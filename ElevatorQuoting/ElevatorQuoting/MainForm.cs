@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.OleDb;
 
 namespace ElevatorQuoting
 {
@@ -17,9 +18,79 @@ namespace ElevatorQuoting
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonOK_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Hello");
+            MessageBox.Show(dtpDate.Value.ToShortDateString());
+
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+
+
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CreateQuoteLocal();
+            }
+            catch
+            {
+
+            }
+            SaveQuoteLocal();
+
+        }
+
+
+        void CreateQuoteLocal()
+        {
+
+            OleDbConnection conn = new OleDbConnection();
+            string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
+            string sql = "INSERT INTO Main(QuoteName) VALUES(@QuoteName)";
+            conn.ConnectionString = connection;
+            conn.Open();
+            OleDbCommand cmd = new OleDbCommand(sql, conn);
+
+
+            cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
+
+
+            cmd.ExecuteNonQuery();
+
+            cmd.Dispose();
+            conn.Close();
+
+        }
+
+        void SaveQuoteLocal()
+        {
+
+            OleDbConnection conn = new OleDbConnection();
+            string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
+            string sql = "UPDATE Main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
+            conn.ConnectionString = connection;
+            conn.Open();
+            OleDbCommand cmd = new OleDbCommand(sql, conn);
+
+            //update
+            cmd.Parameters.Add("@LoadType", OleDbType.VarChar).Value = comboxLoadType.Text;
+            cmd.Parameters.Add("@QuoteDate", OleDbType.DBDate).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
+
+            //where
+            cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
+
+            cmd.ExecuteNonQuery();
+
+            cmd.Dispose();
+            conn.Close();
+
+            MessageBox.Show("Quote Saved");
+        }
+
     }
 }
