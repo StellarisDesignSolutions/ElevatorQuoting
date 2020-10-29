@@ -13,6 +13,8 @@ namespace ElevatorQuoting
 {
     public partial class MainForm : Form
     {
+        List<string> ProvinceCode = new List<string>();
+
         public MainForm()
         {
             InitializeComponent();
@@ -27,6 +29,7 @@ namespace ElevatorQuoting
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+            LogicLoad();
 
 
         }
@@ -44,6 +47,31 @@ namespace ElevatorQuoting
             SaveQuoteLocal();
 
         }
+
+        void LogicLoad()
+        {
+
+            OleDbConnection conn = new OleDbConnection();
+            string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\ProgramLogic.accdb";
+            string sql = "SELECT * FROM Province_Year";
+            conn.ConnectionString = connection;
+            conn.Open();
+            OleDbCommand cmd = new OleDbCommand(sql, conn);
+            OleDbDataReader dr = cmd.ExecuteReader();
+
+            while(dr.Read())
+            {
+                comboxProvince.Items.Add(dr[0].ToString());
+                ProvinceCode.Add(dr[1].ToString());
+
+            }
+
+            dr.Close();
+            cmd.Dispose();
+            conn.Close();
+
+        }
+
 
 
         void CreateQuoteLocal()
@@ -92,5 +120,11 @@ namespace ElevatorQuoting
             MessageBox.Show("Quote Saved");
         }
 
+        private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
+
+        }
     }
 }

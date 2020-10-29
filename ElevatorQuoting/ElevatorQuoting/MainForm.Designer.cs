@@ -62,15 +62,21 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelCodeYear = new System.Windows.Forms.Label();
+            this.txtboxCodeYear = new System.Windows.Forms.TextBox();
+            this.labelProvince = new System.Windows.Forms.Label();
+            this.comboxProvince = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.labelCodeYear);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.labelClassofLoading);
             this.panel1.Controls.Add(this.labelOutputs);
+            this.panel1.Controls.Add(this.txtboxCodeYear);
             this.panel1.Location = new System.Drawing.Point(498, 170);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(232, 276);
@@ -80,7 +86,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(58, 118);
+            this.label1.Location = new System.Drawing.Point(49, 153);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(64, 16);
             this.label1.TabIndex = 3;
@@ -90,7 +96,7 @@
             // 
             this.labelClassofLoading.AutoSize = true;
             this.labelClassofLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelClassofLoading.Location = new System.Drawing.Point(58, 70);
+            this.labelClassofLoading.Location = new System.Drawing.Point(49, 105);
             this.labelClassofLoading.Name = "labelClassofLoading";
             this.labelClassofLoading.Size = new System.Drawing.Size(57, 16);
             this.labelClassofLoading.TabIndex = 3;
@@ -112,7 +118,7 @@
             this.comboxLoadType.Items.AddRange(new object[] {
             "Automobile",
             "Pallettes"});
-            this.comboxLoadType.Location = new System.Drawing.Point(34, 146);
+            this.comboxLoadType.Location = new System.Drawing.Point(241, 135);
             this.comboxLoadType.Name = "comboxLoadType";
             this.comboxLoadType.Size = new System.Drawing.Size(121, 21);
             this.comboxLoadType.TabIndex = 25;
@@ -183,7 +189,7 @@
             // labelLoadType
             // 
             this.labelLoadType.AutoSize = true;
-            this.labelLoadType.Location = new System.Drawing.Point(12, 128);
+            this.labelLoadType.Location = new System.Drawing.Point(219, 117);
             this.labelLoadType.Name = "labelLoadType";
             this.labelLoadType.Size = new System.Drawing.Size(58, 13);
             this.labelLoadType.TabIndex = 24;
@@ -353,6 +359,42 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
+            // labelCodeYear
+            // 
+            this.labelCodeYear.AutoSize = true;
+            this.labelCodeYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCodeYear.Location = new System.Drawing.Point(22, 57);
+            this.labelCodeYear.Name = "labelCodeYear";
+            this.labelCodeYear.Size = new System.Drawing.Size(93, 16);
+            this.labelCodeYear.TabIndex = 3;
+            this.labelCodeYear.Text = "CSA B44 Year";
+            // 
+            // txtboxCodeYear
+            // 
+            this.txtboxCodeYear.Location = new System.Drawing.Point(121, 57);
+            this.txtboxCodeYear.Name = "txtboxCodeYear";
+            this.txtboxCodeYear.ReadOnly = true;
+            this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
+            this.txtboxCodeYear.TabIndex = 7;
+            // 
+            // labelProvince
+            // 
+            this.labelProvince.AutoSize = true;
+            this.labelProvince.Location = new System.Drawing.Point(25, 204);
+            this.labelProvince.Name = "labelProvince";
+            this.labelProvince.Size = new System.Drawing.Size(49, 13);
+            this.labelProvince.TabIndex = 24;
+            this.labelProvince.Text = "Province";
+            // 
+            // comboxProvince
+            // 
+            this.comboxProvince.FormattingEnabled = true;
+            this.comboxProvince.Location = new System.Drawing.Point(47, 222);
+            this.comboxProvince.Name = "comboxProvince";
+            this.comboxProvince.Size = new System.Drawing.Size(121, 21);
+            this.comboxProvince.TabIndex = 25;
+            this.comboxProvince.SelectedIndexChanged += new System.EventHandler(this.comboxProvince_SelectedIndexChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -362,6 +404,7 @@
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.comboxProvince);
             this.Controls.Add(this.comboxLoadType);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.labelUnit3);
@@ -369,6 +412,7 @@
             this.Controls.Add(this.labelSpeedUnit);
             this.Controls.Add(this.labelUnit5);
             this.Controls.Add(this.labelUnit4);
+            this.Controls.Add(this.labelProvince);
             this.Controls.Add(this.labelUnit1);
             this.Controls.Add(this.labelLoadType);
             this.Controls.Add(this.labelDate);
@@ -435,6 +479,10 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.Label labelCodeYear;
+        private System.Windows.Forms.TextBox txtboxCodeYear;
+        private System.Windows.Forms.Label labelProvince;
+        private System.Windows.Forms.ComboBox comboxProvince;
     }
 }
 
