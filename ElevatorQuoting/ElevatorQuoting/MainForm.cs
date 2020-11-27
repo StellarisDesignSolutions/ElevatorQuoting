@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace ElevatorQuoting
 {
@@ -51,24 +53,59 @@ namespace ElevatorQuoting
         void LogicLoad()
         {
 
-            OleDbConnection conn = new OleDbConnection();
-            string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\ProgramLogic.accdb";
-            string sql = "SELECT * FROM Province_Year";
-            conn.ConnectionString = connection;
-            conn.Open();
-            OleDbCommand cmd = new OleDbCommand(sql, conn);
-            OleDbDataReader dr = cmd.ExecuteReader();
 
-            while(dr.Read())
+            MySqlConnection conn;
+            string myConnectionString;
+
+            myConnectionString = "server=127.0.0.1;uid=root;pwd=stellaris;database=programlogic;";
+
+            try
             {
-                comboxProvince.Items.Add(dr[0].ToString());
-                ProvinceCode.Add(dr[1].ToString());
+                conn = new MySql.Data.MySqlClient.MySqlConnection();
+                conn.ConnectionString = myConnectionString;
+                string sql = "SELECT * FROM province_year";
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    comboxProvince.Items.Add(dr[0].ToString());
+                    ProvinceCode.Add(dr[1].ToString());
+
+                }
+
+                dr.Close();
+                cmd.Dispose();
+                conn.Close();
+
 
             }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
-            dr.Close();
-            cmd.Dispose();
-            conn.Close();
+            //Below is Access Connection
+            //OleDbConnection conn = new OleDbConnection();
+            //string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\ProgramLogic.accdb";
+            //string sql = "SELECT * FROM Province_Year";
+            //conn.ConnectionString = connection;
+            //conn.Open();
+            //OleDbCommand cmd = new OleDbCommand(sql, conn);
+            //OleDbDataReader dr = cmd.ExecuteReader();
+
+            //while(dr.Read())
+            //{
+            //    comboxProvince.Items.Add(dr[0].ToString());
+            //    ProvinceCode.Add(dr[1].ToString());
+
+            //}
+
+            //dr.Close();
+            //cmd.Dispose();
+            //conn.Close();
 
         }
 
@@ -77,45 +114,96 @@ namespace ElevatorQuoting
         void CreateQuoteLocal()
         {
 
-            OleDbConnection conn = new OleDbConnection();
-            string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
-            string sql = "INSERT INTO Main(QuoteName) VALUES(@QuoteName)";
-            conn.ConnectionString = connection;
+
+            MySqlConnection conn;
+            string myConnectionString;
+
+            myConnectionString = "server=127.0.0.1;uid=root;pwd=stellaris;database=quotinglog;";
+
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = myConnectionString;
+            string sql = "INSERT INTO main(QuoteName) VALUES(@QuoteName)";
             conn.Open();
-            OleDbCommand cmd = new OleDbCommand(sql, conn);
+
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
 
 
-            cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
+            cmd.Parameters.Add("@QuoteName", MySqlDbType.VarChar).Value = txtboxQuoteName.Text;
 
 
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
             conn.Close();
+
+
+            //OleDbConnection conn = new OleDbConnection();
+            //string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
+            //string sql = "INSERT INTO Main(QuoteName) VALUES(@QuoteName)";
+            //conn.ConnectionString = connection;
+            //conn.Open();
+            //OleDbCommand cmd = new OleDbCommand(sql, conn);
+
+
+            //cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
+
+
+            //cmd.ExecuteNonQuery();
+
+            //cmd.Dispose();
+            //conn.Close();
 
         }
 
         void SaveQuoteLocal()
         {
 
-            OleDbConnection conn = new OleDbConnection();
-            string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
-            string sql = "UPDATE Main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
-            conn.ConnectionString = connection;
+            MySqlConnection conn;
+            string myConnectionString;
+
+            myConnectionString = "server=127.0.0.1;uid=root;pwd=stellaris;database=quotinglog;";
+
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = myConnectionString;
+
+            string sql = "UPDATE main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
+
             conn.Open();
-            OleDbCommand cmd = new OleDbCommand(sql, conn);
+
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
 
             //update
-            cmd.Parameters.Add("@LoadType", OleDbType.VarChar).Value = comboxLoadType.Text;
-            cmd.Parameters.Add("@QuoteDate", OleDbType.DBDate).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
+            cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
+            cmd.Parameters.Add("@QuoteDate", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
 
             //where
-            cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
+            cmd.Parameters.Add("@QuoteName", MySqlDbType.VarChar).Value = txtboxQuoteName.Text;
 
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
             conn.Close();
+
+
+
+            //OleDbConnection conn = new OleDbConnection();
+            //string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
+            //string sql = "UPDATE Main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
+            //conn.ConnectionString = connection;
+            //conn.Open();
+            //OleDbCommand cmd = new OleDbCommand(sql, conn);
+
+            ////update
+            //cmd.Parameters.Add("@LoadType", OleDbType.VarChar).Value = comboxLoadType.Text;
+            //cmd.Parameters.Add("@QuoteDate", OleDbType.DBDate).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
+
+            ////where
+            //cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
+
+            //cmd.ExecuteNonQuery();
+
+            //cmd.Dispose();
+            //conn.Close();
 
             MessageBox.Show("Quote Saved");
         }
