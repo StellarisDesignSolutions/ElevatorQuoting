@@ -30,9 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelCodeYear = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelClassofLoading = new System.Windows.Forms.Label();
             this.labelOutputs = new System.Windows.Forms.Label();
+            this.txtboxCodeYear = new System.Windows.Forms.TextBox();
             this.comboxLoadType = new System.Windows.Forms.ComboBox();
             this.labelX1 = new System.Windows.Forms.Label();
             this.labelUnit3 = new System.Windows.Forms.Label();
@@ -62,10 +64,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.labelCodeYear = new System.Windows.Forms.Label();
-            this.txtboxCodeYear = new System.Windows.Forms.TextBox();
             this.labelProvince = new System.Windows.Forms.Label();
             this.comboxProvince = new System.Windows.Forms.ComboBox();
+            this.comboxUnits = new System.Windows.Forms.ComboBox();
+            this.labelUnits = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -77,10 +79,20 @@
             this.panel1.Controls.Add(this.labelClassofLoading);
             this.panel1.Controls.Add(this.labelOutputs);
             this.panel1.Controls.Add(this.txtboxCodeYear);
-            this.panel1.Location = new System.Drawing.Point(498, 170);
+            this.panel1.Location = new System.Drawing.Point(467, 180);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(232, 276);
+            this.panel1.Size = new System.Drawing.Size(621, 276);
             this.panel1.TabIndex = 26;
+            // 
+            // labelCodeYear
+            // 
+            this.labelCodeYear.AutoSize = true;
+            this.labelCodeYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCodeYear.Location = new System.Drawing.Point(22, 57);
+            this.labelCodeYear.Name = "labelCodeYear";
+            this.labelCodeYear.Size = new System.Drawing.Size(93, 16);
+            this.labelCodeYear.TabIndex = 3;
+            this.labelCodeYear.Text = "CSA B44 Year";
             // 
             // label1
             // 
@@ -111,6 +123,14 @@
             this.labelOutputs.Size = new System.Drawing.Size(73, 20);
             this.labelOutputs.TabIndex = 2;
             this.labelOutputs.Text = "Outputs";
+            // 
+            // txtboxCodeYear
+            // 
+            this.txtboxCodeYear.Location = new System.Drawing.Point(121, 57);
+            this.txtboxCodeYear.Name = "txtboxCodeYear";
+            this.txtboxCodeYear.ReadOnly = true;
+            this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
+            this.txtboxCodeYear.TabIndex = 7;
             // 
             // comboxLoadType
             // 
@@ -281,6 +301,7 @@
             this.txtboxTravelDis.Name = "txtboxTravelDis";
             this.txtboxTravelDis.Size = new System.Drawing.Size(47, 20);
             this.txtboxTravelDis.TabIndex = 11;
+            this.txtboxTravelDis.TextChanged += new System.EventHandler(this.txtboxTravelDis_TextChanged);
             // 
             // labelNotes
             // 
@@ -340,7 +361,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(852, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1198, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -355,27 +376,9 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // labelCodeYear
-            // 
-            this.labelCodeYear.AutoSize = true;
-            this.labelCodeYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCodeYear.Location = new System.Drawing.Point(22, 57);
-            this.labelCodeYear.Name = "labelCodeYear";
-            this.labelCodeYear.Size = new System.Drawing.Size(93, 16);
-            this.labelCodeYear.TabIndex = 3;
-            this.labelCodeYear.Text = "CSA B44 Year";
-            // 
-            // txtboxCodeYear
-            // 
-            this.txtboxCodeYear.Location = new System.Drawing.Point(121, 57);
-            this.txtboxCodeYear.Name = "txtboxCodeYear";
-            this.txtboxCodeYear.ReadOnly = true;
-            this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
-            this.txtboxCodeYear.TabIndex = 7;
             // 
             // labelProvince
             // 
@@ -395,11 +398,34 @@
             this.comboxProvince.TabIndex = 25;
             this.comboxProvince.SelectedIndexChanged += new System.EventHandler(this.comboxProvince_SelectedIndexChanged);
             // 
+            // comboxUnits
+            // 
+            this.comboxUnits.FormattingEnabled = true;
+            this.comboxUnits.Items.AddRange(new object[] {
+            "Imperial",
+            "Metric"});
+            this.comboxUnits.Location = new System.Drawing.Point(75, 135);
+            this.comboxUnits.Name = "comboxUnits";
+            this.comboxUnits.Size = new System.Drawing.Size(121, 21);
+            this.comboxUnits.TabIndex = 31;
+            this.comboxUnits.SelectedIndexChanged += new System.EventHandler(this.comboxUnits_SelectedIndexChanged);
+            // 
+            // labelUnits
+            // 
+            this.labelUnits.AutoSize = true;
+            this.labelUnits.Location = new System.Drawing.Point(61, 119);
+            this.labelUnits.Name = "labelUnits";
+            this.labelUnits.Size = new System.Drawing.Size(31, 13);
+            this.labelUnits.TabIndex = 32;
+            this.labelUnits.Text = "Units";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(852, 588);
+            this.ClientSize = new System.Drawing.Size(1198, 588);
+            this.Controls.Add(this.labelUnits);
+            this.Controls.Add(this.comboxUnits);
             this.Controls.Add(this.labelQuoteName);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.dtpDate);
@@ -483,6 +509,8 @@
         private System.Windows.Forms.TextBox txtboxCodeYear;
         private System.Windows.Forms.Label labelProvince;
         private System.Windows.Forms.ComboBox comboxProvince;
+        private System.Windows.Forms.ComboBox comboxUnits;
+        private System.Windows.Forms.Label labelUnits;
     }
 }
 

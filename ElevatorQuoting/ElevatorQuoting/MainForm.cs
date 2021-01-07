@@ -208,11 +208,42 @@ namespace ElevatorQuoting
             MessageBox.Show("Quote Saved");
         }
 
+        void setUnits(string newUnits)
+        {
+            string newUnitLabel = null;
+
+            if (newUnits == "Metric")
+            {
+                newUnitLabel = "m";
+            }
+            else
+            {
+                newUnitLabel = "ft";
+            }
+
+            labelUnit1.Text = newUnitLabel;
+            labelUnit2.Text = newUnitLabel;
+            labelUnit3.Text = newUnitLabel;
+            labelUnit4.Text = newUnitLabel;
+            labelUnit5.Text = newUnitLabel;
+            labelSpeedUnit.Text = newUnitLabel  + "/s";
+        }
+
         private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
 
+        }
+
+        private void txtboxTravelDis_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboxUnits_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setUnits(comboxUnits.Items[comboxUnits.SelectedIndex].ToString());
         }
     }
 }
