@@ -19,9 +19,12 @@ namespace ElevatorQuoting
         List<string> ProvinceCode = new List<string>();
         List<decimal> materialDensitiesMetric = new List<decimal>();
         List<decimal> materialDensitiesImperial = new List<decimal>();
-        List<decimal> cylinderEffectiveAreas = new List<decimal>();
+        List<decimal> cylinderEffectiveAreasMetric = new List<decimal>();
+        List<decimal> cylinderEffectiveAreasImperial = new List<decimal>();
         Dictionary<string, int> metricCapacityValues = new Dictionary<string, int>();
         Dictionary<string, int> imperialCapacityValues = new Dictionary<string, int>();
+
+        const decimal maxOperatingPressure = 1200;
 
         Boolean unitsAreMetric = false;
 
@@ -41,6 +44,9 @@ namespace ElevatorQuoting
 
             LogicLoad();
             comboxUnits.SelectedIndex = 0;
+            comboxCylinders.SelectedIndex = 0;
+            comboxNumberOfCylinders.SelectedIndex = 0;
+            comboxProvince.SelectedIndex = 8;
 
         }
 
@@ -132,7 +138,8 @@ namespace ElevatorQuoting
                 while (readerForImportingCylinders.Read())
                 {
                     comboxCylinders.Items.Add(readerForImportingCylinders[0].ToString());
-                    cylinderEffectiveAreas.Add(Convert.ToDecimal(readerForImportingCylinders[1]));
+                    cylinderEffectiveAreasMetric.Add(Convert.ToDecimal(readerForImportingCylinders[1]));
+                    cylinderEffectiveAreasImperial.Add(Convert.ToDecimal(readerForImportingCylinders[2]));
                 }
 
                 comboxMaterials.SelectedIndex = 0;
@@ -307,24 +314,24 @@ namespace ElevatorQuoting
                 
                 //Class A Capacity//
                 decimal platformClassACapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                textboxCapacityClassA.Text = string.Format("{0}", platformClassACapacity);
+                txtboxCapacityClassA.Text = string.Format("{0,4:.00}", platformClassACapacity);
                 ////////////////////
 
                 //Class B Capacity//
                 decimal platformClassBCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                textboxCapacityClassB.Text = string.Format("{0}", platformClassBCapacity);
+                txtboxCapacityClassB.Text = string.Format("{0,4:.00}", platformClassBCapacity);
                 ////////////////////
                 
                 //Class C Capacity//
                 decimal platformClassCCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                textboxCapacityClassC.Text = string.Format("{0}", platformClassCCapacity);
+                txtboxCapacityClassC.Text = string.Format("{0,4:.00}", platformClassCCapacity);
                 ////////////////////
             }
             else
             {
-                textboxCapacityClassA.Text = "Invalid";
-                textboxCapacityClassB.Text = "Invalid";
-                textboxCapacityClassC.Text = "Invalid";
+                txtboxCapacityClassA.Text = "Invalid";
+                txtboxCapacityClassB.Text = "Invalid";
+                txtboxCapacityClassC.Text = "Invalid";
             }
         }
 
@@ -355,7 +362,7 @@ namespace ElevatorQuoting
 
                 decimal platformMass = materialDensity * platformVolume * conversionFactor;
 
-                txtboxPlatformMass.Text = string.Format("{0}", platformMass);
+                txtboxPlatformMass.Text = string.Format("{0,4:.00}", platformMass);
             }
             else
             {
@@ -363,9 +370,78 @@ namespace ElevatorQuoting
             }
         }
 
+        void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
+        {
+            if (isThisStringANumber(capacityTextBox.Text) && isThisStringANumber(txtboxPlatformMass.Text))
+            {
+                decimal totalMass = decimal.Parse(txtboxPlatformMass.Text) + decimal.Parse(capacityTextBox.Text);
+
+                decimal conversionFactor = 1;
+
+                decimal totalArea;
+
+                if (unitsAreMetric)
+                {
+                    totalArea = decimal.Parse(comboxNumberOfCylinders.Text) * cylinderEffectiveAreasMetric[comboxCylinders.SelectedIndex];
+                    conversionFactor = 9.81M;
+                }
+                else
+                {
+                    totalArea = decimal.Parse(comboxNumberOfCylinders.Text) * cylinderEffectiveAreasImperial[comboxCylinders.SelectedIndex];
+                    conversionFactor = 1;
+                }
+
+                decimal maxOperatingPressureStatic = totalMass * conversionFactor / totalArea;
+
+                decimal maxOperatingPressureDynamic = maxOperatingPressureStatic * 1.1M;
+
+                textBoxToPopulateStatic.BackColor = capacityTextBox.BackColor;
+                textBoxToPopulateStatic.ForeColor = Color.Black;
+                if (!isPressureOk(maxOperatingPressureStatic))
+                {
+                    textBoxToPopulateStatic.ForeColor = Color.Red;
+                }
+                textBoxToPopulateStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
+
+                textBoxToPopulateDynamic.BackColor = capacityTextBox.BackColor;
+                textBoxToPopulateDynamic.ForeColor = Color.Black;
+                if (!isPressureOk(maxOperatingPressureDynamic))
+                {
+                    textBoxToPopulateDynamic.ForeColor = Color.Red;
+                }
+                textBoxToPopulateDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
+            }
+            else
+            {
+                textBoxToPopulateStatic.Text = "Invalid";
+                textBoxToPopulateDynamic.Text = "Invalid";
+            }
+        }
+
+        void updateAllCalculations()
+        {
+            calculateCapacity();
+            calculatePlatformMass();
+            calculatePressures(txtboxFullLoadStaticA, txtboxFullLoadDynamicA, txtboxCapacityClassA);
+            calculatePressures(txtboxFullLoadStaticB, txtboxFullLoadDynamicB, txtboxCapacityClassB);
+            calculatePressures(txtboxFullLoadStaticC, txtboxFullLoadDynamicC, txtboxCapacityClassC);
+        }
+
         Boolean isThisStringANumber(string numberToCheck)
         {
             if (decimal.TryParse(numberToCheck, out decimal d)){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        Boolean isPressureOk(decimal pressureToCheck)
+        {
+            if (pressureToCheck <= maxOperatingPressure)
+            {
                 return true;
             }
             else
@@ -389,30 +465,42 @@ namespace ElevatorQuoting
         private void comboxUnits_SelectedIndexChanged(object sender, EventArgs e)
         {
             setUnits(comboxUnits.Items[comboxUnits.SelectedIndex].ToString());
-            calculateCapacity();
-            calculatePlatformMass();
+            updateAllCalculations();
         }
 
         private void txtboxPlatformWidth_TextChanged(object sender, EventArgs e)
         {
-            calculateCapacity();
-            calculatePlatformMass();
+            updateAllCalculations();
         }
 
         private void txtboxPlatformLength_TextChanged(object sender, EventArgs e)
         {
-            calculateCapacity();
-            calculatePlatformMass();
+            updateAllCalculations();
         }
 
         private void txtboxPlatformThickness_TextChanged(object sender, EventArgs e)
         {
-            calculatePlatformMass();
+            updateAllCalculations();
         }
 
         private void comboxMaterials_SelectedIndexChanged(object sender, EventArgs e)
         {
-            calculatePlatformMass();
+            updateAllCalculations();
+        }
+
+        private void buttonCalculate_Click(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
+
+        private void comboxCylinders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
+
+        private void comboxNumberOfCylinders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
         }
     }
 }

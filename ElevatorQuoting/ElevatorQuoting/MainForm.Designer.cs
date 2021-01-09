@@ -69,17 +69,29 @@
             this.comboxUnits = new System.Windows.Forms.ComboBox();
             this.labelUnits = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.labelFullLoadDynamicA = new System.Windows.Forms.Label();
+            this.txtboxFullLoadDynamicA = new System.Windows.Forms.TextBox();
+            this.labelFullLoadStaticA = new System.Windows.Forms.Label();
+            this.txtboxFullLoadStaticA = new System.Windows.Forms.TextBox();
             this.labelCapacityClassA = new System.Windows.Forms.Label();
             this.labelClassA = new System.Windows.Forms.Label();
-            this.textboxCapacityClassA = new System.Windows.Forms.TextBox();
+            this.txtboxCapacityClassA = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.labelFullLoadDynamicB = new System.Windows.Forms.Label();
             this.labelCapacityClassB = new System.Windows.Forms.Label();
+            this.txtboxFullLoadDynamicB = new System.Windows.Forms.TextBox();
             this.labelClassB = new System.Windows.Forms.Label();
-            this.textboxCapacityClassB = new System.Windows.Forms.TextBox();
+            this.labelFullLoadStaticB = new System.Windows.Forms.Label();
+            this.txtboxFullLoadStaticB = new System.Windows.Forms.TextBox();
+            this.txtboxCapacityClassB = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.labelFullLoadDynamicC = new System.Windows.Forms.Label();
             this.labelCapacityClassC = new System.Windows.Forms.Label();
+            this.txtboxFullLoadDynamicC = new System.Windows.Forms.TextBox();
             this.labelClassC = new System.Windows.Forms.Label();
-            this.textboxCapacityClassC = new System.Windows.Forms.TextBox();
+            this.labelFullLoadStaticC = new System.Windows.Forms.Label();
+            this.txtboxFullLoadStaticC = new System.Windows.Forms.TextBox();
+            this.txtboxCapacityClassC = new System.Windows.Forms.TextBox();
             this.labelUnit6 = new System.Windows.Forms.Label();
             this.labelPlatformThickness = new System.Windows.Forms.Label();
             this.txtboxPlatformThickness = new System.Windows.Forms.TextBox();
@@ -88,6 +100,8 @@
             this.txtboxPlatformMass = new System.Windows.Forms.TextBox();
             this.comboxCylinders = new System.Windows.Forms.ComboBox();
             this.labelCylinders = new System.Windows.Forms.Label();
+            this.comboxNumberOfCylinders = new System.Windows.Forms.ComboBox();
+            this.labelNumberOfCylinders = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -164,7 +178,7 @@
             this.comboxLoadType.Location = new System.Drawing.Point(241, 135);
             this.comboxLoadType.Name = "comboxLoadType";
             this.comboxLoadType.Size = new System.Drawing.Size(121, 21);
-            this.comboxLoadType.TabIndex = 25;
+            this.comboxLoadType.TabIndex = 3;
             // 
             // labelX1
             // 
@@ -304,28 +318,28 @@
             this.txtboxTravelSpeed.Location = new System.Drawing.Point(149, 303);
             this.txtboxTravelSpeed.Name = "txtboxTravelSpeed";
             this.txtboxTravelSpeed.Size = new System.Drawing.Size(47, 20);
-            this.txtboxTravelSpeed.TabIndex = 8;
+            this.txtboxTravelSpeed.TabIndex = 6;
             // 
             // txtboxOverheadCl
             // 
             this.txtboxOverheadCl.Location = new System.Drawing.Point(149, 381);
             this.txtboxOverheadCl.Name = "txtboxOverheadCl";
             this.txtboxOverheadCl.Size = new System.Drawing.Size(47, 20);
-            this.txtboxOverheadCl.TabIndex = 7;
+            this.txtboxOverheadCl.TabIndex = 8;
             // 
             // txtboxPitDepth
             // 
             this.txtboxPitDepth.Location = new System.Drawing.Point(28, 381);
             this.txtboxPitDepth.Name = "txtboxPitDepth";
             this.txtboxPitDepth.Size = new System.Drawing.Size(47, 20);
-            this.txtboxPitDepth.TabIndex = 6;
+            this.txtboxPitDepth.TabIndex = 7;
             // 
             // txtboxTravelDis
             // 
             this.txtboxTravelDis.Location = new System.Drawing.Point(28, 303);
             this.txtboxTravelDis.Name = "txtboxTravelDis";
             this.txtboxTravelDis.Size = new System.Drawing.Size(47, 20);
-            this.txtboxTravelDis.TabIndex = 11;
+            this.txtboxTravelDis.TabIndex = 5;
             this.txtboxTravelDis.TextChanged += new System.EventHandler(this.txtboxTravelDis_TextChanged);
             // 
             // labelNotes
@@ -369,7 +383,7 @@
             this.txtboxQuoteName.Location = new System.Drawing.Point(34, 76);
             this.txtboxQuoteName.Name = "txtboxQuoteName";
             this.txtboxQuoteName.Size = new System.Drawing.Size(113, 20);
-            this.txtboxQuoteName.TabIndex = 10;
+            this.txtboxQuoteName.TabIndex = 1;
             // 
             // labelQuoteName
             // 
@@ -420,7 +434,7 @@
             this.comboxProvince.Location = new System.Drawing.Point(28, 220);
             this.comboxProvince.Name = "comboxProvince";
             this.comboxProvince.Size = new System.Drawing.Size(121, 21);
-            this.comboxProvince.TabIndex = 25;
+            this.comboxProvince.TabIndex = 4;
             this.comboxProvince.SelectedIndexChanged += new System.EventHandler(this.comboxProvince_SelectedIndexChanged);
             // 
             // comboxUnits
@@ -432,7 +446,7 @@
             this.comboxUnits.Location = new System.Drawing.Point(75, 135);
             this.comboxUnits.Name = "comboxUnits";
             this.comboxUnits.Size = new System.Drawing.Size(121, 21);
-            this.comboxUnits.TabIndex = 31;
+            this.comboxUnits.TabIndex = 2;
             this.comboxUnits.SelectedIndexChanged += new System.EventHandler(this.comboxUnits_SelectedIndexChanged);
             // 
             // labelUnits
@@ -446,13 +460,53 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.labelFullLoadDynamicA);
+            this.panel2.Controls.Add(this.txtboxFullLoadDynamicA);
+            this.panel2.Controls.Add(this.labelFullLoadStaticA);
+            this.panel2.Controls.Add(this.txtboxFullLoadStaticA);
             this.panel2.Controls.Add(this.labelCapacityClassA);
             this.panel2.Controls.Add(this.labelClassA);
-            this.panel2.Controls.Add(this.textboxCapacityClassA);
+            this.panel2.Controls.Add(this.txtboxCapacityClassA);
             this.panel2.Location = new System.Drawing.Point(600, 180);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(218, 276);
             this.panel2.TabIndex = 27;
+            // 
+            // labelFullLoadDynamicA
+            // 
+            this.labelFullLoadDynamicA.AutoSize = true;
+            this.labelFullLoadDynamicA.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadDynamicA.Location = new System.Drawing.Point(22, 182);
+            this.labelFullLoadDynamicA.Name = "labelFullLoadDynamicA";
+            this.labelFullLoadDynamicA.Size = new System.Drawing.Size(176, 16);
+            this.labelFullLoadDynamicA.TabIndex = 10;
+            this.labelFullLoadDynamicA.Text = "Full Load Dynamic Pressure";
+            // 
+            // txtboxFullLoadDynamicA
+            // 
+            this.txtboxFullLoadDynamicA.Location = new System.Drawing.Point(70, 208);
+            this.txtboxFullLoadDynamicA.Name = "txtboxFullLoadDynamicA";
+            this.txtboxFullLoadDynamicA.ReadOnly = true;
+            this.txtboxFullLoadDynamicA.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadDynamicA.TabIndex = 11;
+            // 
+            // labelFullLoadStaticA
+            // 
+            this.labelFullLoadStaticA.AutoSize = true;
+            this.labelFullLoadStaticA.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadStaticA.Location = new System.Drawing.Point(31, 104);
+            this.labelFullLoadStaticA.Name = "labelFullLoadStaticA";
+            this.labelFullLoadStaticA.Size = new System.Drawing.Size(156, 16);
+            this.labelFullLoadStaticA.TabIndex = 8;
+            this.labelFullLoadStaticA.Text = "Full Load Static Pressure";
+            // 
+            // txtboxFullLoadStaticA
+            // 
+            this.txtboxFullLoadStaticA.Location = new System.Drawing.Point(70, 130);
+            this.txtboxFullLoadStaticA.Name = "txtboxFullLoadStaticA";
+            this.txtboxFullLoadStaticA.ReadOnly = true;
+            this.txtboxFullLoadStaticA.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadStaticA.TabIndex = 9;
             // 
             // labelCapacityClassA
             // 
@@ -474,23 +528,37 @@
             this.labelClassA.TabIndex = 2;
             this.labelClassA.Text = "Class A";
             // 
-            // textboxCapacityClassA
+            // txtboxCapacityClassA
             // 
-            this.textboxCapacityClassA.Location = new System.Drawing.Point(89, 56);
-            this.textboxCapacityClassA.Name = "textboxCapacityClassA";
-            this.textboxCapacityClassA.ReadOnly = true;
-            this.textboxCapacityClassA.Size = new System.Drawing.Size(73, 20);
-            this.textboxCapacityClassA.TabIndex = 7;
+            this.txtboxCapacityClassA.Location = new System.Drawing.Point(89, 56);
+            this.txtboxCapacityClassA.Name = "txtboxCapacityClassA";
+            this.txtboxCapacityClassA.ReadOnly = true;
+            this.txtboxCapacityClassA.Size = new System.Drawing.Size(73, 20);
+            this.txtboxCapacityClassA.TabIndex = 7;
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.labelFullLoadDynamicB);
             this.panel3.Controls.Add(this.labelCapacityClassB);
+            this.panel3.Controls.Add(this.txtboxFullLoadDynamicB);
             this.panel3.Controls.Add(this.labelClassB);
-            this.panel3.Controls.Add(this.textboxCapacityClassB);
+            this.panel3.Controls.Add(this.labelFullLoadStaticB);
+            this.panel3.Controls.Add(this.txtboxFullLoadStaticB);
+            this.panel3.Controls.Add(this.txtboxCapacityClassB);
             this.panel3.Location = new System.Drawing.Point(824, 180);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(218, 276);
             this.panel3.TabIndex = 28;
+            // 
+            // labelFullLoadDynamicB
+            // 
+            this.labelFullLoadDynamicB.AutoSize = true;
+            this.labelFullLoadDynamicB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadDynamicB.Location = new System.Drawing.Point(23, 182);
+            this.labelFullLoadDynamicB.Name = "labelFullLoadDynamicB";
+            this.labelFullLoadDynamicB.Size = new System.Drawing.Size(176, 16);
+            this.labelFullLoadDynamicB.TabIndex = 14;
+            this.labelFullLoadDynamicB.Text = "Full Load Dynamic Pressure";
             // 
             // labelCapacityClassB
             // 
@@ -502,6 +570,14 @@
             this.labelCapacityClassB.TabIndex = 3;
             this.labelCapacityClassB.Text = "Capacity";
             // 
+            // txtboxFullLoadDynamicB
+            // 
+            this.txtboxFullLoadDynamicB.Location = new System.Drawing.Point(71, 208);
+            this.txtboxFullLoadDynamicB.Name = "txtboxFullLoadDynamicB";
+            this.txtboxFullLoadDynamicB.ReadOnly = true;
+            this.txtboxFullLoadDynamicB.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadDynamicB.TabIndex = 15;
+            // 
             // labelClassB
             // 
             this.labelClassB.AutoSize = true;
@@ -512,23 +588,55 @@
             this.labelClassB.TabIndex = 2;
             this.labelClassB.Text = "Class B";
             // 
-            // textboxCapacityClassB
+            // labelFullLoadStaticB
             // 
-            this.textboxCapacityClassB.Location = new System.Drawing.Point(89, 56);
-            this.textboxCapacityClassB.Name = "textboxCapacityClassB";
-            this.textboxCapacityClassB.ReadOnly = true;
-            this.textboxCapacityClassB.Size = new System.Drawing.Size(73, 20);
-            this.textboxCapacityClassB.TabIndex = 7;
+            this.labelFullLoadStaticB.AutoSize = true;
+            this.labelFullLoadStaticB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadStaticB.Location = new System.Drawing.Point(32, 104);
+            this.labelFullLoadStaticB.Name = "labelFullLoadStaticB";
+            this.labelFullLoadStaticB.Size = new System.Drawing.Size(156, 16);
+            this.labelFullLoadStaticB.TabIndex = 12;
+            this.labelFullLoadStaticB.Text = "Full Load Static Pressure";
+            // 
+            // txtboxFullLoadStaticB
+            // 
+            this.txtboxFullLoadStaticB.Location = new System.Drawing.Point(71, 130);
+            this.txtboxFullLoadStaticB.Name = "txtboxFullLoadStaticB";
+            this.txtboxFullLoadStaticB.ReadOnly = true;
+            this.txtboxFullLoadStaticB.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadStaticB.TabIndex = 13;
+            // 
+            // txtboxCapacityClassB
+            // 
+            this.txtboxCapacityClassB.Location = new System.Drawing.Point(89, 56);
+            this.txtboxCapacityClassB.Name = "txtboxCapacityClassB";
+            this.txtboxCapacityClassB.ReadOnly = true;
+            this.txtboxCapacityClassB.Size = new System.Drawing.Size(73, 20);
+            this.txtboxCapacityClassB.TabIndex = 7;
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.labelFullLoadDynamicC);
             this.panel4.Controls.Add(this.labelCapacityClassC);
+            this.panel4.Controls.Add(this.txtboxFullLoadDynamicC);
             this.panel4.Controls.Add(this.labelClassC);
-            this.panel4.Controls.Add(this.textboxCapacityClassC);
+            this.panel4.Controls.Add(this.labelFullLoadStaticC);
+            this.panel4.Controls.Add(this.txtboxFullLoadStaticC);
+            this.panel4.Controls.Add(this.txtboxCapacityClassC);
             this.panel4.Location = new System.Drawing.Point(1048, 180);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(218, 276);
             this.panel4.TabIndex = 29;
+            // 
+            // labelFullLoadDynamicC
+            // 
+            this.labelFullLoadDynamicC.AutoSize = true;
+            this.labelFullLoadDynamicC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadDynamicC.Location = new System.Drawing.Point(25, 182);
+            this.labelFullLoadDynamicC.Name = "labelFullLoadDynamicC";
+            this.labelFullLoadDynamicC.Size = new System.Drawing.Size(176, 16);
+            this.labelFullLoadDynamicC.TabIndex = 18;
+            this.labelFullLoadDynamicC.Text = "Full Load Dynamic Pressure";
             // 
             // labelCapacityClassC
             // 
@@ -540,6 +648,14 @@
             this.labelCapacityClassC.TabIndex = 3;
             this.labelCapacityClassC.Text = "Capacity";
             // 
+            // txtboxFullLoadDynamicC
+            // 
+            this.txtboxFullLoadDynamicC.Location = new System.Drawing.Point(73, 208);
+            this.txtboxFullLoadDynamicC.Name = "txtboxFullLoadDynamicC";
+            this.txtboxFullLoadDynamicC.ReadOnly = true;
+            this.txtboxFullLoadDynamicC.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadDynamicC.TabIndex = 19;
+            // 
             // labelClassC
             // 
             this.labelClassC.AutoSize = true;
@@ -550,13 +666,31 @@
             this.labelClassC.TabIndex = 2;
             this.labelClassC.Text = "Class C";
             // 
-            // textboxCapacityClassC
+            // labelFullLoadStaticC
             // 
-            this.textboxCapacityClassC.Location = new System.Drawing.Point(108, 56);
-            this.textboxCapacityClassC.Name = "textboxCapacityClassC";
-            this.textboxCapacityClassC.ReadOnly = true;
-            this.textboxCapacityClassC.Size = new System.Drawing.Size(73, 20);
-            this.textboxCapacityClassC.TabIndex = 7;
+            this.labelFullLoadStaticC.AutoSize = true;
+            this.labelFullLoadStaticC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadStaticC.Location = new System.Drawing.Point(34, 104);
+            this.labelFullLoadStaticC.Name = "labelFullLoadStaticC";
+            this.labelFullLoadStaticC.Size = new System.Drawing.Size(156, 16);
+            this.labelFullLoadStaticC.TabIndex = 16;
+            this.labelFullLoadStaticC.Text = "Full Load Static Pressure";
+            // 
+            // txtboxFullLoadStaticC
+            // 
+            this.txtboxFullLoadStaticC.Location = new System.Drawing.Point(73, 130);
+            this.txtboxFullLoadStaticC.Name = "txtboxFullLoadStaticC";
+            this.txtboxFullLoadStaticC.ReadOnly = true;
+            this.txtboxFullLoadStaticC.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadStaticC.TabIndex = 17;
+            // 
+            // txtboxCapacityClassC
+            // 
+            this.txtboxCapacityClassC.Location = new System.Drawing.Point(108, 56);
+            this.txtboxCapacityClassC.Name = "txtboxCapacityClassC";
+            this.txtboxCapacityClassC.ReadOnly = true;
+            this.txtboxCapacityClassC.Size = new System.Drawing.Size(73, 20);
+            this.txtboxCapacityClassC.TabIndex = 7;
             // 
             // labelUnit6
             // 
@@ -581,7 +715,7 @@
             this.txtboxPlatformThickness.Location = new System.Drawing.Point(28, 517);
             this.txtboxPlatformThickness.Name = "txtboxPlatformThickness";
             this.txtboxPlatformThickness.Size = new System.Drawing.Size(47, 20);
-            this.txtboxPlatformThickness.TabIndex = 33;
+            this.txtboxPlatformThickness.TabIndex = 11;
             this.txtboxPlatformThickness.TextChanged += new System.EventHandler(this.txtboxPlatformThickness_TextChanged);
             // 
             // labelPlatformMaterial
@@ -599,7 +733,7 @@
             this.comboxMaterials.Location = new System.Drawing.Point(28, 563);
             this.comboxMaterials.Name = "comboxMaterials";
             this.comboxMaterials.Size = new System.Drawing.Size(121, 21);
-            this.comboxMaterials.TabIndex = 38;
+            this.comboxMaterials.TabIndex = 12;
             this.comboxMaterials.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
             // 
             // txtboxPlatformMass
@@ -616,7 +750,8 @@
             this.comboxCylinders.Location = new System.Drawing.Point(294, 563);
             this.comboxCylinders.Name = "comboxCylinders";
             this.comboxCylinders.Size = new System.Drawing.Size(205, 21);
-            this.comboxCylinders.TabIndex = 41;
+            this.comboxCylinders.TabIndex = 13;
+            this.comboxCylinders.SelectedIndexChanged += new System.EventHandler(this.comboxCylinders_SelectedIndexChanged);
             // 
             // labelCylinders
             // 
@@ -627,11 +762,35 @@
             this.labelCylinders.TabIndex = 40;
             this.labelCylinders.Text = "Cylinder Type";
             // 
+            // comboxNumberOfCylinders
+            // 
+            this.comboxNumberOfCylinders.FormattingEnabled = true;
+            this.comboxNumberOfCylinders.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3"});
+            this.comboxNumberOfCylinders.Location = new System.Drawing.Point(526, 563);
+            this.comboxNumberOfCylinders.Name = "comboxNumberOfCylinders";
+            this.comboxNumberOfCylinders.Size = new System.Drawing.Size(51, 21);
+            this.comboxNumberOfCylinders.TabIndex = 14;
+            this.comboxNumberOfCylinders.SelectedIndexChanged += new System.EventHandler(this.comboxNumberOfCylinders_SelectedIndexChanged);
+            // 
+            // labelNumberOfCylinders
+            // 
+            this.labelNumberOfCylinders.AutoSize = true;
+            this.labelNumberOfCylinders.Location = new System.Drawing.Point(523, 547);
+            this.labelNumberOfCylinders.Name = "labelNumberOfCylinders";
+            this.labelNumberOfCylinders.Size = new System.Drawing.Size(101, 13);
+            this.labelNumberOfCylinders.TabIndex = 42;
+            this.labelNumberOfCylinders.Text = "Number of Cylinders";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1387, 605);
+            this.Controls.Add(this.comboxNumberOfCylinders);
+            this.Controls.Add(this.labelNumberOfCylinders);
             this.Controls.Add(this.comboxCylinders);
             this.Controls.Add(this.labelCylinders);
             this.Controls.Add(this.txtboxPlatformMass);
@@ -739,15 +898,15 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label labelCapacityClassA;
         private System.Windows.Forms.Label labelClassA;
-        private System.Windows.Forms.TextBox textboxCapacityClassA;
+        private System.Windows.Forms.TextBox txtboxCapacityClassA;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label labelCapacityClassB;
         private System.Windows.Forms.Label labelClassB;
-        private System.Windows.Forms.TextBox textboxCapacityClassB;
+        private System.Windows.Forms.TextBox txtboxCapacityClassB;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label labelCapacityClassC;
         private System.Windows.Forms.Label labelClassC;
-        private System.Windows.Forms.TextBox textboxCapacityClassC;
+        private System.Windows.Forms.TextBox txtboxCapacityClassC;
         private System.Windows.Forms.Label labelUnit6;
         private System.Windows.Forms.Label labelPlatformThickness;
         private System.Windows.Forms.TextBox txtboxPlatformThickness;
@@ -756,6 +915,20 @@
         private System.Windows.Forms.TextBox txtboxPlatformMass;
         private System.Windows.Forms.ComboBox comboxCylinders;
         private System.Windows.Forms.Label labelCylinders;
+        private System.Windows.Forms.ComboBox comboxNumberOfCylinders;
+        private System.Windows.Forms.Label labelNumberOfCylinders;
+        private System.Windows.Forms.Label labelFullLoadDynamicA;
+        private System.Windows.Forms.TextBox txtboxFullLoadDynamicA;
+        private System.Windows.Forms.Label labelFullLoadStaticA;
+        private System.Windows.Forms.TextBox txtboxFullLoadStaticA;
+        private System.Windows.Forms.Label labelFullLoadDynamicB;
+        private System.Windows.Forms.TextBox txtboxFullLoadDynamicB;
+        private System.Windows.Forms.Label labelFullLoadStaticB;
+        private System.Windows.Forms.TextBox txtboxFullLoadStaticB;
+        private System.Windows.Forms.Label labelFullLoadDynamicC;
+        private System.Windows.Forms.TextBox txtboxFullLoadDynamicC;
+        private System.Windows.Forms.Label labelFullLoadStaticC;
+        private System.Windows.Forms.TextBox txtboxFullLoadStaticC;
     }
 }
 
