@@ -24,7 +24,7 @@ namespace ElevatorQuoting
         Dictionary<string, int> metricCapacityValues = new Dictionary<string, int>();
         Dictionary<string, int> imperialCapacityValues = new Dictionary<string, int>();
 
-        const decimal maxOperatingPressure = 1200;
+        const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
 
         Boolean unitsAreMetric = false;
 
@@ -383,7 +383,7 @@ namespace ElevatorQuoting
                 if (unitsAreMetric)
                 {
                     totalArea = decimal.Parse(comboxNumberOfCylinders.Text) * cylinderEffectiveAreasMetric[comboxCylinders.SelectedIndex];
-                    conversionFactor = 9.81M;
+                    conversionFactor = 9.81M / 1000;
                 }
                 else
                 {
@@ -440,7 +440,9 @@ namespace ElevatorQuoting
 
         Boolean isPressureOk(decimal pressureToCheck)
         {
-            if (pressureToCheck <= maxOperatingPressure)
+            decimal maximumPressure = unitsAreMetric ? maxOperatingPressure * 6.895M : maxOperatingPressure;
+
+            if (pressureToCheck <= maximumPressure)
             {
                 return true;
             }
