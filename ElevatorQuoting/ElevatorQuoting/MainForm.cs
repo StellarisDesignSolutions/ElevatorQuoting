@@ -12,6 +12,10 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 
 
+// SSH
+using Renci.SshNet;
+using Renci.SshNet.Common;
+
 namespace ElevatorQuoting
 {
     public partial class MainForm : Form
@@ -41,12 +45,12 @@ namespace ElevatorQuoting
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
-            LogicLoad();
-            comboxUnits.SelectedIndex = 0;
-            comboxCylinders.SelectedIndex = 0;
-            comboxNumberOfCylinders.SelectedIndex = 0;
-            comboxProvince.SelectedIndex = 8;
+            sshConnection();
+            //LogicLoad();
+            //comboxUnits.SelectedIndex = 0;
+            //comboxCylinders.SelectedIndex = 0;
+            //comboxNumberOfCylinders.SelectedIndex = 0;
+            //comboxProvince.SelectedIndex = 8;
 
         }
 
@@ -64,6 +68,62 @@ namespace ElevatorQuoting
 
         }
         
+        void sshConnection()
+        {
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
+            connectionInfo.Timeout = TimeSpan.FromSeconds(30);
+
+            using (var client = new SshClient(connectionInfo))
+            {
+                try
+                {
+                    Console.WriteLine("Trying SSH connection...");
+                    client.Connect();
+                    if (client.IsConnected)
+                    {
+                        Console.WriteLine("SSH connection is active: {0}", client.ConnectionInfo.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("SSH connection has failed: {0}", client.ConnectionInfo.ToString());
+                    }
+
+                    Console.WriteLine("\r\nTrying port forwarding...");
+                    var portFwld = new ForwardedPortLocal("127.0.0.1", 1000, "localhost", 3306);
+                    client.AddForwardedPort(portFwld);
+                    portFwld.Start();
+                    if (portFwld.IsStarted)
+                    {
+                        Console.WriteLine("Port forwarded: {0}", portFwld.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Port forwarding has failed.");
+                    }
+
+                    LogicLoad();
+
+                    client.Disconnect();
+
+                }
+                catch (SshException e)
+                {
+                    Console.WriteLine("SSH client connection error: {0}", e.Message);
+                }
+                catch (System.Net.Sockets.SocketException e)
+                {
+                    Console.WriteLine("Socket connection error: {0}", e.Message);
+                }
+
+            }
+
+            //Console.WriteLine("\r\nTrying database connection...");
+            //DBConnect dbConnect = new DBConnect("localhost", "test_database", "root", "passwrod123", "4479");
+
+            //var ct = dbConnect.Count("packages");
+            //Console.WriteLine(ct.ToString());
+        }
+
         void LogicLoad()
         {
 
@@ -71,12 +131,12 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=stellaris;database=programlogic;";
+            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=programlogic;";
 
             try
             {
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = myConnectionString;
+                conn = new MySql.Data.MySqlClient.MySqlConnection(myConnectionString);
+                //conn.ConnectionString = myConnectionString;
                 conn.Open();
 
                 string sql = "SELECT * FROM province_year";
