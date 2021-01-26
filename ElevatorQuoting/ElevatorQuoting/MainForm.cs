@@ -46,11 +46,11 @@ namespace ElevatorQuoting
         private void MainForm_Load(object sender, EventArgs e)
         {
             sshConnection();
-            //LogicLoad();
-            //comboxUnits.SelectedIndex = 0;
-            //comboxCylinders.SelectedIndex = 0;
-            //comboxNumberOfCylinders.SelectedIndex = 0;
-            //comboxProvince.SelectedIndex = 8;
+            //LogicLoad();  //migrated to sshConnection function
+            comboxUnits.SelectedIndex = 0;
+            comboxCylinders.SelectedIndex = 0;
+            comboxNumberOfCylinders.SelectedIndex = 0;
+            comboxProvince.SelectedIndex = 8;
 
         }
 
