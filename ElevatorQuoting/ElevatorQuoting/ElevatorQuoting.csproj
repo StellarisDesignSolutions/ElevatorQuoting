@@ -114,6 +114,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -130,6 +131,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ClassA.JPG" />
+    <None Include="Resources\ClassB.JPG" />
+    <None Include="Resources\ClassC1.JPG" />
+    <None Include="Resources\ClassC2.JPG" />
+    <None Include="Resources\ClassC3.JPG" />
     <Content Include="stellar_logo_style_0tU_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

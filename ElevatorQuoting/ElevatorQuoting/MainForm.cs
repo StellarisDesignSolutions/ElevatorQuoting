@@ -256,7 +256,9 @@ namespace ElevatorQuoting
         //Next Buttons
         private void buttonSCNext_Click(object sender, EventArgs e)
         {
+            updateAllCalculations();
             tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+
         }
 
 
@@ -325,25 +327,36 @@ namespace ElevatorQuoting
                 decimal platformWidth = decimal.Parse(txtboxPlatformWidth.Text);
                 decimal platformLength = decimal.Parse(txtboxPlatformLength.Text);
                 decimal platformArea = platformLength * platformWidth;
+                decimal platformClassCapacity;
 
-                string classLetter = "A";
+                //string classLetter = "A";
 
-                switch (classLetter)
+                switch (comboxLoadType.SelectedIndex)
                 {
-                    case "A":
-                        decimal platformClassACapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassACapacity);
+                    case 0:
+                        platformClassCapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
+                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "A";
                         break;
-                    case "B":
-                        decimal platformClassBCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassBCapacity);
+                    case 1:
+                        platformClassCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
+                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "B";
                         break;
-                    case "C":
-                        decimal platformClassCCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCCapacity);
-                        txtboxClass.Text = "C";
+                    case 2:
+                        platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
+                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxClass.Text = "C1";
+                        break;
+                    case 3:
+                        platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C2"] : imperialCapacityValues["C2"]) * platformArea;
+                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxClass.Text = "C2";
+                        break;
+                    case 4:
+                        platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C3"] : imperialCapacityValues["C3"]) * platformArea;
+                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxClass.Text = "C3";
                         break;
                     default:
                         
@@ -620,7 +633,39 @@ namespace ElevatorQuoting
 
         private void comboxLoadType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            switch (comboxLoadType.SelectedIndex)
+            {
+                case 0:
 
+                    pictureBoxClass.Image = Properties.Resources.ClassA;
+
+                    break;
+
+                case 1:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassB;
+
+                    break;
+
+                case 2:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassC1;
+
+                    break;
+
+                case 3:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassC2;
+
+                    break;
+
+                case 4:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassC3;
+
+                    break;
+
+            }
         }
 
         private void txtboxTravelSpeed_TextChanged(object sender, EventArgs e)
@@ -640,6 +685,39 @@ namespace ElevatorQuoting
 
         private void comboxNumberOfCylinders_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+
+        }
+
+        private void panelClassB_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void buttonPDNext_Click(object sender, EventArgs e)
+        {
+
+            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+
+        }
+
+        private void buttonLoadNext_Click(object sender, EventArgs e)
+        {
+
+            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+
+        }
+
+        private void buttonSCBack_Click(object sender, EventArgs e)
+        {
+
+            tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
+
+        }
+
+        private void buttonLoadBack_Click(object sender, EventArgs e)
+        {
+
+            tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
 
         }
     }
