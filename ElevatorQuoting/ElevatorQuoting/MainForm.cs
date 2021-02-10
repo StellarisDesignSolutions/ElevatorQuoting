@@ -10,8 +10,9 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using MySql.Data;
 using MySql.Data.MySqlClient;
-
-
+using netDxf;
+using netDxf.Entities;
+using netDxf.IO;
 // SSH
 using Renci.SshNet;
 using Renci.SshNet.Common;
@@ -51,7 +52,7 @@ namespace ElevatorQuoting
         }
         void sshConnection()
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("stellarismysql.ddns.net", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
             connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
             using (var client = new SshClient(connectionInfo))
@@ -719,6 +720,28 @@ namespace ElevatorQuoting
 
             tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
 
+        }
+
+        private void buttonDXF_Click(object sender, EventArgs e)
+        {
+            // your DXF file name
+            string file = "sample.dxf";
+
+            // create a new document, by default it will create an AutoCad2000 DXF version
+            DxfDocument doc = new DxfDocument();
+            // an entity
+            Line entity = new Line(new Vector2(5, 5), new Vector2(10, 5));
+            // add your entities here
+            doc.AddEntity(entity);
+            // save to file
+            doc.Save(file);
+
+            // this check is optional but recommended before loading a DXF file
+            //DxfVersion dxfVersion = DxfDocument.CheckDxfFileVersion(file);
+            // netDxf is only compatible with AutoCad2000 and higher DXF versions
+            //if (dxfVersion < DxfVersion.AutoCad2000) return;
+            // load file
+            DxfDocument loaded = DxfDocument.Load(file);
         }
     }
 }

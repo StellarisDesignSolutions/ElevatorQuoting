@@ -79,7 +79,29 @@
             this.txtboxFullLoadStaticC = new System.Windows.Forms.TextBox();
             this.txtboxCapacityClassC = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabProjectDetails = new System.Windows.Forms.TabPage();
+            this.buttonPDNext = new System.Windows.Forms.Button();
+            this.comboxContactName = new System.Windows.Forms.ComboBox();
+            this.labelContactPhone = new System.Windows.Forms.Label();
+            this.labelProjectDescription = new System.Windows.Forms.Label();
+            this.labelContactEmail = new System.Windows.Forms.Label();
+            this.labelContactName = new System.Windows.Forms.Label();
+            this.labelProjectDetails = new System.Windows.Forms.Label();
+            this.comboxCustomer = new System.Windows.Forms.ComboBox();
+            this.labelCustomer = new System.Windows.Forms.Label();
+            this.comboxProvince = new System.Windows.Forms.ComboBox();
+            this.labelProvince = new System.Windows.Forms.Label();
+            this.txtboxContactPhone = new System.Windows.Forms.TextBox();
+            this.txtboxProjectDescription = new System.Windows.Forms.TextBox();
+            this.txtboxContactEmail = new System.Windows.Forms.TextBox();
+            this.tabLoading = new System.Windows.Forms.TabPage();
+            this.buttonLoadBack = new System.Windows.Forms.Button();
+            this.buttonLoadNext = new System.Windows.Forms.Button();
+            this.labelLoading = new System.Windows.Forms.Label();
+            this.labelClassDesc = new System.Windows.Forms.Label();
+            this.pictureBoxClass = new System.Windows.Forms.PictureBox();
             this.tabSiteConditions = new System.Windows.Forms.TabPage();
+            this.buttonSCBack = new System.Windows.Forms.Button();
             this.buttonSCNext = new System.Windows.Forms.Button();
             this.comboxMaterials = new System.Windows.Forms.ComboBox();
             this.labelPlatformMaterial = new System.Windows.Forms.Label();
@@ -112,39 +134,18 @@
             this.comboxCylinders = new System.Windows.Forms.ComboBox();
             this.labelCylinders = new System.Windows.Forms.Label();
             this.buttonCylBack = new System.Windows.Forms.Button();
-            this.pictureBoxClass = new System.Windows.Forms.PictureBox();
-            this.tabLoading = new System.Windows.Forms.TabPage();
-            this.labelClassDesc = new System.Windows.Forms.Label();
-            this.tabProjectDetails = new System.Windows.Forms.TabPage();
-            this.comboxProvince = new System.Windows.Forms.ComboBox();
-            this.labelProvince = new System.Windows.Forms.Label();
-            this.labelLoading = new System.Windows.Forms.Label();
-            this.labelProjectDetails = new System.Windows.Forms.Label();
-            this.labelCustomer = new System.Windows.Forms.Label();
-            this.comboxCustomer = new System.Windows.Forms.ComboBox();
-            this.comboxContactName = new System.Windows.Forms.ComboBox();
-            this.labelContactName = new System.Windows.Forms.Label();
-            this.labelContactEmail = new System.Windows.Forms.Label();
-            this.txtboxContactEmail = new System.Windows.Forms.TextBox();
-            this.txtboxContactPhone = new System.Windows.Forms.TextBox();
-            this.labelContactPhone = new System.Windows.Forms.Label();
-            this.txtboxProjectDescription = new System.Windows.Forms.TextBox();
-            this.labelProjectDescription = new System.Windows.Forms.Label();
-            this.buttonPDNext = new System.Windows.Forms.Button();
-            this.buttonLoadNext = new System.Windows.Forms.Button();
-            this.buttonSCBack = new System.Windows.Forms.Button();
-            this.buttonLoadBack = new System.Windows.Forms.Button();
+            this.buttonDXF = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelClassA.SuspendLayout();
             this.panelClassB.SuspendLayout();
             this.panelClassC.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.tabProjectDetails.SuspendLayout();
+            this.tabLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxClass)).BeginInit();
             this.tabSiteConditions.SuspendLayout();
             this.tabCylinder.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxClass)).BeginInit();
-            this.tabLoading.SuspendLayout();
-            this.tabProjectDetails.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -637,6 +638,214 @@
             this.tabControl.Size = new System.Drawing.Size(444, 368);
             this.tabControl.TabIndex = 43;
             // 
+            // tabProjectDetails
+            // 
+            this.tabProjectDetails.BackColor = System.Drawing.Color.Transparent;
+            this.tabProjectDetails.Controls.Add(this.buttonPDNext);
+            this.tabProjectDetails.Controls.Add(this.comboxContactName);
+            this.tabProjectDetails.Controls.Add(this.labelContactPhone);
+            this.tabProjectDetails.Controls.Add(this.labelProjectDescription);
+            this.tabProjectDetails.Controls.Add(this.labelContactEmail);
+            this.tabProjectDetails.Controls.Add(this.labelContactName);
+            this.tabProjectDetails.Controls.Add(this.labelProjectDetails);
+            this.tabProjectDetails.Controls.Add(this.comboxCustomer);
+            this.tabProjectDetails.Controls.Add(this.labelCustomer);
+            this.tabProjectDetails.Controls.Add(this.comboxProvince);
+            this.tabProjectDetails.Controls.Add(this.labelProvince);
+            this.tabProjectDetails.Controls.Add(this.txtboxContactPhone);
+            this.tabProjectDetails.Controls.Add(this.txtboxProjectDescription);
+            this.tabProjectDetails.Controls.Add(this.txtboxContactEmail);
+            this.tabProjectDetails.Location = new System.Drawing.Point(4, 22);
+            this.tabProjectDetails.Name = "tabProjectDetails";
+            this.tabProjectDetails.Padding = new System.Windows.Forms.Padding(3);
+            this.tabProjectDetails.Size = new System.Drawing.Size(436, 342);
+            this.tabProjectDetails.TabIndex = 3;
+            this.tabProjectDetails.Text = "Project Details";
+            // 
+            // buttonPDNext
+            // 
+            this.buttonPDNext.Location = new System.Drawing.Point(336, 293);
+            this.buttonPDNext.Name = "buttonPDNext";
+            this.buttonPDNext.Size = new System.Drawing.Size(90, 42);
+            this.buttonPDNext.TabIndex = 51;
+            this.buttonPDNext.Text = "Next";
+            this.buttonPDNext.UseVisualStyleBackColor = true;
+            this.buttonPDNext.Click += new System.EventHandler(this.buttonPDNext_Click);
+            // 
+            // comboxContactName
+            // 
+            this.comboxContactName.FormattingEnabled = true;
+            this.comboxContactName.Location = new System.Drawing.Point(36, 146);
+            this.comboxContactName.Name = "comboxContactName";
+            this.comboxContactName.Size = new System.Drawing.Size(130, 21);
+            this.comboxContactName.TabIndex = 49;
+            // 
+            // labelContactPhone
+            // 
+            this.labelContactPhone.AutoSize = true;
+            this.labelContactPhone.Location = new System.Drawing.Point(189, 185);
+            this.labelContactPhone.Name = "labelContactPhone";
+            this.labelContactPhone.Size = new System.Drawing.Size(78, 13);
+            this.labelContactPhone.TabIndex = 50;
+            this.labelContactPhone.Text = "Phone Number";
+            // 
+            // labelProjectDescription
+            // 
+            this.labelProjectDescription.AutoSize = true;
+            this.labelProjectDescription.Location = new System.Drawing.Point(32, 250);
+            this.labelProjectDescription.Name = "labelProjectDescription";
+            this.labelProjectDescription.Size = new System.Drawing.Size(96, 13);
+            this.labelProjectDescription.TabIndex = 50;
+            this.labelProjectDescription.Text = "Project Description";
+            // 
+            // labelContactEmail
+            // 
+            this.labelContactEmail.AutoSize = true;
+            this.labelContactEmail.Location = new System.Drawing.Point(189, 130);
+            this.labelContactEmail.Name = "labelContactEmail";
+            this.labelContactEmail.Size = new System.Drawing.Size(32, 13);
+            this.labelContactEmail.TabIndex = 50;
+            this.labelContactEmail.Text = "Email";
+            // 
+            // labelContactName
+            // 
+            this.labelContactName.AutoSize = true;
+            this.labelContactName.Location = new System.Drawing.Point(33, 130);
+            this.labelContactName.Name = "labelContactName";
+            this.labelContactName.Size = new System.Drawing.Size(75, 13);
+            this.labelContactName.TabIndex = 50;
+            this.labelContactName.Text = "Contact Name";
+            // 
+            // labelProjectDetails
+            // 
+            this.labelProjectDetails.AutoSize = true;
+            this.labelProjectDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelProjectDetails.Location = new System.Drawing.Point(18, 19);
+            this.labelProjectDetails.Name = "labelProjectDetails";
+            this.labelProjectDetails.Size = new System.Drawing.Size(126, 20);
+            this.labelProjectDetails.TabIndex = 48;
+            this.labelProjectDetails.Text = "Project Details";
+            // 
+            // comboxCustomer
+            // 
+            this.comboxCustomer.FormattingEnabled = true;
+            this.comboxCustomer.Location = new System.Drawing.Point(35, 79);
+            this.comboxCustomer.Name = "comboxCustomer";
+            this.comboxCustomer.Size = new System.Drawing.Size(229, 21);
+            this.comboxCustomer.TabIndex = 46;
+            // 
+            // labelCustomer
+            // 
+            this.labelCustomer.AutoSize = true;
+            this.labelCustomer.Location = new System.Drawing.Point(32, 63);
+            this.labelCustomer.Name = "labelCustomer";
+            this.labelCustomer.Size = new System.Drawing.Size(51, 13);
+            this.labelCustomer.TabIndex = 47;
+            this.labelCustomer.Text = "Customer";
+            // 
+            // comboxProvince
+            // 
+            this.comboxProvince.FormattingEnabled = true;
+            this.comboxProvince.Location = new System.Drawing.Point(299, 79);
+            this.comboxProvince.Name = "comboxProvince";
+            this.comboxProvince.Size = new System.Drawing.Size(108, 21);
+            this.comboxProvince.TabIndex = 46;
+            // 
+            // labelProvince
+            // 
+            this.labelProvince.AutoSize = true;
+            this.labelProvince.Location = new System.Drawing.Point(296, 63);
+            this.labelProvince.Name = "labelProvince";
+            this.labelProvince.Size = new System.Drawing.Size(49, 13);
+            this.labelProvince.TabIndex = 47;
+            this.labelProvince.Text = "Province";
+            // 
+            // txtboxContactPhone
+            // 
+            this.txtboxContactPhone.Location = new System.Drawing.Point(192, 201);
+            this.txtboxContactPhone.Name = "txtboxContactPhone";
+            this.txtboxContactPhone.Size = new System.Drawing.Size(153, 20);
+            this.txtboxContactPhone.TabIndex = 1;
+            // 
+            // txtboxProjectDescription
+            // 
+            this.txtboxProjectDescription.Location = new System.Drawing.Point(35, 267);
+            this.txtboxProjectDescription.Name = "txtboxProjectDescription";
+            this.txtboxProjectDescription.Size = new System.Drawing.Size(372, 20);
+            this.txtboxProjectDescription.TabIndex = 1;
+            // 
+            // txtboxContactEmail
+            // 
+            this.txtboxContactEmail.Location = new System.Drawing.Point(192, 147);
+            this.txtboxContactEmail.Name = "txtboxContactEmail";
+            this.txtboxContactEmail.Size = new System.Drawing.Size(197, 20);
+            this.txtboxContactEmail.TabIndex = 1;
+            // 
+            // tabLoading
+            // 
+            this.tabLoading.BackColor = System.Drawing.Color.Transparent;
+            this.tabLoading.Controls.Add(this.buttonLoadBack);
+            this.tabLoading.Controls.Add(this.buttonLoadNext);
+            this.tabLoading.Controls.Add(this.labelLoading);
+            this.tabLoading.Controls.Add(this.labelClassDesc);
+            this.tabLoading.Controls.Add(this.pictureBoxClass);
+            this.tabLoading.Controls.Add(this.comboxLoadType);
+            this.tabLoading.Controls.Add(this.labelLoadType);
+            this.tabLoading.Location = new System.Drawing.Point(4, 22);
+            this.tabLoading.Name = "tabLoading";
+            this.tabLoading.Padding = new System.Windows.Forms.Padding(3);
+            this.tabLoading.Size = new System.Drawing.Size(436, 342);
+            this.tabLoading.TabIndex = 2;
+            this.tabLoading.Text = "Loading";
+            // 
+            // buttonLoadBack
+            // 
+            this.buttonLoadBack.Location = new System.Drawing.Point(6, 294);
+            this.buttonLoadBack.Name = "buttonLoadBack";
+            this.buttonLoadBack.Size = new System.Drawing.Size(90, 42);
+            this.buttonLoadBack.TabIndex = 53;
+            this.buttonLoadBack.Text = "Back";
+            this.buttonLoadBack.UseVisualStyleBackColor = true;
+            this.buttonLoadBack.Click += new System.EventHandler(this.buttonLoadBack_Click);
+            // 
+            // buttonLoadNext
+            // 
+            this.buttonLoadNext.Location = new System.Drawing.Point(340, 294);
+            this.buttonLoadNext.Name = "buttonLoadNext";
+            this.buttonLoadNext.Size = new System.Drawing.Size(90, 42);
+            this.buttonLoadNext.TabIndex = 52;
+            this.buttonLoadNext.Text = "Next";
+            this.buttonLoadNext.UseVisualStyleBackColor = true;
+            this.buttonLoadNext.Click += new System.EventHandler(this.buttonLoadNext_Click);
+            // 
+            // labelLoading
+            // 
+            this.labelLoading.AutoSize = true;
+            this.labelLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLoading.Location = new System.Drawing.Point(30, 29);
+            this.labelLoading.Name = "labelLoading";
+            this.labelLoading.Size = new System.Drawing.Size(73, 20);
+            this.labelLoading.TabIndex = 48;
+            this.labelLoading.Text = "Loading";
+            // 
+            // labelClassDesc
+            // 
+            this.labelClassDesc.AutoSize = true;
+            this.labelClassDesc.Location = new System.Drawing.Point(127, 309);
+            this.labelClassDesc.Name = "labelClassDesc";
+            this.labelClassDesc.Size = new System.Drawing.Size(19, 13);
+            this.labelClassDesc.TabIndex = 47;
+            this.labelClassDesc.Text = "----";
+            // 
+            // pictureBoxClass
+            // 
+            this.pictureBoxClass.Location = new System.Drawing.Point(95, 130);
+            this.pictureBoxClass.Name = "pictureBoxClass";
+            this.pictureBoxClass.Size = new System.Drawing.Size(229, 161);
+            this.pictureBoxClass.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxClass.TabIndex = 46;
+            this.pictureBoxClass.TabStop = false;
+            // 
             // tabSiteConditions
             // 
             this.tabSiteConditions.BackColor = System.Drawing.Color.Transparent;
@@ -673,6 +882,16 @@
             this.tabSiteConditions.Size = new System.Drawing.Size(436, 342);
             this.tabSiteConditions.TabIndex = 0;
             this.tabSiteConditions.Text = "Site Conditions";
+            // 
+            // buttonSCBack
+            // 
+            this.buttonSCBack.Location = new System.Drawing.Point(12, 294);
+            this.buttonSCBack.Name = "buttonSCBack";
+            this.buttonSCBack.Size = new System.Drawing.Size(90, 42);
+            this.buttonSCBack.TabIndex = 48;
+            this.buttonSCBack.Text = "Back";
+            this.buttonSCBack.UseVisualStyleBackColor = true;
+            this.buttonSCBack.Click += new System.EventHandler(this.buttonSCBack_Click);
             // 
             // buttonSCNext
             // 
@@ -968,229 +1187,22 @@
             this.buttonCylBack.UseVisualStyleBackColor = true;
             this.buttonCylBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
-            // pictureBoxClass
+            // buttonDXF
             // 
-            this.pictureBoxClass.Location = new System.Drawing.Point(95, 130);
-            this.pictureBoxClass.Name = "pictureBoxClass";
-            this.pictureBoxClass.Size = new System.Drawing.Size(229, 161);
-            this.pictureBoxClass.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxClass.TabIndex = 46;
-            this.pictureBoxClass.TabStop = false;
-            // 
-            // tabLoading
-            // 
-            this.tabLoading.BackColor = System.Drawing.Color.Transparent;
-            this.tabLoading.Controls.Add(this.buttonLoadBack);
-            this.tabLoading.Controls.Add(this.buttonLoadNext);
-            this.tabLoading.Controls.Add(this.labelLoading);
-            this.tabLoading.Controls.Add(this.labelClassDesc);
-            this.tabLoading.Controls.Add(this.pictureBoxClass);
-            this.tabLoading.Controls.Add(this.comboxLoadType);
-            this.tabLoading.Controls.Add(this.labelLoadType);
-            this.tabLoading.Location = new System.Drawing.Point(4, 22);
-            this.tabLoading.Name = "tabLoading";
-            this.tabLoading.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLoading.Size = new System.Drawing.Size(436, 342);
-            this.tabLoading.TabIndex = 2;
-            this.tabLoading.Text = "Loading";
-            // 
-            // labelClassDesc
-            // 
-            this.labelClassDesc.AutoSize = true;
-            this.labelClassDesc.Location = new System.Drawing.Point(127, 309);
-            this.labelClassDesc.Name = "labelClassDesc";
-            this.labelClassDesc.Size = new System.Drawing.Size(19, 13);
-            this.labelClassDesc.TabIndex = 47;
-            this.labelClassDesc.Text = "----";
-            // 
-            // tabProjectDetails
-            // 
-            this.tabProjectDetails.BackColor = System.Drawing.Color.Transparent;
-            this.tabProjectDetails.Controls.Add(this.buttonPDNext);
-            this.tabProjectDetails.Controls.Add(this.comboxContactName);
-            this.tabProjectDetails.Controls.Add(this.labelContactPhone);
-            this.tabProjectDetails.Controls.Add(this.labelProjectDescription);
-            this.tabProjectDetails.Controls.Add(this.labelContactEmail);
-            this.tabProjectDetails.Controls.Add(this.labelContactName);
-            this.tabProjectDetails.Controls.Add(this.labelProjectDetails);
-            this.tabProjectDetails.Controls.Add(this.comboxCustomer);
-            this.tabProjectDetails.Controls.Add(this.labelCustomer);
-            this.tabProjectDetails.Controls.Add(this.comboxProvince);
-            this.tabProjectDetails.Controls.Add(this.labelProvince);
-            this.tabProjectDetails.Controls.Add(this.txtboxContactPhone);
-            this.tabProjectDetails.Controls.Add(this.txtboxProjectDescription);
-            this.tabProjectDetails.Controls.Add(this.txtboxContactEmail);
-            this.tabProjectDetails.Location = new System.Drawing.Point(4, 22);
-            this.tabProjectDetails.Name = "tabProjectDetails";
-            this.tabProjectDetails.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProjectDetails.Size = new System.Drawing.Size(436, 342);
-            this.tabProjectDetails.TabIndex = 3;
-            this.tabProjectDetails.Text = "Project Details";
-            // 
-            // comboxProvince
-            // 
-            this.comboxProvince.FormattingEnabled = true;
-            this.comboxProvince.Location = new System.Drawing.Point(299, 79);
-            this.comboxProvince.Name = "comboxProvince";
-            this.comboxProvince.Size = new System.Drawing.Size(108, 21);
-            this.comboxProvince.TabIndex = 46;
-            // 
-            // labelProvince
-            // 
-            this.labelProvince.AutoSize = true;
-            this.labelProvince.Location = new System.Drawing.Point(296, 63);
-            this.labelProvince.Name = "labelProvince";
-            this.labelProvince.Size = new System.Drawing.Size(49, 13);
-            this.labelProvince.TabIndex = 47;
-            this.labelProvince.Text = "Province";
-            // 
-            // labelLoading
-            // 
-            this.labelLoading.AutoSize = true;
-            this.labelLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoading.Location = new System.Drawing.Point(30, 29);
-            this.labelLoading.Name = "labelLoading";
-            this.labelLoading.Size = new System.Drawing.Size(73, 20);
-            this.labelLoading.TabIndex = 48;
-            this.labelLoading.Text = "Loading";
-            // 
-            // labelProjectDetails
-            // 
-            this.labelProjectDetails.AutoSize = true;
-            this.labelProjectDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelProjectDetails.Location = new System.Drawing.Point(18, 19);
-            this.labelProjectDetails.Name = "labelProjectDetails";
-            this.labelProjectDetails.Size = new System.Drawing.Size(126, 20);
-            this.labelProjectDetails.TabIndex = 48;
-            this.labelProjectDetails.Text = "Project Details";
-            // 
-            // labelCustomer
-            // 
-            this.labelCustomer.AutoSize = true;
-            this.labelCustomer.Location = new System.Drawing.Point(32, 63);
-            this.labelCustomer.Name = "labelCustomer";
-            this.labelCustomer.Size = new System.Drawing.Size(51, 13);
-            this.labelCustomer.TabIndex = 47;
-            this.labelCustomer.Text = "Customer";
-            // 
-            // comboxCustomer
-            // 
-            this.comboxCustomer.FormattingEnabled = true;
-            this.comboxCustomer.Location = new System.Drawing.Point(35, 79);
-            this.comboxCustomer.Name = "comboxCustomer";
-            this.comboxCustomer.Size = new System.Drawing.Size(229, 21);
-            this.comboxCustomer.TabIndex = 46;
-            // 
-            // comboxContactName
-            // 
-            this.comboxContactName.FormattingEnabled = true;
-            this.comboxContactName.Location = new System.Drawing.Point(36, 146);
-            this.comboxContactName.Name = "comboxContactName";
-            this.comboxContactName.Size = new System.Drawing.Size(130, 21);
-            this.comboxContactName.TabIndex = 49;
-            // 
-            // labelContactName
-            // 
-            this.labelContactName.AutoSize = true;
-            this.labelContactName.Location = new System.Drawing.Point(33, 130);
-            this.labelContactName.Name = "labelContactName";
-            this.labelContactName.Size = new System.Drawing.Size(75, 13);
-            this.labelContactName.TabIndex = 50;
-            this.labelContactName.Text = "Contact Name";
-            // 
-            // labelContactEmail
-            // 
-            this.labelContactEmail.AutoSize = true;
-            this.labelContactEmail.Location = new System.Drawing.Point(189, 130);
-            this.labelContactEmail.Name = "labelContactEmail";
-            this.labelContactEmail.Size = new System.Drawing.Size(32, 13);
-            this.labelContactEmail.TabIndex = 50;
-            this.labelContactEmail.Text = "Email";
-            // 
-            // txtboxContactEmail
-            // 
-            this.txtboxContactEmail.Location = new System.Drawing.Point(192, 147);
-            this.txtboxContactEmail.Name = "txtboxContactEmail";
-            this.txtboxContactEmail.Size = new System.Drawing.Size(197, 20);
-            this.txtboxContactEmail.TabIndex = 1;
-            // 
-            // txtboxContactPhone
-            // 
-            this.txtboxContactPhone.Location = new System.Drawing.Point(192, 201);
-            this.txtboxContactPhone.Name = "txtboxContactPhone";
-            this.txtboxContactPhone.Size = new System.Drawing.Size(153, 20);
-            this.txtboxContactPhone.TabIndex = 1;
-            // 
-            // labelContactPhone
-            // 
-            this.labelContactPhone.AutoSize = true;
-            this.labelContactPhone.Location = new System.Drawing.Point(189, 185);
-            this.labelContactPhone.Name = "labelContactPhone";
-            this.labelContactPhone.Size = new System.Drawing.Size(78, 13);
-            this.labelContactPhone.TabIndex = 50;
-            this.labelContactPhone.Text = "Phone Number";
-            // 
-            // txtboxProjectDescription
-            // 
-            this.txtboxProjectDescription.Location = new System.Drawing.Point(35, 267);
-            this.txtboxProjectDescription.Name = "txtboxProjectDescription";
-            this.txtboxProjectDescription.Size = new System.Drawing.Size(372, 20);
-            this.txtboxProjectDescription.TabIndex = 1;
-            // 
-            // labelProjectDescription
-            // 
-            this.labelProjectDescription.AutoSize = true;
-            this.labelProjectDescription.Location = new System.Drawing.Point(32, 250);
-            this.labelProjectDescription.Name = "labelProjectDescription";
-            this.labelProjectDescription.Size = new System.Drawing.Size(96, 13);
-            this.labelProjectDescription.TabIndex = 50;
-            this.labelProjectDescription.Text = "Project Description";
-            // 
-            // buttonPDNext
-            // 
-            this.buttonPDNext.Location = new System.Drawing.Point(336, 293);
-            this.buttonPDNext.Name = "buttonPDNext";
-            this.buttonPDNext.Size = new System.Drawing.Size(90, 42);
-            this.buttonPDNext.TabIndex = 51;
-            this.buttonPDNext.Text = "Next";
-            this.buttonPDNext.UseVisualStyleBackColor = true;
-            this.buttonPDNext.Click += new System.EventHandler(this.buttonPDNext_Click);
-            // 
-            // buttonLoadNext
-            // 
-            this.buttonLoadNext.Location = new System.Drawing.Point(340, 294);
-            this.buttonLoadNext.Name = "buttonLoadNext";
-            this.buttonLoadNext.Size = new System.Drawing.Size(90, 42);
-            this.buttonLoadNext.TabIndex = 52;
-            this.buttonLoadNext.Text = "Next";
-            this.buttonLoadNext.UseVisualStyleBackColor = true;
-            this.buttonLoadNext.Click += new System.EventHandler(this.buttonLoadNext_Click);
-            // 
-            // buttonSCBack
-            // 
-            this.buttonSCBack.Location = new System.Drawing.Point(12, 294);
-            this.buttonSCBack.Name = "buttonSCBack";
-            this.buttonSCBack.Size = new System.Drawing.Size(90, 42);
-            this.buttonSCBack.TabIndex = 48;
-            this.buttonSCBack.Text = "Back";
-            this.buttonSCBack.UseVisualStyleBackColor = true;
-            this.buttonSCBack.Click += new System.EventHandler(this.buttonSCBack_Click);
-            // 
-            // buttonLoadBack
-            // 
-            this.buttonLoadBack.Location = new System.Drawing.Point(6, 294);
-            this.buttonLoadBack.Name = "buttonLoadBack";
-            this.buttonLoadBack.Size = new System.Drawing.Size(90, 42);
-            this.buttonLoadBack.TabIndex = 53;
-            this.buttonLoadBack.Text = "Back";
-            this.buttonLoadBack.UseVisualStyleBackColor = true;
-            this.buttonLoadBack.Click += new System.EventHandler(this.buttonLoadBack_Click);
+            this.buttonDXF.Location = new System.Drawing.Point(496, 135);
+            this.buttonDXF.Name = "buttonDXF";
+            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
+            this.buttonDXF.TabIndex = 44;
+            this.buttonDXF.Text = "Create DXF";
+            this.buttonDXF.UseVisualStyleBackColor = true;
+            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(790, 611);
+            this.Controls.Add(this.buttonDXF);
             this.Controls.Add(this.comboxUnits);
             this.Controls.Add(this.labelUnits);
             this.Controls.Add(this.tabControl);
@@ -1221,15 +1233,15 @@
             this.panelClassC.ResumeLayout(false);
             this.panelClassC.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.tabProjectDetails.ResumeLayout(false);
+            this.tabProjectDetails.PerformLayout();
+            this.tabLoading.ResumeLayout(false);
+            this.tabLoading.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxClass)).EndInit();
             this.tabSiteConditions.ResumeLayout(false);
             this.tabSiteConditions.PerformLayout();
             this.tabCylinder.ResumeLayout(false);
             this.tabCylinder.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxClass)).EndInit();
-            this.tabLoading.ResumeLayout(false);
-            this.tabLoading.PerformLayout();
-            this.tabProjectDetails.ResumeLayout(false);
-            this.tabProjectDetails.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1342,6 +1354,7 @@
         private System.Windows.Forms.Button buttonLoadNext;
         private System.Windows.Forms.Button buttonSCBack;
         private System.Windows.Forms.Button buttonLoadBack;
+        private System.Windows.Forms.Button buttonDXF;
     }
 }
 
