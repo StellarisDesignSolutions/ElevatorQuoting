@@ -935,9 +935,9 @@
             this.labelUnit6.AutoSize = true;
             this.labelUnit6.Location = new System.Drawing.Point(282, 204);
             this.labelUnit6.Name = "labelUnit6";
-            this.labelUnit6.Size = new System.Drawing.Size(13, 13);
+            this.labelUnit6.Size = new System.Drawing.Size(15, 13);
             this.labelUnit6.TabIndex = 42;
-            this.labelUnit6.Text = "ft";
+            this.labelUnit6.Text = "in";
             // 
             // labelPlatformThickness
             // 

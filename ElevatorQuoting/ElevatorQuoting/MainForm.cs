@@ -29,6 +29,9 @@ namespace ElevatorQuoting
         Dictionary<string, int> metricCapacityValues = new Dictionary<string, int>();
         Dictionary<string, int> imperialCapacityValues = new Dictionary<string, int>();
 
+        int dxfStartX = 200; //inch
+        int dxfStartY = 200; //inch
+
         const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
 
         Boolean unitsAreMetric = false;
@@ -724,15 +727,99 @@ namespace ElevatorQuoting
 
         private void buttonDXF_Click(object sender, EventArgs e)
         {
+
+            double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * 12);
+            double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * 12);
+            double PlatformThickness = Convert.ToDouble(txtboxPlatformThickness.Text);
+
+            double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * 12);
+            
+            double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * 12);
+            double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * 12);
+
+            double TopCl = 24;
+
+            double DimensionX = dxfStartX / 2;
+
             // your DXF file name
             string file = "sample.dxf";
 
             // create a new document, by default it will create an AutoCad2000 DXF version
             DxfDocument doc = new DxfDocument();
             // an entity
-            Line entity = new Line(new Vector2(5, 5), new Vector2(10, 5));
+
+            //Platform
+            Line entity = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness));
+            Line entity2 = new Line(new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness));
+            Line entity3 = new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth));
+            
+            Line entity4 = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY));
+
+            Line entity5 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness*2, dxfStartY + PitDepth - PlatformThickness));
+            Line entity6 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth - PlatformThickness));
+            Line entity7 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth));
+
+            Line entity8 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness));
+            
+            //top of lift
+            Line entity9 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+            Line entity10 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+            Line entity11 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+            
+            //top area
+            Line entity12 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+            Line entity13 = new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
+            Line entity14 = new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
+            Line entity15 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+            Line entity16 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+
+            //Floors
+            Line entity17 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance));
+            Line entity18 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance));
+            Line entity19 = new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance));
+            Line entity20 = new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + TravelDistance));
+
+            Line entity21 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance));
+            Line entity22 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance));
+            Line entity23 = new Line(new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance));
+            Line entity24 = new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance));
+
+
+            //Dimensions
+
+            //PitDepth
+
+            LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth), 5, 0);
+
+
             // add your entities here
             doc.AddEntity(entity);
+            doc.AddEntity(entity2);
+            doc.AddEntity(entity3);
+            doc.AddEntity(entity4);
+            doc.AddEntity(entity5);
+            doc.AddEntity(entity6);
+            doc.AddEntity(entity7);
+            doc.AddEntity(entity8);
+            doc.AddEntity(entity9);
+            doc.AddEntity(entity10);
+            doc.AddEntity(entity11);
+            doc.AddEntity(entity12);
+            doc.AddEntity(entity13);
+            doc.AddEntity(entity14);
+            doc.AddEntity(entity15);
+            doc.AddEntity(entity16);
+            doc.AddEntity(entity17);
+            doc.AddEntity(entity18);
+            doc.AddEntity(entity19);
+            doc.AddEntity(entity20);
+            doc.AddEntity(entity21);
+            doc.AddEntity(entity22);
+            doc.AddEntity(entity23);
+            doc.AddEntity(entity24);
+            doc.AddEntity(dim1);
+
+
             // save to file
             doc.Save(file);
 
