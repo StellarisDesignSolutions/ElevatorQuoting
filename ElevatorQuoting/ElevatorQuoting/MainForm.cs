@@ -725,9 +725,10 @@ namespace ElevatorQuoting
 
         }
 
+
         private void drawObject(List<Line> objectList, DxfDocument doc)
         {
-            for (int i = 0; i < objectList.Count; i ++)
+            for (int i = 0; i < objectList.Count; i++)
             {
                 doc.AddEntity(objectList[i]);
             }
@@ -818,15 +819,15 @@ namespace ElevatorQuoting
             floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance)));
             floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance)));
 
-            Line entity17 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance));
-            Line entity18 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance));
-            Line entity19 = new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance));
-            Line entity20 = new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + TravelDistance));
+            //Line entity17 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance));
+            //Line entity18 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance));
+            //Line entity19 = new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance));
+            //Line entity20 = new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + TravelDistance));
 
-            Line entity21 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance));
-            Line entity22 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance));
-            Line entity23 = new Line(new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance));
-            Line entity24 = new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance));
+            //Line entity21 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance));
+            //Line entity22 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance));
+            //Line entity23 = new Line(new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance));
+            //Line entity24 = new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance));
 
 
             //Dimensions
