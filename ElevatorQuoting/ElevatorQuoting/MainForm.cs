@@ -29,6 +29,8 @@ namespace ElevatorQuoting
         Dictionary<string, int> metricCapacityValues = new Dictionary<string, int>();
         Dictionary<string, int> imperialCapacityValues = new Dictionary<string, int>();
 
+        List<Customer> customers = new List<Customer>();
+
         int dxfStartX = 200; //inch
         int dxfStartY = 200; //inch
 
@@ -188,8 +190,45 @@ namespace ElevatorQuoting
 
                 comboxMaterials.SelectedIndex = 0;
 
-                readerForImportingMaterials.Close();
-                cmdForImportingMaterials.Dispose();
+                readerForImportingCylinders.Close();
+                cmdForImportingCylinders.Dispose();
+                //////
+
+                //////
+
+
+                MySqlConnection conn2 = new MySql.Data.MySqlClient.MySqlConnection(myConnectionString);
+                conn2.Open();
+
+                string sqlForCustomers = "SELECT * FROM customer_information";
+
+                MySqlCommand cmdForCustomers = new MySqlCommand(sqlForCustomers, conn);
+                MySqlDataReader readerForCustomers = cmdForCustomers.ExecuteReader();
+
+                
+
+                while (readerForCustomers.Read())
+                {
+                    MySqlCommand cmdForContacts = new MySqlCommand("SELECT * FROM customer_contacts WHERE customer_id='" + readerForCustomers[0].ToString() + "'", conn2);
+                    MySqlDataReader readerForContacts = cmdForContacts.ExecuteReader();
+                    List<Contact> tempContacts = new List<Contact>();
+                    while (readerForContacts.Read())
+                    {
+                        tempContacts.Add(new Contact(readerForContacts[1].ToString(), readerForContacts[2].ToString(), readerForContacts[3].ToString()));
+                    }
+                    cmdForContacts.Dispose();
+                    readerForContacts.Close();
+                    comboxCustomer.Items.Add(readerForCustomers[1].ToString());
+                    customers.Add(new Customer(readerForCustomers[0].ToString(), readerForCustomers[1].ToString(), tempContacts));
+                }
+
+
+                readerForCustomers.Close();
+                cmdForCustomers.Dispose();
+
+                
+                conn2.Close();
+
                 //////
 
                 conn.Close();
@@ -881,6 +920,93 @@ namespace ElevatorQuoting
             //if (dxfVersion < DxfVersion.AutoCad2000) return;
             // load file
             DxfDocument loaded = DxfDocument.Load(file);
+        }
+
+        private void comboxCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int customerIndex = comboxCustomer.SelectedIndex;
+
+            comboxContactName.Items.Clear();
+
+            comboxContactName.Text = "";
+
+            foreach (Contact contact in customers[customerIndex].Contacts)
+            {
+                comboxContactName.Items.Add(contact.Name);
+            }
+        }
+
+        private void comboxContactName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int customerIndex = comboxCustomer.SelectedIndex;
+            int contactIndex = comboxContactName.SelectedIndex;
+
+            txtboxContactEmail.Text = customers[customerIndex].Contacts[contactIndex].Email;
+            txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
+        }
+    }
+
+    public class Customer
+    {
+
+        // Auto-implemented readonly property:
+        public string ID { get; }
+        public string Name { get; }
+        public List<Contact> Contacts { get; }
+
+        // Constructor that takes no arguments:
+        /*public Customer()
+        {
+            Name = "unknown";
+
+        }
+        */
+
+        // Constructor that takes arguments:
+        public Customer(string id, string name, List<Contact> contacts)
+        {
+            ID = id;
+            Name = name;
+            Contacts = contacts;
+        }
+
+        // Method that overrides the base class (System.Object) implementation.
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
+    public class Contact
+    {
+
+        // Auto-implemented readonly property:
+
+        public string Name { get; }
+        public string Email { get; }
+        public string Phone { get; }
+
+
+        // Constructor that takes no arguments:
+        /*
+        public Contact()
+        {
+            Name = "unknown";
+        }
+        */
+
+        // Constructor that takes arguments:
+        public Contact(string name, string email, string phone)
+        {
+            Name = name;
+            Email = email;
+            Phone = phone;
+        }
+
+        // Method that overrides the base class (System.Object) implementation.
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }
