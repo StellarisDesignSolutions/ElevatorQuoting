@@ -29,6 +29,8 @@ namespace ElevatorQuoting
         Dictionary<string, int> metricCapacityValues = new Dictionary<string, int>();
         Dictionary<string, int> imperialCapacityValues = new Dictionary<string, int>();
 
+        List<Customer> customers = new List<Customer>();
+
         int dxfStartX = 200; //inch
         int dxfStartY = 200; //inch
 
@@ -55,7 +57,7 @@ namespace ElevatorQuoting
         }
         void sshConnection()
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("stellarismysql.ddns.net", 7846, "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
             connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
             using (var client = new SshClient(connectionInfo))
@@ -188,8 +190,45 @@ namespace ElevatorQuoting
 
                 comboxMaterials.SelectedIndex = 0;
 
-                readerForImportingMaterials.Close();
-                cmdForImportingMaterials.Dispose();
+                readerForImportingCylinders.Close();
+                cmdForImportingCylinders.Dispose();
+                //////
+
+                //////
+
+
+                MySqlConnection conn2 = new MySql.Data.MySqlClient.MySqlConnection(myConnectionString);
+                conn2.Open();
+
+                string sqlForCustomers = "SELECT * FROM customer_information";
+
+                MySqlCommand cmdForCustomers = new MySqlCommand(sqlForCustomers, conn);
+                MySqlDataReader readerForCustomers = cmdForCustomers.ExecuteReader();
+
+                
+
+                while (readerForCustomers.Read())
+                {
+                    MySqlCommand cmdForContacts = new MySqlCommand("SELECT * FROM customer_contacts WHERE customer_id='" + readerForCustomers[0].ToString() + "'", conn2);
+                    MySqlDataReader readerForContacts = cmdForContacts.ExecuteReader();
+                    List<Contact> tempContacts = new List<Contact>();
+                    while (readerForContacts.Read())
+                    {
+                        tempContacts.Add(new Contact(readerForContacts[1].ToString(), readerForContacts[2].ToString(), readerForContacts[3].ToString()));
+                    }
+                    cmdForContacts.Dispose();
+                    readerForContacts.Close();
+                    comboxCustomer.Items.Add(readerForCustomers[1].ToString());
+                    customers.Add(new Customer(readerForCustomers[0].ToString(), readerForCustomers[1].ToString(), tempContacts));
+                }
+
+
+                readerForCustomers.Close();
+                cmdForCustomers.Dispose();
+
+                
+                conn2.Close();
+
                 //////
 
                 conn.Close();
@@ -725,6 +764,15 @@ namespace ElevatorQuoting
 
         }
 
+
+        private void drawObject(List<Line> objectList, DxfDocument doc)
+        {
+            for (int i = 0; i < objectList.Count; i++)
+            {
+                doc.AddEntity(objectList[i]);
+            }
+        }
+
         private void buttonDXF_Click(object sender, EventArgs e)
         {
 
@@ -742,82 +790,125 @@ namespace ElevatorQuoting
             double DimensionX = dxfStartX / 2;
 
             // your DXF file name
-            string file = "sample.dxf";
+            string file = "_sample.dxf";
 
             // create a new document, by default it will create an AutoCad2000 DXF version
             DxfDocument doc = new DxfDocument();
             // an entity
 
             //Platform
-            Line entity = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness));
-            Line entity2 = new Line(new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness));
-            Line entity3 = new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth));
-            
-            Line entity4 = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY));
+            List<Line> platform = new List<Line>();
 
-            Line entity5 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness*2, dxfStartY + PitDepth - PlatformThickness));
-            Line entity6 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth - PlatformThickness));
-            Line entity7 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth));
+            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness)));
+            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness)));
+            platform.Add(new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth - PlatformThickness)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness)));
 
-            Line entity8 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness));
-            
+            //Line entity = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness));
+            //Line entity2 = new Line(new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness));
+            //Line entity3 = new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth));
+
+            //Line entity4 = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY));
+
+            //Line entity5 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness*2, dxfStartY + PitDepth - PlatformThickness));
+            //Line entity6 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth - PlatformThickness));
+            //Line entity7 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth));
+
+            //Line entity8 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness));
+
             //top of lift
-            Line entity9 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
-            Line entity10 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
-            Line entity11 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
-            
+            List<Line> topOfLift = new List<Line>();
+
+            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl)));
+            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl)));
+            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl)));
+
+            //Line entity9 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+            //Line entity10 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+            //Line entity11 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+
             //top area
-            Line entity12 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
-            Line entity13 = new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
-            Line entity14 = new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
-            Line entity15 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
-            Line entity16 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+            List<Line> topArea = new List<Line>();
 
+            topArea.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl)));
+
+            //Line entity12 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+            //Line entity13 = new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
+            //Line entity14 = new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
+            //Line entity15 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+            //Line entity16 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
+            
             //Floors
-            Line entity17 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance));
-            Line entity18 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance));
-            Line entity19 = new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance));
-            Line entity20 = new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + TravelDistance));
+            List<Line> floors = new List<Line>();
 
-            Line entity21 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance));
-            Line entity22 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance));
-            Line entity23 = new Line(new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance));
-            Line entity24 = new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance)));
+
+            //Line entity17 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance));
+            //Line entity18 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance));
+            //Line entity19 = new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance));
+            //Line entity20 = new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + TravelDistance));
+
+            //Line entity21 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance));
+            //Line entity22 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance));
+            //Line entity23 = new Line(new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance));
+            //Line entity24 = new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance));
 
 
             //Dimensions
 
             //PitDepth
+            
+            LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth), 30, 90, netDxf.Tables.DimensionStyle.Iso25);
 
-            LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth), 5, 0);
+            LinearDimension dim2 = new LinearDimension();
 
+            drawObject(platform, doc);
+            drawObject(topOfLift, doc);
+            drawObject(topArea, doc);
+            drawObject(floors, doc);
 
             // add your entities here
-            doc.AddEntity(entity);
-            doc.AddEntity(entity2);
-            doc.AddEntity(entity3);
-            doc.AddEntity(entity4);
-            doc.AddEntity(entity5);
-            doc.AddEntity(entity6);
-            doc.AddEntity(entity7);
-            doc.AddEntity(entity8);
-            doc.AddEntity(entity9);
-            doc.AddEntity(entity10);
-            doc.AddEntity(entity11);
-            doc.AddEntity(entity12);
-            doc.AddEntity(entity13);
-            doc.AddEntity(entity14);
-            doc.AddEntity(entity15);
-            doc.AddEntity(entity16);
-            doc.AddEntity(entity17);
-            doc.AddEntity(entity18);
-            doc.AddEntity(entity19);
-            doc.AddEntity(entity20);
-            doc.AddEntity(entity21);
-            doc.AddEntity(entity22);
-            doc.AddEntity(entity23);
-            doc.AddEntity(entity24);
+            //doc.AddEntity(entity);
+            //doc.AddEntity(entity2);
+            //doc.AddEntity(entity3);
+            //doc.AddEntity(entity4);
+            //doc.AddEntity(entity5);
+            //doc.AddEntity(entity6);
+            //doc.AddEntity(entity7);
+            //doc.AddEntity(entity8);
+            //doc.AddEntity(entity9);
+            //doc.AddEntity(entity10);
+            //doc.AddEntity(entity11);
+            //doc.AddEntity(entity12);
+            //doc.AddEntity(entity13);
+            //doc.AddEntity(entity14);
+            //doc.AddEntity(entity15);
+            //doc.AddEntity(entity16);
+            //doc.AddEntity(entity17);
+            //doc.AddEntity(entity18);
+            //doc.AddEntity(entity19);
+            //doc.AddEntity(entity20);
+            //doc.AddEntity(entity21);
+            //doc.AddEntity(entity22);
+            //doc.AddEntity(entity23);
+            //doc.AddEntity(entity24);
             doc.AddEntity(dim1);
+            //doc.AddEntity(dim2);
 
 
             // save to file
@@ -829,6 +920,93 @@ namespace ElevatorQuoting
             //if (dxfVersion < DxfVersion.AutoCad2000) return;
             // load file
             DxfDocument loaded = DxfDocument.Load(file);
+        }
+
+        private void comboxCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int customerIndex = comboxCustomer.SelectedIndex;
+
+            comboxContactName.Items.Clear();
+
+            comboxContactName.Text = "";
+
+            foreach (Contact contact in customers[customerIndex].Contacts)
+            {
+                comboxContactName.Items.Add(contact.Name);
+            }
+        }
+
+        private void comboxContactName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int customerIndex = comboxCustomer.SelectedIndex;
+            int contactIndex = comboxContactName.SelectedIndex;
+
+            txtboxContactEmail.Text = customers[customerIndex].Contacts[contactIndex].Email;
+            txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
+        }
+    }
+
+    public class Customer
+    {
+
+        // Auto-implemented readonly property:
+        public string ID { get; }
+        public string Name { get; }
+        public List<Contact> Contacts { get; }
+
+        // Constructor that takes no arguments:
+        /*public Customer()
+        {
+            Name = "unknown";
+
+        }
+        */
+
+        // Constructor that takes arguments:
+        public Customer(string id, string name, List<Contact> contacts)
+        {
+            ID = id;
+            Name = name;
+            Contacts = contacts;
+        }
+
+        // Method that overrides the base class (System.Object) implementation.
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
+    public class Contact
+    {
+
+        // Auto-implemented readonly property:
+
+        public string Name { get; }
+        public string Email { get; }
+        public string Phone { get; }
+
+
+        // Constructor that takes no arguments:
+        /*
+        public Contact()
+        {
+            Name = "unknown";
+        }
+        */
+
+        // Constructor that takes arguments:
+        public Contact(string name, string email, string phone)
+        {
+            Name = name;
+            Email = email;
+            Phone = phone;
+        }
+
+        // Method that overrides the base class (System.Object) implementation.
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

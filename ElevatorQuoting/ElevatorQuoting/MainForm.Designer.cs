@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelFullLoadDynamic = new System.Windows.Forms.Label();
             this.txtboxFullLoadDynamic = new System.Windows.Forms.TextBox();
@@ -679,6 +678,7 @@
             this.comboxContactName.Name = "comboxContactName";
             this.comboxContactName.Size = new System.Drawing.Size(130, 21);
             this.comboxContactName.TabIndex = 49;
+            this.comboxContactName.SelectedIndexChanged += new System.EventHandler(this.comboxContactName_SelectedIndexChanged);
             // 
             // labelContactPhone
             // 
@@ -733,6 +733,7 @@
             this.comboxCustomer.Name = "comboxCustomer";
             this.comboxCustomer.Size = new System.Drawing.Size(229, 21);
             this.comboxCustomer.TabIndex = 46;
+            this.comboxCustomer.SelectedIndexChanged += new System.EventHandler(this.comboxCustomer_SelectedIndexChanged);
             // 
             // labelCustomer
             // 
@@ -1217,7 +1218,6 @@
             this.Controls.Add(this.txtboxQuoteName);
             this.Controls.Add(this.labelNotes);
             this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "MainForm";
