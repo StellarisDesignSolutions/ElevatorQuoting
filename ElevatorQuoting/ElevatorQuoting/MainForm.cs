@@ -35,7 +35,13 @@ namespace ElevatorQuoting
         int dxfStartY = 200; //inch
 
         const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
+        const decimal pitDepthThreshold = 0.666M;
+        const decimal massPerSqMDeepPit = 317.5378M;
+        const decimal massPerSqFtDeepPit = 65;
+        const decimal massPerSqMShallowPit = 1;
+        const decimal massPerSqFtShallowPit = 1;
 
+        Boolean pitDepthThresholdMet;
         Boolean unitsAreMetric = false;
 
         public MainForm()
@@ -277,12 +283,12 @@ namespace ElevatorQuoting
 
             if (metric)
             {
-                conversionFactor = 3.37M;
+                conversionFactor = 3.28084M;
                 conversionFactorInches = conversionFactor * 12M;
 
             } else
             {
-                conversionFactor = 1M / 3.37M;
+                conversionFactor = 0.3048M;
                 conversionFactorInches = conversionFactor / 12M;
             }
 
@@ -475,30 +481,40 @@ namespace ElevatorQuoting
         }
         void calculatePlatformMass()
         {
-            if (isThisStringANumber(txtboxPlatformThickness.Text) && isThisStringANumber(txtboxPlatformWidth.Text) && isThisStringANumber(txtboxPlatformLength.Text))
+            if (isThisStringANumber(txtboxPlatformWidth.Text) && isThisStringANumber(txtboxPlatformLength.Text))
             {
                 decimal platformWidth = decimal.Parse(txtboxPlatformWidth.Text);
                 decimal platformLength = decimal.Parse(txtboxPlatformLength.Text);
-                decimal platformThickness = decimal.Parse(txtboxPlatformThickness.Text);
-                decimal platformVolume = platformWidth * platformLength * platformThickness;
+                decimal platformArea = platformWidth * platformLength;
 
 
 
-                decimal materialDensity = 1;
+                decimal platformMassPerArea;
 
-                decimal conversionFactor = 1;
-
-                if (unitsAreMetric)
+                if (pitDepthThresholdMet)
                 {
-                    materialDensity = materialDensitiesMetric[comboxMaterials.SelectedIndex];
-                }
-                else
+
+                    if (unitsAreMetric)
+                    {
+                        platformMassPerArea = massPerSqMDeepPit;
+                    }
+                    else
+                    {
+                        platformMassPerArea = massPerSqFtDeepPit;
+                    }
+                } else
                 {
-                    materialDensity = materialDensitiesImperial[comboxMaterials.SelectedIndex];
-                    conversionFactor = 1728;
+                    if (unitsAreMetric)
+                    {
+                        platformMassPerArea = massPerSqMShallowPit;
+                    }
+                    else
+                    {
+                        platformMassPerArea = massPerSqFtShallowPit;
+                    }
                 }
 
-                decimal platformMass = materialDensity * platformVolume * conversionFactor;
+                decimal platformMass = platformArea * platformMassPerArea;
 
                 txtboxPlatformMass.Text = string.Format("{0,4:.00}", platformMass);
             }
@@ -710,7 +726,28 @@ namespace ElevatorQuoting
 
         private void txtboxPitDepth_TextChanged(object sender, EventArgs e)
         {
+            decimal pitDepth = 0;
 
+            if (isThisStringANumber(txtboxPitDepth.Text))
+            {
+                if (unitsAreMetric)
+                {
+                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text) * 3.28084M;
+                } else
+                {
+                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text);
+                }
+            }
+
+            if (pitDepth >= pitDepthThreshold)
+            {
+                pitDepthThresholdMet = true;
+            } else
+            {
+                pitDepthThresholdMet = false;
+            }
+            
+            updateAllCalculations();
         }
 
         private void txtboxOverheadCl_TextChanged(object sender, EventArgs e)
