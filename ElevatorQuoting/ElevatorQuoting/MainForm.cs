@@ -802,9 +802,23 @@ namespace ElevatorQuoting
 
         private void buttonPDNext_Click(object sender, EventArgs e)
         {
-
-            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-
+            if (comboxCustomer.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Customer Selected","Complete Form",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            } else if (comboxProvince.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Province Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else if (comboxContactName.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Contact Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else if (txtboxProjectDescription.Text == "")
+            {
+                MessageBox.Show(this, "Project Description Missing", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            }
         }
 
         private void buttonLoadNext_Click(object sender, EventArgs e)
@@ -1028,6 +1042,8 @@ namespace ElevatorQuoting
             comboxContactName.Items.Clear();
 
             comboxContactName.Text = "";
+            txtboxContactEmail.Text = "";
+            txtboxContactPhone.Text = "";
 
             foreach (Contact contact in customers[customerIndex].Contacts)
             {
