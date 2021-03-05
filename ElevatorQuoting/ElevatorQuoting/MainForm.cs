@@ -57,7 +57,7 @@ namespace ElevatorQuoting
         }
         void sshConnection()
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("stellarismysql.ddns.net", 7846, "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
             connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
             using (var client = new SshClient(connectionInfo))
@@ -262,19 +262,63 @@ namespace ElevatorQuoting
 
         }
 
+        void convertTextbox(TextBox txtbox, decimal conversionFactor)
+        {
+            if (isThisStringANumber(txtbox.Text))
+            {
+                txtbox.Text = Convert.ToString(Math.Round(Convert.ToDecimal(txtbox.Text) * conversionFactor, 4));
+            }
+        }
+
+        void convertAllInputs(Boolean metric)
+        {
+            decimal conversionFactor;
+            decimal conversionFactorInches;
+
+            if (metric)
+            {
+                conversionFactor = 3.37M;
+                conversionFactorInches = conversionFactor * 12M;
+
+            } else
+            {
+                conversionFactor = 1M / 3.37M;
+                conversionFactorInches = conversionFactor / 12M;
+            }
+
+            convertTextbox(txtboxPitDepth, conversionFactor);
+            convertTextbox(txtboxPlatformLength, conversionFactor);
+            convertTextbox(txtboxPlatformWidth, conversionFactor);
+            convertTextbox(txtboxOverheadCl, conversionFactor);
+            convertTextbox(txtboxTravelDis, conversionFactor);
+            convertTextbox(txtboxPlatformThickness, conversionFactorInches);
+            convertTextbox(txtboxTravelSpeed, conversionFactor);
+
+        }
 
         void setUnits(string newUnits)
         {
-            string newUnitLabel = null;
+            string newUnitLabel;
+            string newUnitLabel2;
 
             if (newUnits == "Metric")
             {
+                if (!unitsAreMetric)
+                {
+                    convertAllInputs(unitsAreMetric);
+                }
                 newUnitLabel = "m";
+                newUnitLabel2 = "m";
                 unitsAreMetric = true;
             }
             else
             {
+                if (unitsAreMetric)
+                {
+                    convertAllInputs(unitsAreMetric);
+                }
                 newUnitLabel = "ft";
+                newUnitLabel2 = "in";
                 unitsAreMetric = false;
             }
 
@@ -283,7 +327,7 @@ namespace ElevatorQuoting
             labelUnit3.Text = newUnitLabel;
             labelUnit4.Text = newUnitLabel;
             labelUnit5.Text = newUnitLabel;
-            labelUnit6.Text = newUnitLabel;
+            labelUnit6.Text = newUnitLabel2;
             labelSpeedUnit.Text = newUnitLabel + "/s";
         }
 
