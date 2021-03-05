@@ -134,6 +134,8 @@
             this.labelCylinders = new System.Windows.Forms.Label();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.buttonDXF = new System.Windows.Forms.Button();
+            this.comboxFloors = new System.Windows.Forms.ComboBox();
+            this.labelFloors = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelClassA.SuspendLayout();
@@ -852,7 +854,9 @@
             this.tabSiteConditions.BackColor = System.Drawing.Color.Transparent;
             this.tabSiteConditions.Controls.Add(this.buttonSCBack);
             this.tabSiteConditions.Controls.Add(this.buttonSCNext);
+            this.tabSiteConditions.Controls.Add(this.comboxFloors);
             this.tabSiteConditions.Controls.Add(this.comboxMaterials);
+            this.tabSiteConditions.Controls.Add(this.labelFloors);
             this.tabSiteConditions.Controls.Add(this.labelPlatformMaterial);
             this.tabSiteConditions.Controls.Add(this.txtboxPlatformMass);
             this.tabSiteConditions.Controls.Add(this.labelUnit6);
@@ -1198,6 +1202,29 @@
             this.buttonDXF.UseVisualStyleBackColor = true;
             this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
+            // comboxFloors
+            // 
+            this.comboxFloors.FormattingEnabled = true;
+            this.comboxFloors.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.comboxFloors.Location = new System.Drawing.Point(81, 142);
+            this.comboxFloors.Name = "comboxFloors";
+            this.comboxFloors.Size = new System.Drawing.Size(57, 21);
+            this.comboxFloors.TabIndex = 44;
+            this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
+            // 
+            // labelFloors
+            // 
+            this.labelFloors.AutoSize = true;
+            this.labelFloors.Location = new System.Drawing.Point(78, 122);
+            this.labelFloors.Name = "labelFloors";
+            this.labelFloors.Size = new System.Drawing.Size(35, 13);
+            this.labelFloors.TabIndex = 45;
+            this.labelFloors.Text = "Floors";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1355,6 +1382,8 @@
         private System.Windows.Forms.Button buttonSCBack;
         private System.Windows.Forms.Button buttonLoadBack;
         private System.Windows.Forms.Button buttonDXF;
+        private System.Windows.Forms.ComboBox comboxFloors;
+        private System.Windows.Forms.Label labelFloors;
     }
 }
 

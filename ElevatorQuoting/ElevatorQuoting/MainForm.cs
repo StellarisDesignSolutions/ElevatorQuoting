@@ -773,6 +773,14 @@ namespace ElevatorQuoting
             }
         }
 
+        private void drawDimension(List<LinearDimension> objectList, DxfDocument doc)
+        {
+            for (int i = 0; i < objectList.Count; i++)
+            {
+                doc.AddEntity(objectList[i]);
+            }
+        }
+
         private void buttonDXF_Click(object sender, EventArgs e)
         {
 
@@ -788,6 +796,14 @@ namespace ElevatorQuoting
             double TopCl = 24;
 
             double DimensionX = dxfStartX / 2;
+            double dimPad = 5;
+
+            double hatchThickness = 20;
+
+            double dxfPlanStartX = dxfStartX + PlatformLength * 2;
+
+
+            int numOfFloors;
 
             // your DXF file name
             string file = "_sample.dxf";
@@ -799,116 +815,135 @@ namespace ElevatorQuoting
             //Platform
             List<Line> platform = new List<Line>();
 
-            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness)));
-            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness)));
-            platform.Add(new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth + PlatformThickness)));
             platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth - PlatformThickness)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth)));
+            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth + PlatformThickness)));
             platform.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness)));
 
-            //Line entity = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness));
-            //Line entity2 = new Line(new Vector2(dxfStartX, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness));
-            //Line entity3 = new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth));
-
-            //Line entity4 = new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY));
-
-            //Line entity5 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness*2, dxfStartY + PitDepth - PlatformThickness));
-            //Line entity6 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth - PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth - PlatformThickness));
-            //Line entity7 = new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness*4, dxfStartY + PitDepth));
-
-            //Line entity8 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness));
 
             //top of lift
             List<Line> topOfLift = new List<Line>();
 
-            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl)));
-            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl)));
-            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl)));
-
-            //Line entity9 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
-            //Line entity10 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
-            //Line entity11 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance + OverheadCl));
+            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl)));
+            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl)));
+            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl)));
 
             //top area
             List<Line> topArea = new List<Line>();
 
-            topArea.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl)));
+            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl)));
 
-            //Line entity12 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
-            //Line entity13 = new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
-            //Line entity14 = new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl));
-            //Line entity15 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness*2) + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
-            //Line entity16 = new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance + OverheadCl - TopCl));
-            
+
             //Floors
             List<Line> floors = new List<Line>();
 
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + PlatformThickness + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance)));
+            List<LinearDimension> intTravel = new List<LinearDimension>();
 
-            //Line entity17 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + PlatformThickness + TravelDistance));
-            //Line entity18 = new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance));
-            //Line entity19 = new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX, dxfStartY + TravelDistance));
-            //Line entity20 = new Line(new Vector2(dxfStartX, dxfStartY + TravelDistance), new Vector2(dxfStartX - (PlatformThickness*2), dxfStartY + TravelDistance));
+            //Subsequent floors
 
-            //Line entity21 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + TravelDistance));
-            //Line entity22 = new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance));
-            //Line entity23 = new Line(new Vector2(dxfStartX + (PlatformThickness*2) + PlatformLength, dxfStartY - PlatformThickness + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance));
-            //Line entity24 = new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance));
+            numOfFloors = Convert.ToInt32(comboxFloors.Text);
 
+            for (int i = 1; i < numOfFloors; i++)
+            {
+
+                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
+                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
+                floors.Add(new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
+                floors.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + TravelDistance - (TravelDistance * i / numOfFloors) + PitDepth)));
+                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
+                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
+                floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
+                floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance + PitDepth - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance + PitDepth - (TravelDistance * i / numOfFloors))));
+
+                LinearDimension floordim = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * (i+1) / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * i / numOfFloors)), DimensionX - (PlatformThickness * 5.5), 90, netDxf.Tables.DimensionStyle.Iso25);
+                floordim.UserText = (TravelDistance/numOfFloors).ToString() + " INT TRAVEL";
+
+                intTravel.Add(floordim);
+
+            }
+
+            if (numOfFloors > 1)
+            {
+
+                LinearDimension floordim = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * 1 / numOfFloors)), DimensionX - (PlatformThickness * 5.5), 90, netDxf.Tables.DimensionStyle.Iso25);
+                floordim.UserText = (TravelDistance / numOfFloors).ToString() + " INT TRAVEL";
+
+                intTravel.Add(floordim);
+
+            }
+
+
+            //Top Floor
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + TravelDistance + PitDepth)));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + PitDepth + TravelDistance)));
+            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance + PitDepth), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance + PitDepth)));
 
             //Dimensions
 
             //PitDepth
             
-            LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth), 30, 90, netDxf.Tables.DimensionStyle.Iso25);
+            LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
+            dim1.UserText = PitDepth.ToString() + " PIT DEPTH";
+            
+            
+            //Travel
+            
+            LinearDimension dim2 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance) , DimensionX - (PlatformThickness*1.5) , 90, netDxf.Tables.DimensionStyle.Iso25);
+            dim2.UserText = TravelDistance.ToString() + " TRAVEL";
 
-            LinearDimension dim2 = new LinearDimension();
+
+            //Overhead Cl
+            LinearDimension dim3 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + PlatformThickness  - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
+            dim3.UserText = OverheadCl.ToString() + " OVERHEAD CLEARANCE";
+
+            //Top Cl
+            LinearDimension dim4 = new LinearDimension(new Vector2(dxfStartX  - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX - PlatformThickness *3, 90, netDxf.Tables.DimensionStyle.Iso25);
+
+
+
+            //Plan view
+            List<Line> planView = new List<Line>();
+            
+            //outside
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness*2, dxfStartY)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness*2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness*2, dxfStartY + PlatformWidth + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness*2, dxfStartY + PlatformWidth + hatchThickness * 2)));
+
+            //inside
+            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
+
+
 
             drawObject(platform, doc);
             drawObject(topOfLift, doc);
             drawObject(topArea, doc);
             drawObject(floors, doc);
+            drawObject(planView, doc);
+            drawDimension(intTravel, doc);
 
             // add your entities here
-            //doc.AddEntity(entity);
-            //doc.AddEntity(entity2);
-            //doc.AddEntity(entity3);
-            //doc.AddEntity(entity4);
-            //doc.AddEntity(entity5);
-            //doc.AddEntity(entity6);
-            //doc.AddEntity(entity7);
-            //doc.AddEntity(entity8);
-            //doc.AddEntity(entity9);
-            //doc.AddEntity(entity10);
-            //doc.AddEntity(entity11);
-            //doc.AddEntity(entity12);
-            //doc.AddEntity(entity13);
-            //doc.AddEntity(entity14);
-            //doc.AddEntity(entity15);
-            //doc.AddEntity(entity16);
-            //doc.AddEntity(entity17);
-            //doc.AddEntity(entity18);
-            //doc.AddEntity(entity19);
-            //doc.AddEntity(entity20);
-            //doc.AddEntity(entity21);
-            //doc.AddEntity(entity22);
-            //doc.AddEntity(entity23);
-            //doc.AddEntity(entity24);
+
             doc.AddEntity(dim1);
-            //doc.AddEntity(dim2);
+            doc.AddEntity(dim2);
+            doc.AddEntity(dim3);
+            doc.AddEntity(dim4);
 
 
             // save to file
