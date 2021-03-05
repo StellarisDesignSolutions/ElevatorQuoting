@@ -102,7 +102,9 @@
             this.tabSiteConditions = new System.Windows.Forms.TabPage();
             this.buttonSCBack = new System.Windows.Forms.Button();
             this.buttonSCNext = new System.Windows.Forms.Button();
+            this.comboxFloors = new System.Windows.Forms.ComboBox();
             this.comboxMaterials = new System.Windows.Forms.ComboBox();
+            this.labelFloors = new System.Windows.Forms.Label();
             this.labelPlatformMaterial = new System.Windows.Forms.Label();
             this.txtboxPlatformMass = new System.Windows.Forms.TextBox();
             this.labelUnit6 = new System.Windows.Forms.Label();
@@ -134,8 +136,6 @@
             this.labelCylinders = new System.Windows.Forms.Label();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.buttonDXF = new System.Windows.Forms.Button();
-            this.comboxFloors = new System.Windows.Forms.ComboBox();
-            this.labelFloors = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelClassA.SuspendLayout();
@@ -753,6 +753,7 @@
             this.comboxProvince.Name = "comboxProvince";
             this.comboxProvince.Size = new System.Drawing.Size(108, 21);
             this.comboxProvince.TabIndex = 46;
+            this.comboxProvince.SelectedIndexChanged += new System.EventHandler(this.comboxProvince_SelectedIndexChanged);
             // 
             // labelProvince
             // 
@@ -767,6 +768,7 @@
             // 
             this.txtboxContactPhone.Location = new System.Drawing.Point(192, 201);
             this.txtboxContactPhone.Name = "txtboxContactPhone";
+            this.txtboxContactPhone.ReadOnly = true;
             this.txtboxContactPhone.Size = new System.Drawing.Size(153, 20);
             this.txtboxContactPhone.TabIndex = 1;
             // 
@@ -781,6 +783,7 @@
             // 
             this.txtboxContactEmail.Location = new System.Drawing.Point(192, 147);
             this.txtboxContactEmail.Name = "txtboxContactEmail";
+            this.txtboxContactEmail.ReadOnly = true;
             this.txtboxContactEmail.Size = new System.Drawing.Size(197, 20);
             this.txtboxContactEmail.TabIndex = 1;
             // 
@@ -908,6 +911,20 @@
             this.buttonSCNext.UseVisualStyleBackColor = true;
             this.buttonSCNext.Click += new System.EventHandler(this.buttonSCNext_Click);
             // 
+            // comboxFloors
+            // 
+            this.comboxFloors.FormattingEnabled = true;
+            this.comboxFloors.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.comboxFloors.Location = new System.Drawing.Point(81, 142);
+            this.comboxFloors.Name = "comboxFloors";
+            this.comboxFloors.Size = new System.Drawing.Size(57, 21);
+            this.comboxFloors.TabIndex = 44;
+            this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
+            // 
             // comboxMaterials
             // 
             this.comboxMaterials.FormattingEnabled = true;
@@ -916,6 +933,15 @@
             this.comboxMaterials.Size = new System.Drawing.Size(121, 21);
             this.comboxMaterials.TabIndex = 44;
             this.comboxMaterials.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
+            // 
+            // labelFloors
+            // 
+            this.labelFloors.AutoSize = true;
+            this.labelFloors.Location = new System.Drawing.Point(78, 122);
+            this.labelFloors.Name = "labelFloors";
+            this.labelFloors.Size = new System.Drawing.Size(35, 13);
+            this.labelFloors.TabIndex = 45;
+            this.labelFloors.Text = "Floors";
             // 
             // labelPlatformMaterial
             // 
@@ -1201,29 +1227,6 @@
             this.buttonDXF.Text = "Create DXF";
             this.buttonDXF.UseVisualStyleBackColor = true;
             this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
-            // 
-            // comboxFloors
-            // 
-            this.comboxFloors.FormattingEnabled = true;
-            this.comboxFloors.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4"});
-            this.comboxFloors.Location = new System.Drawing.Point(81, 142);
-            this.comboxFloors.Name = "comboxFloors";
-            this.comboxFloors.Size = new System.Drawing.Size(57, 21);
-            this.comboxFloors.TabIndex = 44;
-            this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
-            // 
-            // labelFloors
-            // 
-            this.labelFloors.AutoSize = true;
-            this.labelFloors.Location = new System.Drawing.Point(78, 122);
-            this.labelFloors.Name = "labelFloors";
-            this.labelFloors.Size = new System.Drawing.Size(35, 13);
-            this.labelFloors.TabIndex = 45;
-            this.labelFloors.Text = "Floors";
             // 
             // MainForm
             // 

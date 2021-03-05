@@ -63,7 +63,7 @@ namespace ElevatorQuoting
         }
         void sshConnection()
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
             connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
             using (var client = new SshClient(connectionInfo))
@@ -276,20 +276,19 @@ namespace ElevatorQuoting
             }
         }
 
-        void convertAllInputs(Boolean metric)
+        void convertAllInputs(Boolean imperial)
         {
             decimal conversionFactor;
             decimal conversionFactorInches;
 
-            if (metric)
-            {
-                conversionFactor = 3.28084M;
-                conversionFactorInches = conversionFactor * 12M;
-
-            } else
+            if (imperial)
             {
                 conversionFactor = 0.3048M;
                 conversionFactorInches = conversionFactor / 12M;
+            } else
+            {
+                conversionFactor = 3.28084M;
+                conversionFactorInches = conversionFactor * 12M;
             }
 
             convertTextbox(txtboxPitDepth, conversionFactor);
@@ -311,21 +310,21 @@ namespace ElevatorQuoting
             {
                 if (!unitsAreMetric)
                 {
+                    unitsAreMetric = true;
                     convertAllInputs(unitsAreMetric);
                 }
                 newUnitLabel = "m";
                 newUnitLabel2 = "m";
-                unitsAreMetric = true;
             }
             else
             {
                 if (unitsAreMetric)
                 {
+                    unitsAreMetric = false;
                     convertAllInputs(unitsAreMetric);
                 }
                 newUnitLabel = "ft";
                 newUnitLabel2 = "in";
-                unitsAreMetric = false;
             }
 
             labelUnit1.Text = newUnitLabel;
@@ -337,14 +336,14 @@ namespace ElevatorQuoting
             labelSpeedUnit.Text = newUnitLabel + "/s";
         }
 
-
+        
         private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
 
         }
-
+        
 
         //Next Buttons
         private void buttonSCNext_Click(object sender, EventArgs e)
@@ -405,7 +404,8 @@ namespace ElevatorQuoting
         {
             calculateCapacity();
             calculatePlatformMass();
-            calculatePressures(txtboxFullLoadStatic, txtboxFullLoadDynamic, txtboxCapacity);
+            calculatePressures();
+            //calculatePressures(txtboxFullLoadStatic, txtboxFullLoadDynamic, txtboxCapacity);
             //calculatePressures(txtboxFullLoadStaticA, txtboxFullLoadDynamicA, txtboxCapacityClassA);
             //calculatePressures(txtboxFullLoadStaticB, txtboxFullLoadDynamicB, txtboxCapacityClassB);
             //calculatePressures(txtboxFullLoadStaticC, txtboxFullLoadDynamicC, txtboxCapacityClassC);
@@ -455,28 +455,10 @@ namespace ElevatorQuoting
                         
                         break;
                 }
-
-                //keeping this out for now
-                ////Class A Capacity//
-                //decimal platformClassACapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                //txtboxCapacityClassA.Text = string.Format("{0,4:.00}", platformClassACapacity);
-                //////////////////////
-
-                ////Class B Capacity//
-                //decimal platformClassBCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                //txtboxCapacityClassB.Text = string.Format("{0,4:.00}", platformClassBCapacity);
-                //////////////////////
-
-                ////Class C Capacity//
-                //decimal platformClassCCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                //txtboxCapacityClassC.Text = string.Format("{0,4:.00}", platformClassCCapacity);
-                //////////////////////
             }
             else
             {
-                txtboxCapacityClassA.Text = "Invalid";
-                txtboxCapacityClassB.Text = "Invalid";
-                txtboxCapacityClassC.Text = "Invalid";
+                txtboxCapacity.Text = "Invalid";
             }
         }
         void calculatePlatformMass()
@@ -523,11 +505,12 @@ namespace ElevatorQuoting
                 txtboxPlatformMass.Text = "Invalid";
             }
         }
-        void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
+        //void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
+        void calculatePressures()
         {
-            if (isThisStringANumber(capacityTextBox.Text) && isThisStringANumber(txtboxPlatformMass.Text))
+            if (isThisStringANumber(txtboxCapacity.Text) && isThisStringANumber(txtboxPlatformMass.Text) && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
             {
-                decimal totalMass = decimal.Parse(txtboxPlatformMass.Text) + decimal.Parse(capacityTextBox.Text);
+                decimal totalMass = decimal.Parse(txtboxPlatformMass.Text) + decimal.Parse(txtboxCapacity.Text);
 
                 decimal conversionFactor = 1;
 
@@ -548,26 +531,26 @@ namespace ElevatorQuoting
 
                 decimal maxOperatingPressureDynamic = maxOperatingPressureStatic * 1.1M;
 
-                textBoxToPopulateStatic.BackColor = capacityTextBox.BackColor;
-                textBoxToPopulateStatic.ForeColor = Color.Black;
+                txtboxFullLoadStatic.BackColor = txtboxCapacity.BackColor;
+                txtboxFullLoadStatic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureStatic))
                 {
-                    textBoxToPopulateStatic.ForeColor = Color.Red;
+                    txtboxFullLoadStatic.ForeColor = Color.Red;
                 }
-                textBoxToPopulateStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
+                txtboxFullLoadStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
 
-                textBoxToPopulateDynamic.BackColor = capacityTextBox.BackColor;
-                textBoxToPopulateDynamic.ForeColor = Color.Black;
+                txtboxFullLoadDynamic.BackColor = txtboxCapacity.BackColor;
+                txtboxFullLoadDynamic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureDynamic))
                 {
-                    textBoxToPopulateDynamic.ForeColor = Color.Red;
+                    txtboxFullLoadDynamic.ForeColor = Color.Red;
                 }
-                textBoxToPopulateDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
+                txtboxFullLoadDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
             }
             else
             {
-                textBoxToPopulateStatic.Text = "Invalid";
-                textBoxToPopulateDynamic.Text = "Invalid";
+                txtboxFullLoadStatic.Text = "Invalid";
+                txtboxFullLoadDynamic.Text = "Invalid";
             }
         }
 
@@ -788,8 +771,8 @@ namespace ElevatorQuoting
                     pictureBoxClass.Image = Properties.Resources.ClassC3;
 
                     break;
-
             }
+            calculateCapacity();
         }
 
         private void txtboxTravelSpeed_TextChanged(object sender, EventArgs e)
@@ -1060,6 +1043,7 @@ namespace ElevatorQuoting
             txtboxContactEmail.Text = customers[customerIndex].Contacts[contactIndex].Email;
             txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
         }
+
     }
 
     public class Customer
