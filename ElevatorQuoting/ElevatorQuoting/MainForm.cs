@@ -296,7 +296,6 @@ namespace ElevatorQuoting
             convertTextbox(txtboxPlatformWidth, conversionFactor);
             convertTextbox(txtboxOverheadCl, conversionFactor);
             convertTextbox(txtboxTravelDis, conversionFactor);
-            convertTextbox(txtboxPlatformThickness, conversionFactorInches);
             convertTextbox(txtboxTravelSpeed, conversionFactor);
 
         }
@@ -332,7 +331,6 @@ namespace ElevatorQuoting
             labelUnit3.Text = newUnitLabel;
             labelUnit4.Text = newUnitLabel;
             labelUnit5.Text = newUnitLabel;
-            labelUnit6.Text = newUnitLabel2;
             labelSpeedUnit.Text = newUnitLabel + "/s";
         }
 
@@ -817,15 +815,20 @@ namespace ElevatorQuoting
             }
             else
             {
+                txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
                 tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
             }
         }
 
         private void buttonLoadNext_Click(object sender, EventArgs e)
         {
-
-            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-
+            if (comboxLoadType.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Load Type Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else
+            {
+                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            }
         }
 
         private void buttonSCBack_Click(object sender, EventArgs e)
@@ -862,14 +865,23 @@ namespace ElevatorQuoting
         private void buttonDXF_Click(object sender, EventArgs e)
         {
 
-            double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * 12);
-            double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * 12);
-            double PlatformThickness = Convert.ToDouble(txtboxPlatformThickness.Text);
+            double conversionFactor = 1;
+            double PlatformThickness = .5;
 
-            double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * 12);
+            if (!unitsAreMetric)
+            {
+                conversionFactor = 12;
+                PlatformThickness = 12;
+            }
+
+            double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * conversionFactor);
+            double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * conversionFactor);
             
-            double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * 12);
-            double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * 12);
+
+            double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * conversionFactor);
+            
+            double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * conversionFactor);
+            double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * conversionFactor);
 
             double TopCl = 24;
 
@@ -1060,6 +1072,10 @@ namespace ElevatorQuoting
             txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
         }
 
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 
     public class Customer
