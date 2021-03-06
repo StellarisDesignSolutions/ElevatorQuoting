@@ -237,6 +237,14 @@ namespace ElevatorQuoting
 
                 //////
 
+                MySqlCommand cmdForQuoteNumber = new MySqlCommand("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'quotinglog' AND TABLE_NAME = 'main'", conn);
+                MySqlDataReader readerForQuoteNumber = cmdForQuoteNumber.ExecuteReader();
+                readerForQuoteNumber.Read();
+                txtboxQuoteName.Text = Convert.ToString(readerForQuoteNumber.GetInt32(0));
+
+                readerForQuoteNumber.Close();
+                cmdForQuoteNumber.Dispose();
+
                 conn.Close();
 
 
