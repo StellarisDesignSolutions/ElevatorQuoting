@@ -35,7 +35,13 @@ namespace ElevatorQuoting
         int dxfStartY = 200; //inch
 
         const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
+        const decimal pitDepthThreshold = 0.666M;
+        const decimal massPerSqMDeepPit = 317.5378M;
+        const decimal massPerSqFtDeepPit = 65;
+        const decimal massPerSqMShallowPit = 1;
+        const decimal massPerSqFtShallowPit = 1;
 
+        Boolean pitDepthThresholdMet;
         Boolean unitsAreMetric = false;
 
         public MainForm()
@@ -57,7 +63,7 @@ namespace ElevatorQuoting
         }
         void sshConnection()
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("stellarismysql.ddns.net", 7846, "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net" for connections from offsite
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
             connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
             using (var client = new SshClient(connectionInfo))
@@ -262,20 +268,62 @@ namespace ElevatorQuoting
 
         }
 
+        void convertTextbox(TextBox txtbox, decimal conversionFactor)
+        {
+            if (isThisStringANumber(txtbox.Text))
+            {
+                txtbox.Text = Convert.ToString(Math.Round(Convert.ToDecimal(txtbox.Text) * conversionFactor, 4));
+            }
+        }
+
+        void convertAllInputs(Boolean imperial)
+        {
+            decimal conversionFactor;
+            decimal conversionFactorInches;
+
+            if (imperial)
+            {
+                conversionFactor = 0.3048M;
+                conversionFactorInches = conversionFactor / 12M;
+            } else
+            {
+                conversionFactor = 3.28084M;
+                conversionFactorInches = conversionFactor * 12M;
+            }
+
+            convertTextbox(txtboxPitDepth, conversionFactor);
+            convertTextbox(txtboxPlatformLength, conversionFactor);
+            convertTextbox(txtboxPlatformWidth, conversionFactor);
+            convertTextbox(txtboxOverheadCl, conversionFactor);
+            convertTextbox(txtboxTravelDis, conversionFactor);
+            convertTextbox(txtboxTravelSpeed, conversionFactor);
+
+        }
 
         void setUnits(string newUnits)
         {
-            string newUnitLabel = null;
+            string newUnitLabel;
+            string newUnitLabel2;
 
             if (newUnits == "Metric")
             {
+                if (!unitsAreMetric)
+                {
+                    unitsAreMetric = true;
+                    convertAllInputs(unitsAreMetric);
+                }
                 newUnitLabel = "m";
-                unitsAreMetric = true;
+                newUnitLabel2 = "m";
             }
             else
             {
+                if (unitsAreMetric)
+                {
+                    unitsAreMetric = false;
+                    convertAllInputs(unitsAreMetric);
+                }
                 newUnitLabel = "ft";
-                unitsAreMetric = false;
+                newUnitLabel2 = "in";
             }
 
             labelUnit1.Text = newUnitLabel;
@@ -283,18 +331,17 @@ namespace ElevatorQuoting
             labelUnit3.Text = newUnitLabel;
             labelUnit4.Text = newUnitLabel;
             labelUnit5.Text = newUnitLabel;
-            labelUnit6.Text = newUnitLabel;
             labelSpeedUnit.Text = newUnitLabel + "/s";
         }
 
-
+        
         private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
 
         }
-
+        
 
         //Next Buttons
         private void buttonSCNext_Click(object sender, EventArgs e)
@@ -355,7 +402,8 @@ namespace ElevatorQuoting
         {
             calculateCapacity();
             calculatePlatformMass();
-            calculatePressures(txtboxFullLoadStatic, txtboxFullLoadDynamic, txtboxCapacity);
+            calculatePressures();
+            //calculatePressures(txtboxFullLoadStatic, txtboxFullLoadDynamic, txtboxCapacity);
             //calculatePressures(txtboxFullLoadStaticA, txtboxFullLoadDynamicA, txtboxCapacityClassA);
             //calculatePressures(txtboxFullLoadStaticB, txtboxFullLoadDynamicB, txtboxCapacityClassB);
             //calculatePressures(txtboxFullLoadStaticC, txtboxFullLoadDynamicC, txtboxCapacityClassC);
@@ -405,56 +453,48 @@ namespace ElevatorQuoting
                         
                         break;
                 }
-
-                //keeping this out for now
-                ////Class A Capacity//
-                //decimal platformClassACapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                //txtboxCapacityClassA.Text = string.Format("{0,4:.00}", platformClassACapacity);
-                //////////////////////
-
-                ////Class B Capacity//
-                //decimal platformClassBCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                //txtboxCapacityClassB.Text = string.Format("{0,4:.00}", platformClassBCapacity);
-                //////////////////////
-
-                ////Class C Capacity//
-                //decimal platformClassCCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                //txtboxCapacityClassC.Text = string.Format("{0,4:.00}", platformClassCCapacity);
-                //////////////////////
             }
             else
             {
-                txtboxCapacityClassA.Text = "Invalid";
-                txtboxCapacityClassB.Text = "Invalid";
-                txtboxCapacityClassC.Text = "Invalid";
+                txtboxCapacity.Text = "Invalid";
             }
         }
         void calculatePlatformMass()
         {
-            if (isThisStringANumber(txtboxPlatformThickness.Text) && isThisStringANumber(txtboxPlatformWidth.Text) && isThisStringANumber(txtboxPlatformLength.Text))
+            if (isThisStringANumber(txtboxPlatformWidth.Text) && isThisStringANumber(txtboxPlatformLength.Text))
             {
                 decimal platformWidth = decimal.Parse(txtboxPlatformWidth.Text);
                 decimal platformLength = decimal.Parse(txtboxPlatformLength.Text);
-                decimal platformThickness = decimal.Parse(txtboxPlatformThickness.Text);
-                decimal platformVolume = platformWidth * platformLength * platformThickness;
+                decimal platformArea = platformWidth * platformLength;
 
 
 
-                decimal materialDensity = 1;
+                decimal platformMassPerArea;
 
-                decimal conversionFactor = 1;
-
-                if (unitsAreMetric)
+                if (pitDepthThresholdMet)
                 {
-                    materialDensity = materialDensitiesMetric[comboxMaterials.SelectedIndex];
-                }
-                else
+
+                    if (unitsAreMetric)
+                    {
+                        platformMassPerArea = massPerSqMDeepPit;
+                    }
+                    else
+                    {
+                        platformMassPerArea = massPerSqFtDeepPit;
+                    }
+                } else
                 {
-                    materialDensity = materialDensitiesImperial[comboxMaterials.SelectedIndex];
-                    conversionFactor = 1728;
+                    if (unitsAreMetric)
+                    {
+                        platformMassPerArea = massPerSqMShallowPit;
+                    }
+                    else
+                    {
+                        platformMassPerArea = massPerSqFtShallowPit;
+                    }
                 }
 
-                decimal platformMass = materialDensity * platformVolume * conversionFactor;
+                decimal platformMass = platformArea * platformMassPerArea;
 
                 txtboxPlatformMass.Text = string.Format("{0,4:.00}", platformMass);
             }
@@ -463,11 +503,12 @@ namespace ElevatorQuoting
                 txtboxPlatformMass.Text = "Invalid";
             }
         }
-        void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
+        //void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
+        void calculatePressures()
         {
-            if (isThisStringANumber(capacityTextBox.Text) && isThisStringANumber(txtboxPlatformMass.Text))
+            if (isThisStringANumber(txtboxCapacity.Text) && isThisStringANumber(txtboxPlatformMass.Text) && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
             {
-                decimal totalMass = decimal.Parse(txtboxPlatformMass.Text) + decimal.Parse(capacityTextBox.Text);
+                decimal totalMass = decimal.Parse(txtboxPlatformMass.Text) + decimal.Parse(txtboxCapacity.Text);
 
                 decimal conversionFactor = 1;
 
@@ -488,26 +529,26 @@ namespace ElevatorQuoting
 
                 decimal maxOperatingPressureDynamic = maxOperatingPressureStatic * 1.1M;
 
-                textBoxToPopulateStatic.BackColor = capacityTextBox.BackColor;
-                textBoxToPopulateStatic.ForeColor = Color.Black;
+                txtboxFullLoadStatic.BackColor = txtboxCapacity.BackColor;
+                txtboxFullLoadStatic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureStatic))
                 {
-                    textBoxToPopulateStatic.ForeColor = Color.Red;
+                    txtboxFullLoadStatic.ForeColor = Color.Red;
                 }
-                textBoxToPopulateStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
+                txtboxFullLoadStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
 
-                textBoxToPopulateDynamic.BackColor = capacityTextBox.BackColor;
-                textBoxToPopulateDynamic.ForeColor = Color.Black;
+                txtboxFullLoadDynamic.BackColor = txtboxCapacity.BackColor;
+                txtboxFullLoadDynamic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureDynamic))
                 {
-                    textBoxToPopulateDynamic.ForeColor = Color.Red;
+                    txtboxFullLoadDynamic.ForeColor = Color.Red;
                 }
-                textBoxToPopulateDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
+                txtboxFullLoadDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
             }
             else
             {
-                textBoxToPopulateStatic.Text = "Invalid";
-                textBoxToPopulateDynamic.Text = "Invalid";
+                txtboxFullLoadStatic.Text = "Invalid";
+                txtboxFullLoadDynamic.Text = "Invalid";
             }
         }
 
@@ -666,7 +707,28 @@ namespace ElevatorQuoting
 
         private void txtboxPitDepth_TextChanged(object sender, EventArgs e)
         {
+            decimal pitDepth = 0;
 
+            if (isThisStringANumber(txtboxPitDepth.Text))
+            {
+                if (unitsAreMetric)
+                {
+                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text) * 3.28084M;
+                } else
+                {
+                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text);
+                }
+            }
+
+            if (pitDepth >= pitDepthThreshold)
+            {
+                pitDepthThresholdMet = true;
+            } else
+            {
+                pitDepthThresholdMet = false;
+            }
+            
+            updateAllCalculations();
         }
 
         private void txtboxOverheadCl_TextChanged(object sender, EventArgs e)
@@ -707,8 +769,8 @@ namespace ElevatorQuoting
                     pictureBoxClass.Image = Properties.Resources.ClassC3;
 
                     break;
-
             }
+            calculateCapacity();
         }
 
         private void txtboxTravelSpeed_TextChanged(object sender, EventArgs e)
@@ -738,16 +800,35 @@ namespace ElevatorQuoting
 
         private void buttonPDNext_Click(object sender, EventArgs e)
         {
-
-            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-
+            if (comboxCustomer.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Customer Selected","Complete Form",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            } else if (comboxProvince.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Province Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else if (comboxContactName.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Contact Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else if (txtboxProjectDescription.Text == "")
+            {
+                MessageBox.Show(this, "Project Description Missing", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
+                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            }
         }
 
         private void buttonLoadNext_Click(object sender, EventArgs e)
         {
-
-            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-
+            if (comboxLoadType.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Load Type Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else
+            {
+                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            }
         }
 
         private void buttonSCBack_Click(object sender, EventArgs e)
@@ -784,14 +865,23 @@ namespace ElevatorQuoting
         private void buttonDXF_Click(object sender, EventArgs e)
         {
 
-            double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * 12);
-            double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * 12);
-            double PlatformThickness = Convert.ToDouble(txtboxPlatformThickness.Text);
+            double conversionFactor = 1;
+            double PlatformThickness = .5;
 
-            double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * 12);
+            if (!unitsAreMetric)
+            {
+                conversionFactor = 12;
+                PlatformThickness = 12;
+            }
+
+            double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * conversionFactor);
+            double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * conversionFactor);
             
-            double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * 12);
-            double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * 12);
+
+            double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * conversionFactor);
+            
+            double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * conversionFactor);
+            double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * conversionFactor);
 
             double TopCl = 24;
 
@@ -964,6 +1054,8 @@ namespace ElevatorQuoting
             comboxContactName.Items.Clear();
 
             comboxContactName.Text = "";
+            txtboxContactEmail.Text = "";
+            txtboxContactPhone.Text = "";
 
             foreach (Contact contact in customers[customerIndex].Contacts)
             {
@@ -978,6 +1070,11 @@ namespace ElevatorQuoting
 
             txtboxContactEmail.Text = customers[customerIndex].Contacts[contactIndex].Email;
             txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 

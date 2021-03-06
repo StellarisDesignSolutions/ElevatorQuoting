@@ -51,6 +51,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.comboxUnits = new System.Windows.Forms.ComboBox();
             this.labelUnits = new System.Windows.Forms.Label();
             this.panelClassA = new System.Windows.Forms.Panel();
@@ -102,12 +103,11 @@
             this.tabSiteConditions = new System.Windows.Forms.TabPage();
             this.buttonSCBack = new System.Windows.Forms.Button();
             this.buttonSCNext = new System.Windows.Forms.Button();
+            this.comboxFloors = new System.Windows.Forms.ComboBox();
             this.comboxMaterials = new System.Windows.Forms.ComboBox();
+            this.labelFloors = new System.Windows.Forms.Label();
             this.labelPlatformMaterial = new System.Windows.Forms.Label();
             this.txtboxPlatformMass = new System.Windows.Forms.TextBox();
-            this.labelUnit6 = new System.Windows.Forms.Label();
-            this.labelPlatformThickness = new System.Windows.Forms.Label();
-            this.txtboxPlatformThickness = new System.Windows.Forms.TextBox();
             this.labelX1 = new System.Windows.Forms.Label();
             this.labelUnit3 = new System.Windows.Forms.Label();
             this.labelUnit2 = new System.Windows.Forms.Label();
@@ -134,8 +134,8 @@
             this.labelCylinders = new System.Windows.Forms.Label();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.buttonDXF = new System.Windows.Forms.Button();
-            this.comboxFloors = new System.Windows.Forms.ComboBox();
-            this.labelFloors = new System.Windows.Forms.Label();
+            this.comboxInlineThrough = new System.Windows.Forms.ComboBox();
+            this.labelInlineThrough = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelClassA.SuspendLayout();
@@ -332,6 +332,7 @@
             // 
             this.txtboxQuoteName.Location = new System.Drawing.Point(34, 76);
             this.txtboxQuoteName.Name = "txtboxQuoteName";
+            this.txtboxQuoteName.ReadOnly = true;
             this.txtboxQuoteName.Size = new System.Drawing.Size(113, 20);
             this.txtboxQuoteName.TabIndex = 1;
             // 
@@ -357,7 +358,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToolStripMenuItem});
+            this.saveToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -368,6 +370,13 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // comboxUnits
             // 
@@ -753,6 +762,7 @@
             this.comboxProvince.Name = "comboxProvince";
             this.comboxProvince.Size = new System.Drawing.Size(108, 21);
             this.comboxProvince.TabIndex = 46;
+            this.comboxProvince.SelectedIndexChanged += new System.EventHandler(this.comboxProvince_SelectedIndexChanged);
             // 
             // labelProvince
             // 
@@ -767,6 +777,7 @@
             // 
             this.txtboxContactPhone.Location = new System.Drawing.Point(192, 201);
             this.txtboxContactPhone.Name = "txtboxContactPhone";
+            this.txtboxContactPhone.ReadOnly = true;
             this.txtboxContactPhone.Size = new System.Drawing.Size(153, 20);
             this.txtboxContactPhone.TabIndex = 1;
             // 
@@ -781,6 +792,7 @@
             // 
             this.txtboxContactEmail.Location = new System.Drawing.Point(192, 147);
             this.txtboxContactEmail.Name = "txtboxContactEmail";
+            this.txtboxContactEmail.ReadOnly = true;
             this.txtboxContactEmail.Size = new System.Drawing.Size(197, 20);
             this.txtboxContactEmail.TabIndex = 1;
             // 
@@ -852,6 +864,8 @@
             // tabSiteConditions
             // 
             this.tabSiteConditions.BackColor = System.Drawing.Color.Transparent;
+            this.tabSiteConditions.Controls.Add(this.labelInlineThrough);
+            this.tabSiteConditions.Controls.Add(this.comboxInlineThrough);
             this.tabSiteConditions.Controls.Add(this.buttonSCBack);
             this.tabSiteConditions.Controls.Add(this.buttonSCNext);
             this.tabSiteConditions.Controls.Add(this.comboxFloors);
@@ -859,9 +873,6 @@
             this.tabSiteConditions.Controls.Add(this.labelFloors);
             this.tabSiteConditions.Controls.Add(this.labelPlatformMaterial);
             this.tabSiteConditions.Controls.Add(this.txtboxPlatformMass);
-            this.tabSiteConditions.Controls.Add(this.labelUnit6);
-            this.tabSiteConditions.Controls.Add(this.labelPlatformThickness);
-            this.tabSiteConditions.Controls.Add(this.txtboxPlatformThickness);
             this.tabSiteConditions.Controls.Add(this.labelX1);
             this.tabSiteConditions.Controls.Add(this.labelUnit3);
             this.tabSiteConditions.Controls.Add(this.labelUnit2);
@@ -908,6 +919,20 @@
             this.buttonSCNext.UseVisualStyleBackColor = true;
             this.buttonSCNext.Click += new System.EventHandler(this.buttonSCNext_Click);
             // 
+            // comboxFloors
+            // 
+            this.comboxFloors.FormattingEnabled = true;
+            this.comboxFloors.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.comboxFloors.Location = new System.Drawing.Point(81, 142);
+            this.comboxFloors.Name = "comboxFloors";
+            this.comboxFloors.Size = new System.Drawing.Size(57, 21);
+            this.comboxFloors.TabIndex = 44;
+            this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
+            // 
             // comboxMaterials
             // 
             this.comboxMaterials.FormattingEnabled = true;
@@ -916,6 +941,15 @@
             this.comboxMaterials.Size = new System.Drawing.Size(121, 21);
             this.comboxMaterials.TabIndex = 44;
             this.comboxMaterials.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
+            // 
+            // labelFloors
+            // 
+            this.labelFloors.AutoSize = true;
+            this.labelFloors.Location = new System.Drawing.Point(78, 122);
+            this.labelFloors.Name = "labelFloors";
+            this.labelFloors.Size = new System.Drawing.Size(35, 13);
+            this.labelFloors.TabIndex = 45;
+            this.labelFloors.Text = "Floors";
             // 
             // labelPlatformMaterial
             // 
@@ -934,32 +968,6 @@
             this.txtboxPlatformMass.Size = new System.Drawing.Size(73, 20);
             this.txtboxPlatformMass.TabIndex = 43;
             this.txtboxPlatformMass.TextChanged += new System.EventHandler(this.txtboxPlatformMass_TextChanged);
-            // 
-            // labelUnit6
-            // 
-            this.labelUnit6.AutoSize = true;
-            this.labelUnit6.Location = new System.Drawing.Point(282, 204);
-            this.labelUnit6.Name = "labelUnit6";
-            this.labelUnit6.Size = new System.Drawing.Size(15, 13);
-            this.labelUnit6.TabIndex = 42;
-            this.labelUnit6.Text = "in";
-            // 
-            // labelPlatformThickness
-            // 
-            this.labelPlatformThickness.AutoSize = true;
-            this.labelPlatformThickness.Location = new System.Drawing.Point(226, 178);
-            this.labelPlatformThickness.Name = "labelPlatformThickness";
-            this.labelPlatformThickness.Size = new System.Drawing.Size(97, 13);
-            this.labelPlatformThickness.TabIndex = 41;
-            this.labelPlatformThickness.Text = "Platform Thickness";
-            // 
-            // txtboxPlatformThickness
-            // 
-            this.txtboxPlatformThickness.Location = new System.Drawing.Point(229, 197);
-            this.txtboxPlatformThickness.Name = "txtboxPlatformThickness";
-            this.txtboxPlatformThickness.Size = new System.Drawing.Size(47, 20);
-            this.txtboxPlatformThickness.TabIndex = 40;
-            this.txtboxPlatformThickness.TextChanged += new System.EventHandler(this.txtboxPlatformThickness_TextChanged);
             // 
             // labelX1
             // 
@@ -1202,33 +1210,31 @@
             this.buttonDXF.UseVisualStyleBackColor = true;
             this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
-            // comboxFloors
+            // comboxInlineThrough
             // 
-            this.comboxFloors.FormattingEnabled = true;
-            this.comboxFloors.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4"});
-            this.comboxFloors.Location = new System.Drawing.Point(81, 142);
-            this.comboxFloors.Name = "comboxFloors";
-            this.comboxFloors.Size = new System.Drawing.Size(57, 21);
-            this.comboxFloors.TabIndex = 44;
-            this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxMaterials_SelectedIndexChanged);
+            this.comboxInlineThrough.FormattingEnabled = true;
+            this.comboxInlineThrough.Items.AddRange(new object[] {
+            "Inline",
+            "Through"});
+            this.comboxInlineThrough.Location = new System.Drawing.Point(184, 256);
+            this.comboxInlineThrough.Name = "comboxInlineThrough";
+            this.comboxInlineThrough.Size = new System.Drawing.Size(121, 21);
+            this.comboxInlineThrough.TabIndex = 49;
             // 
-            // labelFloors
+            // labelInlineThrough
             // 
-            this.labelFloors.AutoSize = true;
-            this.labelFloors.Location = new System.Drawing.Point(78, 122);
-            this.labelFloors.Name = "labelFloors";
-            this.labelFloors.Size = new System.Drawing.Size(35, 13);
-            this.labelFloors.TabIndex = 45;
-            this.labelFloors.Text = "Floors";
+            this.labelInlineThrough.AutoSize = true;
+            this.labelInlineThrough.Location = new System.Drawing.Point(181, 240);
+            this.labelInlineThrough.Name = "labelInlineThrough";
+            this.labelInlineThrough.Size = new System.Drawing.Size(77, 13);
+            this.labelInlineThrough.TabIndex = 50;
+            this.labelInlineThrough.Text = "Inline/Through";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(790, 611);
             this.Controls.Add(this.buttonDXF);
             this.Controls.Add(this.comboxUnits);
@@ -1338,9 +1344,6 @@
         private System.Windows.Forms.ComboBox comboxMaterials;
         private System.Windows.Forms.Label labelPlatformMaterial;
         private System.Windows.Forms.TextBox txtboxPlatformMass;
-        private System.Windows.Forms.Label labelUnit6;
-        private System.Windows.Forms.Label labelPlatformThickness;
-        private System.Windows.Forms.TextBox txtboxPlatformThickness;
         private System.Windows.Forms.Label labelX1;
         private System.Windows.Forms.Label labelUnit3;
         private System.Windows.Forms.Label labelUnit2;
@@ -1384,6 +1387,9 @@
         private System.Windows.Forms.Button buttonDXF;
         private System.Windows.Forms.ComboBox comboxFloors;
         private System.Windows.Forms.Label labelFloors;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ComboBox comboxInlineThrough;
+        private System.Windows.Forms.Label labelInlineThrough;
     }
 }
 
