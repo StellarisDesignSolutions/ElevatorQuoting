@@ -28,18 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.labelFullLoadDynamic = new System.Windows.Forms.Label();
-            this.txtboxFullLoadDynamic = new System.Windows.Forms.TextBox();
-            this.labelFullLoadStatic = new System.Windows.Forms.Label();
-            this.txtboxFullLoadStatic = new System.Windows.Forms.TextBox();
-            this.labelCapacity = new System.Windows.Forms.Label();
-            this.txtboxClass = new System.Windows.Forms.TextBox();
-            this.txtboxCapacity = new System.Windows.Forms.TextBox();
-            this.labelCodeYear = new System.Windows.Forms.Label();
-            this.labelClassofLoading = new System.Windows.Forms.Label();
-            this.labelOutputs = new System.Windows.Forms.Label();
-            this.txtboxCodeYear = new System.Windows.Forms.TextBox();
             this.comboxLoadType = new System.Windows.Forms.ComboBox();
             this.labelLoadType = new System.Windows.Forms.Label();
             this.labelNotes = new System.Windows.Forms.Label();
@@ -53,7 +41,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.comboxUnits = new System.Windows.Forms.ComboBox();
-            this.labelUnits = new System.Windows.Forms.Label();
+            this.labelSelectUnits = new System.Windows.Forms.Label();
             this.panelClassA = new System.Windows.Forms.Panel();
             this.labelFullLoadDynamicA = new System.Windows.Forms.Label();
             this.txtboxFullLoadDynamicA = new System.Windows.Forms.TextBox();
@@ -101,13 +89,14 @@
             this.labelClassDesc = new System.Windows.Forms.Label();
             this.pictureBoxClass = new System.Windows.Forms.PictureBox();
             this.tabSiteConditions = new System.Windows.Forms.TabPage();
+            this.labelInlineThrough = new System.Windows.Forms.Label();
+            this.comboxInlineThrough = new System.Windows.Forms.ComboBox();
             this.buttonSCBack = new System.Windows.Forms.Button();
             this.buttonSCNext = new System.Windows.Forms.Button();
             this.comboxFloors = new System.Windows.Forms.ComboBox();
             this.comboxMaterials = new System.Windows.Forms.ComboBox();
             this.labelFloors = new System.Windows.Forms.Label();
             this.labelPlatformMaterial = new System.Windows.Forms.Label();
-            this.txtboxPlatformMass = new System.Windows.Forms.TextBox();
             this.labelX1 = new System.Windows.Forms.Label();
             this.labelUnit3 = new System.Windows.Forms.Label();
             this.labelUnit2 = new System.Windows.Forms.Label();
@@ -115,7 +104,7 @@
             this.txtboxPlatformLength = new System.Windows.Forms.TextBox();
             this.txtboxPlatformWidth = new System.Windows.Forms.TextBox();
             this.labelSiteConditions = new System.Windows.Forms.Label();
-            this.labelSpeedUnit = new System.Windows.Forms.Label();
+            this.labelUnitSpeed = new System.Windows.Forms.Label();
             this.labelUnit5 = new System.Windows.Forms.Label();
             this.labelUnit4 = new System.Windows.Forms.Label();
             this.labelUnit1 = new System.Windows.Forms.Label();
@@ -134,9 +123,36 @@
             this.labelCylinders = new System.Windows.Forms.Label();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.buttonDXF = new System.Windows.Forms.Button();
-            this.comboxInlineThrough = new System.Windows.Forms.ComboBox();
-            this.labelInlineThrough = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.panelOutput = new System.Windows.Forms.Panel();
+            this.labelPressure4 = new System.Windows.Forms.Label();
+            this.labelPressure3 = new System.Windows.Forms.Label();
+            this.labelPressure2 = new System.Windows.Forms.Label();
+            this.labelPressure1 = new System.Windows.Forms.Label();
+            this.labelMass2 = new System.Windows.Forms.Label();
+            this.labelMass1 = new System.Windows.Forms.Label();
+            this.labelEmptyPlatformDynamic = new System.Windows.Forms.Label();
+            this.txtboxEmptyPlatformDynamic = new System.Windows.Forms.TextBox();
+            this.labelEmptyPlatformStatic = new System.Windows.Forms.Label();
+            this.txtboxEmptyPlatformStatic = new System.Windows.Forms.TextBox();
+            this.labelRequiredCapacity = new System.Windows.Forms.Label();
+            this.txtboxRequiredCapacity = new System.Windows.Forms.TextBox();
+            this.labelFullLoadDynamic = new System.Windows.Forms.Label();
+            this.txtboxFullLoadDynamic = new System.Windows.Forms.TextBox();
+            this.labelFullLoadStatic = new System.Windows.Forms.Label();
+            this.txtboxFullLoadStatic = new System.Windows.Forms.TextBox();
+            this.labelMinCapacity = new System.Windows.Forms.Label();
+            this.txtboxClass = new System.Windows.Forms.TextBox();
+            this.txtboxMinCapacity = new System.Windows.Forms.TextBox();
+            this.labelCodeYear = new System.Windows.Forms.Label();
+            this.labelClassofLoading = new System.Windows.Forms.Label();
+            this.labelSpecifications = new System.Windows.Forms.Label();
+            this.txtboxCodeYear = new System.Windows.Forms.TextBox();
+            this.txtboxPlatformMass = new System.Windows.Forms.TextBox();
+            this.labelPlatformWeight = new System.Windows.Forms.Label();
+            this.labelMass3 = new System.Windows.Forms.Label();
+            this.labelUnitMass = new System.Windows.Forms.Label();
+            this.txtboxCapacity = new System.Windows.Forms.TextBox();
+            this.labelCapacity = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panelClassA.SuspendLayout();
             this.panelClassB.SuspendLayout();
@@ -147,125 +163,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxClass)).BeginInit();
             this.tabSiteConditions.SuspendLayout();
             this.tabCylinder.SuspendLayout();
+            this.panelOutput.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.labelFullLoadDynamic);
-            this.panel1.Controls.Add(this.txtboxFullLoadDynamic);
-            this.panel1.Controls.Add(this.labelFullLoadStatic);
-            this.panel1.Controls.Add(this.txtboxFullLoadStatic);
-            this.panel1.Controls.Add(this.labelCapacity);
-            this.panel1.Controls.Add(this.txtboxClass);
-            this.panel1.Controls.Add(this.txtboxCapacity);
-            this.panel1.Controls.Add(this.labelCodeYear);
-            this.panel1.Controls.Add(this.labelClassofLoading);
-            this.panel1.Controls.Add(this.labelOutputs);
-            this.panel1.Controls.Add(this.txtboxCodeYear);
-            this.panel1.Location = new System.Drawing.Point(483, 210);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(214, 303);
-            this.panel1.TabIndex = 26;
-            // 
-            // labelFullLoadDynamic
-            // 
-            this.labelFullLoadDynamic.AutoSize = true;
-            this.labelFullLoadDynamic.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFullLoadDynamic.Location = new System.Drawing.Point(22, 248);
-            this.labelFullLoadDynamic.Name = "labelFullLoadDynamic";
-            this.labelFullLoadDynamic.Size = new System.Drawing.Size(176, 16);
-            this.labelFullLoadDynamic.TabIndex = 16;
-            this.labelFullLoadDynamic.Text = "Full Load Dynamic Pressure";
-            // 
-            // txtboxFullLoadDynamic
-            // 
-            this.txtboxFullLoadDynamic.Location = new System.Drawing.Point(69, 267);
-            this.txtboxFullLoadDynamic.Name = "txtboxFullLoadDynamic";
-            this.txtboxFullLoadDynamic.ReadOnly = true;
-            this.txtboxFullLoadDynamic.Size = new System.Drawing.Size(73, 20);
-            this.txtboxFullLoadDynamic.TabIndex = 17;
-            // 
-            // labelFullLoadStatic
-            // 
-            this.labelFullLoadStatic.AutoSize = true;
-            this.labelFullLoadStatic.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFullLoadStatic.Location = new System.Drawing.Point(31, 182);
-            this.labelFullLoadStatic.Name = "labelFullLoadStatic";
-            this.labelFullLoadStatic.Size = new System.Drawing.Size(156, 16);
-            this.labelFullLoadStatic.TabIndex = 14;
-            this.labelFullLoadStatic.Text = "Full Load Static Pressure";
-            // 
-            // txtboxFullLoadStatic
-            // 
-            this.txtboxFullLoadStatic.Location = new System.Drawing.Point(69, 201);
-            this.txtboxFullLoadStatic.Name = "txtboxFullLoadStatic";
-            this.txtboxFullLoadStatic.ReadOnly = true;
-            this.txtboxFullLoadStatic.Size = new System.Drawing.Size(73, 20);
-            this.txtboxFullLoadStatic.TabIndex = 15;
-            // 
-            // labelCapacity
-            // 
-            this.labelCapacity.AutoSize = true;
-            this.labelCapacity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCapacity.Location = new System.Drawing.Point(22, 135);
-            this.labelCapacity.Name = "labelCapacity";
-            this.labelCapacity.Size = new System.Drawing.Size(61, 16);
-            this.labelCapacity.TabIndex = 12;
-            this.labelCapacity.Text = "Capacity";
-            // 
-            // txtboxClass
-            // 
-            this.txtboxClass.Location = new System.Drawing.Point(79, 97);
-            this.txtboxClass.Name = "txtboxClass";
-            this.txtboxClass.ReadOnly = true;
-            this.txtboxClass.Size = new System.Drawing.Size(73, 20);
-            this.txtboxClass.TabIndex = 13;
-            // 
-            // txtboxCapacity
-            // 
-            this.txtboxCapacity.Location = new System.Drawing.Point(89, 134);
-            this.txtboxCapacity.Name = "txtboxCapacity";
-            this.txtboxCapacity.ReadOnly = true;
-            this.txtboxCapacity.Size = new System.Drawing.Size(73, 20);
-            this.txtboxCapacity.TabIndex = 13;
-            // 
-            // labelCodeYear
-            // 
-            this.labelCodeYear.AutoSize = true;
-            this.labelCodeYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCodeYear.Location = new System.Drawing.Point(22, 57);
-            this.labelCodeYear.Name = "labelCodeYear";
-            this.labelCodeYear.Size = new System.Drawing.Size(93, 16);
-            this.labelCodeYear.TabIndex = 3;
-            this.labelCodeYear.Text = "CSA B44 Year";
-            // 
-            // labelClassofLoading
-            // 
-            this.labelClassofLoading.AutoSize = true;
-            this.labelClassofLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelClassofLoading.Location = new System.Drawing.Point(31, 97);
-            this.labelClassofLoading.Name = "labelClassofLoading";
-            this.labelClassofLoading.Size = new System.Drawing.Size(42, 16);
-            this.labelClassofLoading.TabIndex = 3;
-            this.labelClassofLoading.Text = "Class";
-            // 
-            // labelOutputs
-            // 
-            this.labelOutputs.AutoSize = true;
-            this.labelOutputs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelOutputs.Location = new System.Drawing.Point(20, 15);
-            this.labelOutputs.Name = "labelOutputs";
-            this.labelOutputs.Size = new System.Drawing.Size(73, 20);
-            this.labelOutputs.TabIndex = 2;
-            this.labelOutputs.Text = "Outputs";
-            // 
-            // txtboxCodeYear
-            // 
-            this.txtboxCodeYear.Location = new System.Drawing.Point(121, 57);
-            this.txtboxCodeYear.Name = "txtboxCodeYear";
-            this.txtboxCodeYear.ReadOnly = true;
-            this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
-            this.txtboxCodeYear.TabIndex = 7;
             // 
             // comboxLoadType
             // 
@@ -311,7 +210,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(572, 531);
+            this.buttonOK.Location = new System.Drawing.Point(807, 507);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(90, 45);
             this.buttonOK.TabIndex = 28;
@@ -351,7 +250,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(790, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(917, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -390,14 +289,14 @@
             this.comboxUnits.TabIndex = 2;
             this.comboxUnits.SelectedIndexChanged += new System.EventHandler(this.comboxUnits_SelectedIndexChanged);
             // 
-            // labelUnits
+            // labelSelectUnits
             // 
-            this.labelUnits.AutoSize = true;
-            this.labelUnits.Location = new System.Drawing.Point(183, 59);
-            this.labelUnits.Name = "labelUnits";
-            this.labelUnits.Size = new System.Drawing.Size(31, 13);
-            this.labelUnits.TabIndex = 32;
-            this.labelUnits.Text = "Units";
+            this.labelSelectUnits.AutoSize = true;
+            this.labelSelectUnits.Location = new System.Drawing.Point(183, 59);
+            this.labelSelectUnits.Name = "labelSelectUnits";
+            this.labelSelectUnits.Size = new System.Drawing.Size(31, 13);
+            this.labelSelectUnits.TabIndex = 32;
+            this.labelSelectUnits.Text = "Units";
             // 
             // panelClassA
             // 
@@ -408,7 +307,7 @@
             this.panelClassA.Controls.Add(this.labelCapacityClassA);
             this.panelClassA.Controls.Add(this.labelClassA);
             this.panelClassA.Controls.Add(this.txtboxCapacityClassA);
-            this.panelClassA.Location = new System.Drawing.Point(724, 160);
+            this.panelClassA.Location = new System.Drawing.Point(1167, 320);
             this.panelClassA.Name = "panelClassA";
             this.panelClassA.Size = new System.Drawing.Size(218, 276);
             this.panelClassA.TabIndex = 27;
@@ -487,7 +386,7 @@
             this.panelClassB.Controls.Add(this.labelFullLoadStaticB);
             this.panelClassB.Controls.Add(this.txtboxFullLoadStaticB);
             this.panelClassB.Controls.Add(this.txtboxCapacityClassB);
-            this.panelClassB.Location = new System.Drawing.Point(948, 47);
+            this.panelClassB.Location = new System.Drawing.Point(1197, 62);
             this.panelClassB.Name = "panelClassB";
             this.panelClassB.Size = new System.Drawing.Size(218, 276);
             this.panelClassB.TabIndex = 28;
@@ -566,7 +465,7 @@
             this.panelClassC.Controls.Add(this.labelFullLoadStaticC);
             this.panelClassC.Controls.Add(this.txtboxFullLoadStaticC);
             this.panelClassC.Controls.Add(this.txtboxCapacityClassC);
-            this.panelClassC.Location = new System.Drawing.Point(948, 363);
+            this.panelClassC.Location = new System.Drawing.Point(1188, 119);
             this.panelClassC.Name = "panelClassC";
             this.panelClassC.Size = new System.Drawing.Size(218, 276);
             this.panelClassC.TabIndex = 29;
@@ -864,6 +763,9 @@
             // tabSiteConditions
             // 
             this.tabSiteConditions.BackColor = System.Drawing.Color.Transparent;
+            this.tabSiteConditions.Controls.Add(this.labelCapacity);
+            this.tabSiteConditions.Controls.Add(this.labelUnitMass);
+            this.tabSiteConditions.Controls.Add(this.txtboxCapacity);
             this.tabSiteConditions.Controls.Add(this.labelInlineThrough);
             this.tabSiteConditions.Controls.Add(this.comboxInlineThrough);
             this.tabSiteConditions.Controls.Add(this.buttonSCBack);
@@ -872,7 +774,6 @@
             this.tabSiteConditions.Controls.Add(this.comboxMaterials);
             this.tabSiteConditions.Controls.Add(this.labelFloors);
             this.tabSiteConditions.Controls.Add(this.labelPlatformMaterial);
-            this.tabSiteConditions.Controls.Add(this.txtboxPlatformMass);
             this.tabSiteConditions.Controls.Add(this.labelX1);
             this.tabSiteConditions.Controls.Add(this.labelUnit3);
             this.tabSiteConditions.Controls.Add(this.labelUnit2);
@@ -880,7 +781,7 @@
             this.tabSiteConditions.Controls.Add(this.txtboxPlatformLength);
             this.tabSiteConditions.Controls.Add(this.txtboxPlatformWidth);
             this.tabSiteConditions.Controls.Add(this.labelSiteConditions);
-            this.tabSiteConditions.Controls.Add(this.labelSpeedUnit);
+            this.tabSiteConditions.Controls.Add(this.labelUnitSpeed);
             this.tabSiteConditions.Controls.Add(this.labelUnit5);
             this.tabSiteConditions.Controls.Add(this.labelUnit4);
             this.tabSiteConditions.Controls.Add(this.labelUnit1);
@@ -898,6 +799,26 @@
             this.tabSiteConditions.Size = new System.Drawing.Size(436, 342);
             this.tabSiteConditions.TabIndex = 0;
             this.tabSiteConditions.Text = "Site Conditions";
+            // 
+            // labelInlineThrough
+            // 
+            this.labelInlineThrough.AutoSize = true;
+            this.labelInlineThrough.Location = new System.Drawing.Point(181, 240);
+            this.labelInlineThrough.Name = "labelInlineThrough";
+            this.labelInlineThrough.Size = new System.Drawing.Size(77, 13);
+            this.labelInlineThrough.TabIndex = 50;
+            this.labelInlineThrough.Text = "Inline/Through";
+            // 
+            // comboxInlineThrough
+            // 
+            this.comboxInlineThrough.FormattingEnabled = true;
+            this.comboxInlineThrough.Items.AddRange(new object[] {
+            "Inline",
+            "Through"});
+            this.comboxInlineThrough.Location = new System.Drawing.Point(184, 256);
+            this.comboxInlineThrough.Name = "comboxInlineThrough";
+            this.comboxInlineThrough.Size = new System.Drawing.Size(121, 21);
+            this.comboxInlineThrough.TabIndex = 49;
             // 
             // buttonSCBack
             // 
@@ -959,15 +880,6 @@
             this.labelPlatformMaterial.Size = new System.Drawing.Size(85, 13);
             this.labelPlatformMaterial.TabIndex = 45;
             this.labelPlatformMaterial.Text = "Platform Material";
-            // 
-            // txtboxPlatformMass
-            // 
-            this.txtboxPlatformMass.Location = new System.Drawing.Point(340, 204);
-            this.txtboxPlatformMass.Name = "txtboxPlatformMass";
-            this.txtboxPlatformMass.ReadOnly = true;
-            this.txtboxPlatformMass.Size = new System.Drawing.Size(73, 20);
-            this.txtboxPlatformMass.TabIndex = 43;
-            this.txtboxPlatformMass.TextChanged += new System.EventHandler(this.txtboxPlatformMass_TextChanged);
             // 
             // labelX1
             // 
@@ -1031,14 +943,14 @@
             this.labelSiteConditions.TabIndex = 33;
             this.labelSiteConditions.Text = "Site Conditions";
             // 
-            // labelSpeedUnit
+            // labelUnitSpeed
             // 
-            this.labelSpeedUnit.AutoSize = true;
-            this.labelSpeedUnit.Location = new System.Drawing.Point(303, 142);
-            this.labelSpeedUnit.Name = "labelSpeedUnit";
-            this.labelSpeedUnit.Size = new System.Drawing.Size(23, 13);
-            this.labelSpeedUnit.TabIndex = 32;
-            this.labelSpeedUnit.Text = "ft/s";
+            this.labelUnitSpeed.AutoSize = true;
+            this.labelUnitSpeed.Location = new System.Drawing.Point(303, 142);
+            this.labelUnitSpeed.Name = "labelUnitSpeed";
+            this.labelUnitSpeed.Size = new System.Drawing.Size(23, 13);
+            this.labelUnitSpeed.TabIndex = 32;
+            this.labelUnitSpeed.Text = "ft/s";
             // 
             // labelUnit5
             // 
@@ -1202,7 +1114,7 @@
             // 
             // buttonDXF
             // 
-            this.buttonDXF.Location = new System.Drawing.Point(496, 135);
+            this.buttonDXF.Location = new System.Drawing.Point(319, 161);
             this.buttonDXF.Name = "buttonDXF";
             this.buttonDXF.Size = new System.Drawing.Size(128, 31);
             this.buttonDXF.TabIndex = 44;
@@ -1210,43 +1122,317 @@
             this.buttonDXF.UseVisualStyleBackColor = true;
             this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
-            // comboxInlineThrough
+            // panelOutput
             // 
-            this.comboxInlineThrough.FormattingEnabled = true;
-            this.comboxInlineThrough.Items.AddRange(new object[] {
-            "Inline",
-            "Through"});
-            this.comboxInlineThrough.Location = new System.Drawing.Point(184, 256);
-            this.comboxInlineThrough.Name = "comboxInlineThrough";
-            this.comboxInlineThrough.Size = new System.Drawing.Size(121, 21);
-            this.comboxInlineThrough.TabIndex = 49;
+            this.panelOutput.Controls.Add(this.labelMass3);
+            this.panelOutput.Controls.Add(this.labelPlatformWeight);
+            this.panelOutput.Controls.Add(this.txtboxPlatformMass);
+            this.panelOutput.Controls.Add(this.labelPressure4);
+            this.panelOutput.Controls.Add(this.labelPressure3);
+            this.panelOutput.Controls.Add(this.labelPressure2);
+            this.panelOutput.Controls.Add(this.labelPressure1);
+            this.panelOutput.Controls.Add(this.labelMass2);
+            this.panelOutput.Controls.Add(this.labelMass1);
+            this.panelOutput.Controls.Add(this.labelEmptyPlatformDynamic);
+            this.panelOutput.Controls.Add(this.txtboxEmptyPlatformDynamic);
+            this.panelOutput.Controls.Add(this.labelEmptyPlatformStatic);
+            this.panelOutput.Controls.Add(this.txtboxEmptyPlatformStatic);
+            this.panelOutput.Controls.Add(this.labelRequiredCapacity);
+            this.panelOutput.Controls.Add(this.txtboxRequiredCapacity);
+            this.panelOutput.Controls.Add(this.labelFullLoadDynamic);
+            this.panelOutput.Controls.Add(this.txtboxFullLoadDynamic);
+            this.panelOutput.Controls.Add(this.labelFullLoadStatic);
+            this.panelOutput.Controls.Add(this.txtboxFullLoadStatic);
+            this.panelOutput.Controls.Add(this.labelMinCapacity);
+            this.panelOutput.Controls.Add(this.txtboxClass);
+            this.panelOutput.Controls.Add(this.txtboxMinCapacity);
+            this.panelOutput.Controls.Add(this.labelCodeYear);
+            this.panelOutput.Controls.Add(this.labelClassofLoading);
+            this.panelOutput.Controls.Add(this.labelSpecifications);
+            this.panelOutput.Controls.Add(this.txtboxCodeYear);
+            this.panelOutput.Location = new System.Drawing.Point(467, 119);
+            this.panelOutput.Name = "panelOutput";
+            this.panelOutput.Size = new System.Drawing.Size(325, 433);
+            this.panelOutput.TabIndex = 26;
             // 
-            // labelInlineThrough
+            // labelPressure4
             // 
-            this.labelInlineThrough.AutoSize = true;
-            this.labelInlineThrough.Location = new System.Drawing.Point(181, 240);
-            this.labelInlineThrough.Name = "labelInlineThrough";
-            this.labelInlineThrough.Size = new System.Drawing.Size(77, 13);
-            this.labelInlineThrough.TabIndex = 50;
-            this.labelInlineThrough.Text = "Inline/Through";
+            this.labelPressure4.AutoSize = true;
+            this.labelPressure4.Location = new System.Drawing.Point(298, 327);
+            this.labelPressure4.Name = "labelPressure4";
+            this.labelPressure4.Size = new System.Drawing.Size(20, 13);
+            this.labelPressure4.TabIndex = 50;
+            this.labelPressure4.Text = "psi";
+            // 
+            // labelPressure3
+            // 
+            this.labelPressure3.AutoSize = true;
+            this.labelPressure3.Location = new System.Drawing.Point(298, 291);
+            this.labelPressure3.Name = "labelPressure3";
+            this.labelPressure3.Size = new System.Drawing.Size(20, 13);
+            this.labelPressure3.TabIndex = 49;
+            this.labelPressure3.Text = "psi";
+            // 
+            // labelPressure2
+            // 
+            this.labelPressure2.AutoSize = true;
+            this.labelPressure2.Location = new System.Drawing.Point(298, 255);
+            this.labelPressure2.Name = "labelPressure2";
+            this.labelPressure2.Size = new System.Drawing.Size(20, 13);
+            this.labelPressure2.TabIndex = 48;
+            this.labelPressure2.Text = "psi";
+            // 
+            // labelPressure1
+            // 
+            this.labelPressure1.AutoSize = true;
+            this.labelPressure1.Location = new System.Drawing.Point(298, 219);
+            this.labelPressure1.Name = "labelPressure1";
+            this.labelPressure1.Size = new System.Drawing.Size(20, 13);
+            this.labelPressure1.TabIndex = 47;
+            this.labelPressure1.Text = "psi";
+            // 
+            // labelMass2
+            // 
+            this.labelMass2.AutoSize = true;
+            this.labelMass2.Location = new System.Drawing.Point(298, 185);
+            this.labelMass2.Name = "labelMass2";
+            this.labelMass2.Size = new System.Drawing.Size(20, 13);
+            this.labelMass2.TabIndex = 46;
+            this.labelMass2.Text = "lbs";
+            // 
+            // labelMass1
+            // 
+            this.labelMass1.AutoSize = true;
+            this.labelMass1.Location = new System.Drawing.Point(298, 149);
+            this.labelMass1.Name = "labelMass1";
+            this.labelMass1.Size = new System.Drawing.Size(20, 13);
+            this.labelMass1.TabIndex = 45;
+            this.labelMass1.Text = "lbs";
+            // 
+            // labelEmptyPlatformDynamic
+            // 
+            this.labelEmptyPlatformDynamic.AutoSize = true;
+            this.labelEmptyPlatformDynamic.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEmptyPlatformDynamic.Location = new System.Drawing.Point(4, 252);
+            this.labelEmptyPlatformDynamic.Name = "labelEmptyPlatformDynamic";
+            this.labelEmptyPlatformDynamic.Size = new System.Drawing.Size(211, 16);
+            this.labelEmptyPlatformDynamic.TabIndex = 22;
+            this.labelEmptyPlatformDynamic.Text = "Empty Platform Dynamic Pressure";
+            // 
+            // txtboxEmptyPlatformDynamic
+            // 
+            this.txtboxEmptyPlatformDynamic.Location = new System.Drawing.Point(219, 252);
+            this.txtboxEmptyPlatformDynamic.Name = "txtboxEmptyPlatformDynamic";
+            this.txtboxEmptyPlatformDynamic.ReadOnly = true;
+            this.txtboxEmptyPlatformDynamic.Size = new System.Drawing.Size(73, 20);
+            this.txtboxEmptyPlatformDynamic.TabIndex = 23;
+            // 
+            // labelEmptyPlatformStatic
+            // 
+            this.labelEmptyPlatformStatic.AutoSize = true;
+            this.labelEmptyPlatformStatic.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEmptyPlatformStatic.Location = new System.Drawing.Point(4, 216);
+            this.labelEmptyPlatformStatic.Name = "labelEmptyPlatformStatic";
+            this.labelEmptyPlatformStatic.Size = new System.Drawing.Size(191, 16);
+            this.labelEmptyPlatformStatic.TabIndex = 20;
+            this.labelEmptyPlatformStatic.Text = "Empty Platform Static Pressure";
+            // 
+            // txtboxEmptyPlatformStatic
+            // 
+            this.txtboxEmptyPlatformStatic.Location = new System.Drawing.Point(219, 216);
+            this.txtboxEmptyPlatformStatic.Name = "txtboxEmptyPlatformStatic";
+            this.txtboxEmptyPlatformStatic.ReadOnly = true;
+            this.txtboxEmptyPlatformStatic.Size = new System.Drawing.Size(73, 20);
+            this.txtboxEmptyPlatformStatic.TabIndex = 21;
+            // 
+            // labelRequiredCapacity
+            // 
+            this.labelRequiredCapacity.AutoSize = true;
+            this.labelRequiredCapacity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRequiredCapacity.Location = new System.Drawing.Point(4, 182);
+            this.labelRequiredCapacity.Name = "labelRequiredCapacity";
+            this.labelRequiredCapacity.Size = new System.Drawing.Size(120, 16);
+            this.labelRequiredCapacity.TabIndex = 18;
+            this.labelRequiredCapacity.Text = "Required Capacity";
+            // 
+            // txtboxRequiredCapacity
+            // 
+            this.txtboxRequiredCapacity.Location = new System.Drawing.Point(219, 182);
+            this.txtboxRequiredCapacity.Name = "txtboxRequiredCapacity";
+            this.txtboxRequiredCapacity.ReadOnly = true;
+            this.txtboxRequiredCapacity.Size = new System.Drawing.Size(73, 20);
+            this.txtboxRequiredCapacity.TabIndex = 19;
+            // 
+            // labelFullLoadDynamic
+            // 
+            this.labelFullLoadDynamic.AutoSize = true;
+            this.labelFullLoadDynamic.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadDynamic.Location = new System.Drawing.Point(4, 325);
+            this.labelFullLoadDynamic.Name = "labelFullLoadDynamic";
+            this.labelFullLoadDynamic.Size = new System.Drawing.Size(176, 16);
+            this.labelFullLoadDynamic.TabIndex = 16;
+            this.labelFullLoadDynamic.Text = "Full Load Dynamic Pressure";
+            // 
+            // txtboxFullLoadDynamic
+            // 
+            this.txtboxFullLoadDynamic.Location = new System.Drawing.Point(219, 324);
+            this.txtboxFullLoadDynamic.Name = "txtboxFullLoadDynamic";
+            this.txtboxFullLoadDynamic.ReadOnly = true;
+            this.txtboxFullLoadDynamic.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadDynamic.TabIndex = 17;
+            // 
+            // labelFullLoadStatic
+            // 
+            this.labelFullLoadStatic.AutoSize = true;
+            this.labelFullLoadStatic.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFullLoadStatic.Location = new System.Drawing.Point(4, 289);
+            this.labelFullLoadStatic.Name = "labelFullLoadStatic";
+            this.labelFullLoadStatic.Size = new System.Drawing.Size(156, 16);
+            this.labelFullLoadStatic.TabIndex = 14;
+            this.labelFullLoadStatic.Text = "Full Load Static Pressure";
+            // 
+            // txtboxFullLoadStatic
+            // 
+            this.txtboxFullLoadStatic.Location = new System.Drawing.Point(219, 288);
+            this.txtboxFullLoadStatic.Name = "txtboxFullLoadStatic";
+            this.txtboxFullLoadStatic.ReadOnly = true;
+            this.txtboxFullLoadStatic.Size = new System.Drawing.Size(73, 20);
+            this.txtboxFullLoadStatic.TabIndex = 15;
+            // 
+            // labelMinCapacity
+            // 
+            this.labelMinCapacity.AutoSize = true;
+            this.labelMinCapacity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMinCapacity.Location = new System.Drawing.Point(4, 146);
+            this.labelMinCapacity.Name = "labelMinCapacity";
+            this.labelMinCapacity.Size = new System.Drawing.Size(117, 16);
+            this.labelMinCapacity.TabIndex = 12;
+            this.labelMinCapacity.Text = "Minimum Capacity";
+            // 
+            // txtboxClass
+            // 
+            this.txtboxClass.Location = new System.Drawing.Point(219, 76);
+            this.txtboxClass.Name = "txtboxClass";
+            this.txtboxClass.ReadOnly = true;
+            this.txtboxClass.Size = new System.Drawing.Size(73, 20);
+            this.txtboxClass.TabIndex = 13;
+            // 
+            // txtboxMinCapacity
+            // 
+            this.txtboxMinCapacity.Location = new System.Drawing.Point(219, 146);
+            this.txtboxMinCapacity.Name = "txtboxMinCapacity";
+            this.txtboxMinCapacity.ReadOnly = true;
+            this.txtboxMinCapacity.Size = new System.Drawing.Size(73, 20);
+            this.txtboxMinCapacity.TabIndex = 13;
+            // 
+            // labelCodeYear
+            // 
+            this.labelCodeYear.AutoSize = true;
+            this.labelCodeYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCodeYear.Location = new System.Drawing.Point(4, 38);
+            this.labelCodeYear.Name = "labelCodeYear";
+            this.labelCodeYear.Size = new System.Drawing.Size(93, 16);
+            this.labelCodeYear.TabIndex = 3;
+            this.labelCodeYear.Text = "CSA B44 Year";
+            // 
+            // labelClassofLoading
+            // 
+            this.labelClassofLoading.AutoSize = true;
+            this.labelClassofLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelClassofLoading.Location = new System.Drawing.Point(4, 77);
+            this.labelClassofLoading.Name = "labelClassofLoading";
+            this.labelClassofLoading.Size = new System.Drawing.Size(42, 16);
+            this.labelClassofLoading.TabIndex = 3;
+            this.labelClassofLoading.Text = "Class";
+            // 
+            // labelSpecifications
+            // 
+            this.labelSpecifications.AutoSize = true;
+            this.labelSpecifications.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSpecifications.Location = new System.Drawing.Point(12, 11);
+            this.labelSpecifications.Name = "labelSpecifications";
+            this.labelSpecifications.Size = new System.Drawing.Size(153, 20);
+            this.labelSpecifications.TabIndex = 2;
+            this.labelSpecifications.Text = "Lift Specifications";
+            // 
+            // txtboxCodeYear
+            // 
+            this.txtboxCodeYear.Location = new System.Drawing.Point(219, 37);
+            this.txtboxCodeYear.Name = "txtboxCodeYear";
+            this.txtboxCodeYear.ReadOnly = true;
+            this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
+            this.txtboxCodeYear.TabIndex = 7;
+            // 
+            // txtboxPlatformMass
+            // 
+            this.txtboxPlatformMass.Location = new System.Drawing.Point(219, 111);
+            this.txtboxPlatformMass.Name = "txtboxPlatformMass";
+            this.txtboxPlatformMass.ReadOnly = true;
+            this.txtboxPlatformMass.Size = new System.Drawing.Size(73, 20);
+            this.txtboxPlatformMass.TabIndex = 51;
+            // 
+            // labelPlatformWeight
+            // 
+            this.labelPlatformWeight.AutoSize = true;
+            this.labelPlatformWeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPlatformWeight.Location = new System.Drawing.Point(4, 112);
+            this.labelPlatformWeight.Name = "labelPlatformWeight";
+            this.labelPlatformWeight.Size = new System.Drawing.Size(102, 16);
+            this.labelPlatformWeight.TabIndex = 52;
+            this.labelPlatformWeight.Text = "Platform Weight";
+            // 
+            // labelMass3
+            // 
+            this.labelMass3.AutoSize = true;
+            this.labelMass3.Location = new System.Drawing.Point(298, 115);
+            this.labelMass3.Name = "labelMass3";
+            this.labelMass3.Size = new System.Drawing.Size(20, 13);
+            this.labelMass3.TabIndex = 53;
+            this.labelMass3.Text = "lbs";
+            // 
+            // labelUnitMass
+            // 
+            this.labelUnitMass.AutoSize = true;
+            this.labelUnitMass.Location = new System.Drawing.Point(347, 204);
+            this.labelUnitMass.Name = "labelUnitMass";
+            this.labelUnitMass.Size = new System.Drawing.Size(20, 13);
+            this.labelUnitMass.TabIndex = 52;
+            this.labelUnitMass.Text = "lbs";
+            // 
+            // txtboxCapacity
+            // 
+            this.txtboxCapacity.Location = new System.Drawing.Point(279, 197);
+            this.txtboxCapacity.Name = "txtboxCapacity";
+            this.txtboxCapacity.Size = new System.Drawing.Size(62, 20);
+            this.txtboxCapacity.TabIndex = 51;
+            this.txtboxCapacity.TextChanged += new System.EventHandler(this.txtboxCapacity_TextChanged);
+            // 
+            // labelCapacity
+            // 
+            this.labelCapacity.AutoSize = true;
+            this.labelCapacity.Location = new System.Drawing.Point(277, 178);
+            this.labelCapacity.Name = "labelCapacity";
+            this.labelCapacity.Size = new System.Drawing.Size(48, 13);
+            this.labelCapacity.TabIndex = 53;
+            this.labelCapacity.Text = "Capacity";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(790, 611);
+            this.ClientSize = new System.Drawing.Size(917, 566);
             this.Controls.Add(this.buttonDXF);
             this.Controls.Add(this.comboxUnits);
-            this.Controls.Add(this.labelUnits);
+            this.Controls.Add(this.labelSelectUnits);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panelClassC);
             this.Controls.Add(this.panelClassB);
             this.Controls.Add(this.panelClassA);
+            this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.labelQuoteName);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.dtpDate);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.labelDate);
             this.Controls.Add(this.txtboxQuoteName);
             this.Controls.Add(this.labelNotes);
@@ -1255,8 +1441,6 @@
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panelClassA.ResumeLayout(false);
@@ -1275,16 +1459,14 @@
             this.tabSiteConditions.PerformLayout();
             this.tabCylinder.ResumeLayout(false);
             this.tabCylinder.PerformLayout();
+            this.panelOutput.ResumeLayout(false);
+            this.panelOutput.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label labelClassofLoading;
-        private System.Windows.Forms.Label labelOutputs;
         private System.Windows.Forms.ComboBox comboxLoadType;
         private System.Windows.Forms.Label labelLoadType;
         private System.Windows.Forms.Label labelNotes;
@@ -1296,10 +1478,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.Label labelCodeYear;
-        private System.Windows.Forms.TextBox txtboxCodeYear;
         private System.Windows.Forms.ComboBox comboxUnits;
-        private System.Windows.Forms.Label labelUnits;
+        private System.Windows.Forms.Label labelSelectUnits;
         private System.Windows.Forms.Panel panelClassA;
         private System.Windows.Forms.Label labelCapacityClassA;
         private System.Windows.Forms.Label labelClassA;
@@ -1328,7 +1508,7 @@
         private System.Windows.Forms.TabPage tabSiteConditions;
         private System.Windows.Forms.TabPage tabCylinder;
         private System.Windows.Forms.Label labelSiteConditions;
-        private System.Windows.Forms.Label labelSpeedUnit;
+        private System.Windows.Forms.Label labelUnitSpeed;
         private System.Windows.Forms.Label labelUnit5;
         private System.Windows.Forms.Label labelUnit4;
         private System.Windows.Forms.Label labelUnit1;
@@ -1343,7 +1523,6 @@
         private System.Windows.Forms.Button buttonSCNext;
         private System.Windows.Forms.ComboBox comboxMaterials;
         private System.Windows.Forms.Label labelPlatformMaterial;
-        private System.Windows.Forms.TextBox txtboxPlatformMass;
         private System.Windows.Forms.Label labelX1;
         private System.Windows.Forms.Label labelUnit3;
         private System.Windows.Forms.Label labelUnit2;
@@ -1351,17 +1530,10 @@
         private System.Windows.Forms.TextBox txtboxPlatformLength;
         private System.Windows.Forms.TextBox txtboxPlatformWidth;
         private System.Windows.Forms.Button buttonCylBack;
-        private System.Windows.Forms.Label labelFullLoadDynamic;
-        private System.Windows.Forms.TextBox txtboxFullLoadDynamic;
-        private System.Windows.Forms.Label labelFullLoadStatic;
-        private System.Windows.Forms.TextBox txtboxFullLoadStatic;
-        private System.Windows.Forms.Label labelCapacity;
-        private System.Windows.Forms.TextBox txtboxCapacity;
         private System.Windows.Forms.ComboBox comboxNumberOfCylinders;
         private System.Windows.Forms.Label labelNumberOfCylinders;
         private System.Windows.Forms.ComboBox comboxCylinders;
         private System.Windows.Forms.Label labelCylinders;
-        private System.Windows.Forms.TextBox txtboxClass;
         private System.Windows.Forms.PictureBox pictureBoxClass;
         private System.Windows.Forms.TabPage tabLoading;
         private System.Windows.Forms.TabPage tabProjectDetails;
@@ -1390,6 +1562,36 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboxInlineThrough;
         private System.Windows.Forms.Label labelInlineThrough;
+        private System.Windows.Forms.Panel panelOutput;
+        private System.Windows.Forms.Label labelEmptyPlatformDynamic;
+        private System.Windows.Forms.TextBox txtboxEmptyPlatformDynamic;
+        private System.Windows.Forms.Label labelEmptyPlatformStatic;
+        private System.Windows.Forms.TextBox txtboxEmptyPlatformStatic;
+        private System.Windows.Forms.Label labelRequiredCapacity;
+        private System.Windows.Forms.TextBox txtboxRequiredCapacity;
+        private System.Windows.Forms.Label labelFullLoadDynamic;
+        private System.Windows.Forms.TextBox txtboxFullLoadDynamic;
+        private System.Windows.Forms.Label labelFullLoadStatic;
+        private System.Windows.Forms.TextBox txtboxFullLoadStatic;
+        private System.Windows.Forms.Label labelMinCapacity;
+        private System.Windows.Forms.TextBox txtboxClass;
+        private System.Windows.Forms.TextBox txtboxMinCapacity;
+        private System.Windows.Forms.Label labelCodeYear;
+        private System.Windows.Forms.Label labelClassofLoading;
+        private System.Windows.Forms.Label labelSpecifications;
+        private System.Windows.Forms.TextBox txtboxCodeYear;
+        private System.Windows.Forms.Label labelMass1;
+        private System.Windows.Forms.Label labelMass2;
+        private System.Windows.Forms.Label labelPressure4;
+        private System.Windows.Forms.Label labelPressure3;
+        private System.Windows.Forms.Label labelPressure2;
+        private System.Windows.Forms.Label labelPressure1;
+        private System.Windows.Forms.TextBox txtboxPlatformMass;
+        private System.Windows.Forms.Label labelMass3;
+        private System.Windows.Forms.Label labelPlatformWeight;
+        private System.Windows.Forms.Label labelCapacity;
+        private System.Windows.Forms.Label labelUnitMass;
+        private System.Windows.Forms.TextBox txtboxCapacity;
     }
 }
 

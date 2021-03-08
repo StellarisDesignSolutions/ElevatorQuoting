@@ -34,6 +34,9 @@ namespace ElevatorQuoting
         int dxfStartX = 200; //inch
         int dxfStartY = 200; //inch
 
+        const decimal poundsPerKilogram = 2.205M;
+        const decimal acceleration = 9.80665M;
+
         const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
         const decimal pitDepthThreshold = 0.666M;
         const decimal massPerSqMDeepPit = 317.5378M;
@@ -254,26 +257,6 @@ namespace ElevatorQuoting
                 MessageBox.Show(ex.Message);
             }
 
-            //Below is Access Connection
-            //OleDbConnection conn = new OleDbConnection();
-            //string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\ProgramLogic.accdb";
-            //string sql = "SELECT * FROM Province_Year";
-            //conn.ConnectionString = connection;
-            //conn.Open();
-            //OleDbCommand cmd = new OleDbCommand(sql, conn);
-            //OleDbDataReader dr = cmd.ExecuteReader();
-
-            //while(dr.Read())
-            //{
-            //    comboxProvince.Items.Add(dr[0].ToString());
-            //    ProvinceCode.Add(dr[1].ToString());
-
-            //}
-
-            //dr.Close();
-            //cmd.Dispose();
-            //conn.Close();
-
         }
 
         void convertTextbox(TextBox txtbox, decimal conversionFactor)
@@ -310,8 +293,9 @@ namespace ElevatorQuoting
 
         void setUnits(string newUnits)
         {
-            string newUnitLabel;
-            string newUnitLabel2;
+            string newUnitLabelLength;
+            string newUnitLabelMass;
+            string newUnitLabelPressure;
 
             if (newUnits == "Metric")
             {
@@ -320,8 +304,9 @@ namespace ElevatorQuoting
                     unitsAreMetric = true;
                     convertAllInputs(unitsAreMetric);
                 }
-                newUnitLabel = "m";
-                newUnitLabel2 = "m";
+                newUnitLabelLength = "m";
+                newUnitLabelMass = "kg";
+                newUnitLabelPressure = "Mpa";
             }
             else
             {
@@ -330,19 +315,44 @@ namespace ElevatorQuoting
                     unitsAreMetric = false;
                     convertAllInputs(unitsAreMetric);
                 }
-                newUnitLabel = "ft";
-                newUnitLabel2 = "in";
+                newUnitLabelLength = "ft";
+                newUnitLabelMass = "lbs";
+                newUnitLabelPressure = "psi";
             }
 
-            labelUnit1.Text = newUnitLabel;
-            labelUnit2.Text = newUnitLabel;
-            labelUnit3.Text = newUnitLabel;
-            labelUnit4.Text = newUnitLabel;
-            labelUnit5.Text = newUnitLabel;
-            labelSpeedUnit.Text = newUnitLabel + "/s";
+            foreach (Label label in tabSiteConditions.Controls.OfType<Label>().Where(label => label.Name.StartsWith("labelUnit")))
+            {
+                label.Text = newUnitLabelLength;
+                if (label.Name.Contains("Speed"))
+                {
+                    label.Text += "/s";
+                } else if (label.Name.Contains("Mass"))
+                {
+                    label.Text = newUnitLabelMass;
+                }
+            }
+
+            foreach (Label label in panelOutput.Controls.OfType<Label>().Where(label => label.Name.StartsWith("labelMass")))
+            {
+                label.Text = newUnitLabelMass;
+            }
+
+            foreach (Label label in panelOutput.Controls.OfType<Label>().Where(label => label.Name.StartsWith("labelPressure")))
+            {
+                label.Text = newUnitLabelPressure;
+            }
+
+            /*
+            labelUnit1.Text = newUnitLabelLength;
+            labelUnit2.Text = newUnitLabelLength;
+            labelUnit3.Text = newUnitLabelLength;
+            labelUnit4.Text = newUnitLabelLength;
+            labelUnit5.Text = newUnitLabelLength;
+            labelSpeedUnit.Text = newUnitLabelLength + "/s";
+            */
         }
 
-        
+
         private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -434,37 +444,46 @@ namespace ElevatorQuoting
                 {
                     case 0:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "A";
                         break;
                     case 1:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "B";
                         break;
                     case 2:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "C1";
                         break;
                     case 3:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C2"] : imperialCapacityValues["C2"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "C2";
                         break;
                     case 4:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C3"] : imperialCapacityValues["C3"]) * platformArea;
-                        txtboxCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
+                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
                         txtboxClass.Text = "C3";
                         break;
                     default:
                         
                         break;
                 }
+
+                if (isThisStringANumber(txtboxCapacity.Text) && Convert.ToDecimal(txtboxCapacity.Text) >= Convert.ToDecimal(txtboxMinCapacity.Text))
+                {
+                    txtboxRequiredCapacity.Text = txtboxCapacity.Text;
+                } else
+                {
+                    txtboxRequiredCapacity.Text = "Invalid";
+                }
+
             }
             else
             {
-                txtboxCapacity.Text = "Invalid";
+                txtboxMinCapacity.Text = "Invalid";
             }
         }
         void calculatePlatformMass()
@@ -514,9 +533,11 @@ namespace ElevatorQuoting
         //void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
         void calculatePressures()
         {
-            if (isThisStringANumber(txtboxCapacity.Text) && isThisStringANumber(txtboxPlatformMass.Text) && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
+            if (isThisStringANumber(txtboxRequiredCapacity.Text) && isThisStringANumber(txtboxPlatformMass.Text) && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
             {
-                decimal totalMass = decimal.Parse(txtboxPlatformMass.Text) + decimal.Parse(txtboxCapacity.Text);
+                decimal platformMass = decimal.Parse(txtboxPlatformMass.Text);
+
+                decimal totalMass = platformMass + decimal.Parse(txtboxRequiredCapacity.Text);
 
                 decimal conversionFactor = 1;
 
@@ -525,7 +546,7 @@ namespace ElevatorQuoting
                 if (unitsAreMetric)
                 {
                     totalArea = decimal.Parse(comboxNumberOfCylinders.Text) * cylinderEffectiveAreasMetric[comboxCylinders.SelectedIndex];
-                    conversionFactor = 9.81M / 1000;
+                    conversionFactor = acceleration;
                 }
                 else
                 {
@@ -533,11 +554,15 @@ namespace ElevatorQuoting
                     conversionFactor = 1;
                 }
 
+                decimal emptyPlatformPressureStatic = platformMass * conversionFactor / totalArea;
+
+                decimal emptyPlatformPressureDynamic = emptyPlatformPressureStatic * 1.1M;
+
                 decimal maxOperatingPressureStatic = totalMass * conversionFactor / totalArea;
 
                 decimal maxOperatingPressureDynamic = maxOperatingPressureStatic * 1.1M;
 
-                txtboxFullLoadStatic.BackColor = txtboxCapacity.BackColor;
+                txtboxFullLoadStatic.BackColor = txtboxMinCapacity.BackColor;
                 txtboxFullLoadStatic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureStatic))
                 {
@@ -545,16 +570,34 @@ namespace ElevatorQuoting
                 }
                 txtboxFullLoadStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
 
-                txtboxFullLoadDynamic.BackColor = txtboxCapacity.BackColor;
+                txtboxFullLoadDynamic.BackColor = txtboxMinCapacity.BackColor;
                 txtboxFullLoadDynamic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureDynamic))
                 {
                     txtboxFullLoadDynamic.ForeColor = Color.Red;
                 }
                 txtboxFullLoadDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
+
+                txtboxEmptyPlatformStatic.BackColor = txtboxMinCapacity.BackColor;
+                txtboxEmptyPlatformStatic.ForeColor = Color.Black;
+                if (!isPressureOk(emptyPlatformPressureStatic))
+                {
+                    txtboxEmptyPlatformStatic.ForeColor = Color.Red;
+                }
+                txtboxEmptyPlatformStatic.Text = string.Format("{0,4:.00}", emptyPlatformPressureStatic);
+
+                txtboxEmptyPlatformDynamic.BackColor = txtboxMinCapacity.BackColor;
+                txtboxEmptyPlatformDynamic.ForeColor = Color.Black;
+                if (!isPressureOk(emptyPlatformPressureDynamic))
+                {
+                    txtboxEmptyPlatformDynamic.ForeColor = Color.Red;
+                }
+                txtboxEmptyPlatformDynamic.Text = string.Format("{0,4:.00}", emptyPlatformPressureDynamic);
             }
             else
             {
+                txtboxEmptyPlatformStatic.Text = "Invalid";
+                txtboxEmptyPlatformDynamic.Text = "Invalid";
                 txtboxFullLoadStatic.Text = "Invalid";
                 txtboxFullLoadDynamic.Text = "Invalid";
             }
@@ -1084,6 +1127,18 @@ namespace ElevatorQuoting
         {
             Application.Exit();
         }
+
+        private void txtboxCapacity_TextChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
+
+        /*
+        void updateLabels(string labelId, string labelText)
+        {
+            Controls.Find("labelUnit", true).FirstOrDefault();
+        }
+        */
     }
 
     public class Customer
