@@ -240,6 +240,7 @@ namespace ElevatorQuoting
 
                 //////
 
+                /*
                 MySqlCommand cmdForQuoteNumber = new MySqlCommand("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'quotinglog' AND TABLE_NAME = 'main'", conn);
                 MySqlDataReader readerForQuoteNumber = cmdForQuoteNumber.ExecuteReader();
                 readerForQuoteNumber.Read();
@@ -247,7 +248,7 @@ namespace ElevatorQuoting
 
                 readerForQuoteNumber.Close();
                 cmdForQuoteNumber.Dispose();
-
+                */
                 conn.Close();
 
 
@@ -615,58 +616,95 @@ namespace ElevatorQuoting
         //Saving
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
+            connectionInfo.Timeout = TimeSpan.FromSeconds(30);
+
+            using (var client = new SshClient(connectionInfo))
             {
-                CreateQuoteLocal();
-            }
-            catch
-            {
+                try
+                {
+                    Console.WriteLine("Trying SSH connection...");
+                    client.Connect();
+                    if (client.IsConnected)
+                    {
+                        Console.WriteLine("SSH connection is active: {0}", client.ConnectionInfo.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("SSH connection has failed: {0}", client.ConnectionInfo.ToString());
+                    }
+
+                    Console.WriteLine("\r\nTrying port forwarding...");
+                    var portFwld = new ForwardedPortLocal("127.0.0.1", 1000, "localhost", 3306);
+                    client.AddForwardedPort(portFwld);
+                    portFwld.Start();
+                    if (portFwld.IsStarted)
+                    {
+                        Console.WriteLine("Port forwarded: {0}", portFwld.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Port forwarding has failed.");
+                    }
+
+                    if (!isThisStringANumber(txtboxQuoteName.Text))
+                    {
+                        CreateQuoteLocal();
+                    }
+                    SaveQuoteLocal();
+
+                    client.Disconnect();
+
+                }
+                catch (SshException err)
+                {
+                    Console.WriteLine("SSH client connection error: {0}", err.Message);
+                }
+                catch (System.Net.Sockets.SocketException err)
+                {
+                    Console.WriteLine("Socket connection error: {0}", err.Message);
+                }
 
             }
-            SaveQuoteLocal();
+
+            
 
         }
         void CreateQuoteLocal()
         {
 
-
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=stellaris;database=quotinglog;";
+            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = myConnectionString;
-            string sql = "INSERT INTO main(QuoteName) VALUES(@QuoteName)";
+            string sql = "INSERT INTO main (ProjectDescription,Customer,Contact,LoadType,PitDepth,TravelDistance,OverheadClearance,Floors,TravelSpeed,PlatformWidth,PlatformLength,InlineThrough,Capacity) VALUES(@ProjectDescription,@Customer,@Contact,@LoadType,@PitDepth,@TravelDistance,@OverheadClearance,@Floors,@TravelSpeed,@PlatformWidth,@PlatformLength,@InlineThrough,@Capacity)";
+            
             conn.Open();
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
 
 
-            cmd.Parameters.Add("@QuoteName", MySqlDbType.VarChar).Value = txtboxQuoteName.Text;
-
+            cmd.Parameters.Add("@ProjectDescription", MySqlDbType.VarChar).Value = txtboxProjectDescription.Text;
+            cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
+            cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
+            cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
+            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPitDepth.Text);
+            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelDis.Text);
+            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxOverheadCl.Text);
+            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = Convert.ToInt16(comboxFloors.Text);
+            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelSpeed.Text);
+            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformWidth.Text);
+            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformLength.Text);
+            cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
+            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxCapacity.Text);
 
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
             conn.Close();
-
-
-            //OleDbConnection conn = new OleDbConnection();
-            //string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
-            //string sql = "INSERT INTO Main(QuoteName) VALUES(@QuoteName)";
-            //conn.ConnectionString = connection;
-            //conn.Open();
-            //OleDbCommand cmd = new OleDbCommand(sql, conn);
-
-
-            //cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
-
-
-            //cmd.ExecuteNonQuery();
-
-            //cmd.Dispose();
-            //conn.Close();
 
         }
         void SaveQuoteLocal()
@@ -675,49 +713,53 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=stellaris;database=quotinglog;";
+            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = myConnectionString;
-
-            string sql = "UPDATE main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
-
             conn.Open();
+
+            if (!isThisStringANumber(txtboxQuoteName.Text))
+            {
+                MySqlCommand cmdForQuoteNumber = new MySqlCommand("SELECT QuoteName FROM main ORDER BY QuoteName DESC LIMIT 1", conn);
+                MySqlDataReader readerForQuoteNumber = cmdForQuoteNumber.ExecuteReader();
+                readerForQuoteNumber.Read();
+                txtboxQuoteName.Text = Convert.ToString(readerForQuoteNumber.GetInt16(0));
+
+                readerForQuoteNumber.Close();
+                cmdForQuoteNumber.Dispose();
+            }
+
+            //string sql = "UPDATE main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
+            string sql = "UPDATE main SET ProjectDescription = @ProjectDescription, Customer = @Customer, Contact = @Contact, LoadType = @LoadType, PitDepth = @PitDepth, TravelDistance = @TravelDistance, OverheadClearance = @OverheadClearance, Floors = @Floors, TravelSpeed = @TravelSpeed, PlatformWidth = @PlatformWidth, PlatformLength = @PlatformLength, InlineThrough = @InlineThrough, Capacity = @Capacity WHERE QuoteName = @QuoteName";
+            
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
 
             //update
+            cmd.Parameters.Add("@ProjectDescription", MySqlDbType.VarChar).Value = txtboxProjectDescription.Text;
+            cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
+            cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
             cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
-            cmd.Parameters.Add("@QuoteDate", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
+            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPitDepth.Text);
+            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelDis.Text);
+            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxOverheadCl.Text);
+            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = Convert.ToInt16(comboxFloors.Text);
+            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelSpeed.Text);
+            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformWidth.Text);
+            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformLength.Text);
+            cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
+            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxCapacity.Text);
+            //cmd.Parameters.Add("@QuoteDate", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
 
             //where
-            cmd.Parameters.Add("@QuoteName", MySqlDbType.VarChar).Value = txtboxQuoteName.Text;
+            cmd.Parameters.Add("@QuoteName", MySqlDbType.Int16).Value = Convert.ToInt16(txtboxQuoteName.Text);
 
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
             conn.Close();
 
-
-
-            //OleDbConnection conn = new OleDbConnection();
-            //string connection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Stellaris\\ElevatorQuoting\\Databases\\QuotingLog.accdb";
-            //string sql = "UPDATE Main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
-            //conn.ConnectionString = connection;
-            //conn.Open();
-            //OleDbCommand cmd = new OleDbCommand(sql, conn);
-
-            ////update
-            //cmd.Parameters.Add("@LoadType", OleDbType.VarChar).Value = comboxLoadType.Text;
-            //cmd.Parameters.Add("@QuoteDate", OleDbType.DBDate).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
-
-            ////where
-            //cmd.Parameters.Add("@QuoteName", OleDbType.VarChar).Value = txtboxQuoteName.Text;
-
-            //cmd.ExecuteNonQuery();
-
-            //cmd.Dispose();
-            //conn.Close();
 
             MessageBox.Show("Quote Saved");
         }
@@ -866,7 +908,7 @@ namespace ElevatorQuoting
             }
             else
             {
-                txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
+                //txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
                 tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
             }
         }
