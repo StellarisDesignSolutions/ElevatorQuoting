@@ -1176,6 +1176,47 @@ namespace ElevatorQuoting
             updateAllCalculations();
         }
 
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Application.Restart();
+            comboxContactName.Items.Clear();
+            txtboxQuoteName.Text = "";
+            dtpDate.Value = DateTime.Today;
+
+            foreach (Control control in tabProjectDetails.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+                
+            }
+            foreach (Control control in tabLoading.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+
+            }
+            foreach (Control control in tabSiteConditions.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+
+            }
+            foreach (Control control in tabCylinder.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+
+            }
+        }
+
         /*
         void updateLabels(string labelId, string labelText)
         {
