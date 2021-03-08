@@ -691,15 +691,15 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
             cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
             cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
-            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPitDepth.Text);
-            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelDis.Text);
-            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxOverheadCl.Text);
-            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = Convert.ToInt16(comboxFloors.Text);
-            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelSpeed.Text);
-            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformWidth.Text);
-            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformLength.Text);
+            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPitDepth.Text) ? Convert.ToDecimal(txtboxPitDepth.Text) : 0;
+            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelDis.Text) ? Convert.ToDecimal(txtboxTravelDis.Text) : 0;
+            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxOverheadCl.Text) ? Convert.ToDecimal(txtboxOverheadCl.Text) : 0;
+            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = isThisStringANumber(comboxFloors.Text) ? Convert.ToInt16(comboxFloors.Text) : 0;
+            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelSpeed.Text) ? Convert.ToDecimal(txtboxTravelSpeed.Text) : 0;
+            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformWidth.Text) ? Convert.ToDecimal(txtboxPlatformWidth.Text) : 0;
+            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
-            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxCapacity.Text);
+            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
 
             cmd.ExecuteNonQuery();
 
@@ -741,15 +741,15 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
             cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
             cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
-            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPitDepth.Text);
-            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelDis.Text);
-            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxOverheadCl.Text);
-            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = Convert.ToInt16(comboxFloors.Text);
-            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxTravelSpeed.Text);
-            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformWidth.Text);
-            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxPlatformLength.Text);
+            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPitDepth.Text) ? Convert.ToDecimal(txtboxPitDepth.Text) : 0;
+            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelDis.Text) ? Convert.ToDecimal(txtboxTravelDis.Text) : 0;
+            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxOverheadCl.Text) ? Convert.ToDecimal(txtboxOverheadCl.Text) : 0;
+            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = isThisStringANumber(comboxFloors.Text) ? Convert.ToInt16(comboxFloors.Text) : 0;
+            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelSpeed.Text) ? Convert.ToDecimal(txtboxTravelSpeed.Text) : 0;
+            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformWidth.Text) ? Convert.ToDecimal(txtboxPlatformWidth.Text) : 0;
+            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
-            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = Convert.ToDecimal(txtboxCapacity.Text);
+            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
             //cmd.Parameters.Add("@QuoteDate", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
 
             //where
