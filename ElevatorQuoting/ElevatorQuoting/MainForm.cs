@@ -680,7 +680,7 @@ namespace ElevatorQuoting
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = myConnectionString;
-            string sql = "INSERT INTO main (ProjectDescription,Customer,Contact,LoadType,PitDepth,TravelDistance,OverheadClearance,Floors,TravelSpeed,PlatformWidth,PlatformLength,InlineThrough,Capacity) VALUES(@ProjectDescription,@Customer,@Contact,@LoadType,@PitDepth,@TravelDistance,@OverheadClearance,@Floors,@TravelSpeed,@PlatformWidth,@PlatformLength,@InlineThrough,@Capacity)";
+            string sql = "INSERT INTO main (ProjectDescription,Date,Customer,Contact,LoadType,PitDepth,TravelDistance,OverheadClearance,Floors,TravelSpeed,PlatformWidth,PlatformLength,InlineThrough,Capacity) VALUES(@ProjectDescription,@Date,@Customer,@Contact,@LoadType,@PitDepth,@TravelDistance,@OverheadClearance,@Floors,@TravelSpeed,@PlatformWidth,@PlatformLength,@InlineThrough,@Capacity)";
             
             conn.Open();
 
@@ -700,6 +700,7 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
             cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
+            cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
 
             cmd.ExecuteNonQuery();
 
@@ -731,7 +732,7 @@ namespace ElevatorQuoting
             }
 
             //string sql = "UPDATE main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
-            string sql = "UPDATE main SET ProjectDescription = @ProjectDescription, Customer = @Customer, Contact = @Contact, LoadType = @LoadType, PitDepth = @PitDepth, TravelDistance = @TravelDistance, OverheadClearance = @OverheadClearance, Floors = @Floors, TravelSpeed = @TravelSpeed, PlatformWidth = @PlatformWidth, PlatformLength = @PlatformLength, InlineThrough = @InlineThrough, Capacity = @Capacity WHERE QuoteName = @QuoteName";
+            string sql = "UPDATE main SET ProjectDescription = @ProjectDescription, Date = @Date, Customer = @Customer, Contact = @Contact, LoadType = @LoadType, PitDepth = @PitDepth, TravelDistance = @TravelDistance, OverheadClearance = @OverheadClearance, Floors = @Floors, TravelSpeed = @TravelSpeed, PlatformWidth = @PlatformWidth, PlatformLength = @PlatformLength, InlineThrough = @InlineThrough, Capacity = @Capacity WHERE QuoteName = @QuoteName";
             
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
@@ -750,7 +751,7 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
             cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
-            //cmd.Parameters.Add("@QuoteDate", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
+            cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
 
             //where
             cmd.Parameters.Add("@QuoteName", MySqlDbType.Int16).Value = Convert.ToInt16(txtboxQuoteName.Text);
