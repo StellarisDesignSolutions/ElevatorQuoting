@@ -34,7 +34,7 @@ namespace ElevatorQuoting
         int dxfStartX = 200; //inch
         int dxfStartY = 200; //inch
 
-        const decimal poundsPerKilogram = 2.205M;
+        const decimal poundsPerKilogram = 2.20462M;
         const decimal acceleration = 9.80665M;
 
         const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
@@ -272,15 +272,19 @@ namespace ElevatorQuoting
         {
             decimal conversionFactor;
             decimal conversionFactorInches;
+            decimal conversionFactorMass;
 
             if (imperial)
             {
                 conversionFactor = 0.3048M;
                 conversionFactorInches = conversionFactor / 12M;
+                conversionFactorMass = 1M / poundsPerKilogram;
+
             } else
             {
                 conversionFactor = 3.28084M;
                 conversionFactorInches = conversionFactor * 12M;
+                conversionFactorMass = poundsPerKilogram;
             }
 
             convertTextbox(txtboxPitDepth, conversionFactor);
@@ -289,6 +293,7 @@ namespace ElevatorQuoting
             convertTextbox(txtboxOverheadCl, conversionFactor);
             convertTextbox(txtboxTravelDis, conversionFactor);
             convertTextbox(txtboxTravelSpeed, conversionFactor);
+            convertTextbox(txtboxCapacity, conversionFactorMass);
 
         }
 
@@ -473,12 +478,16 @@ namespace ElevatorQuoting
                         break;
                 }
 
-                if (isThisStringANumber(txtboxCapacity.Text) && Convert.ToDecimal(txtboxCapacity.Text) >= Convert.ToDecimal(txtboxMinCapacity.Text))
+                if (isThisStringANumber(txtboxCapacity.Text) && isThisStringANumber(txtboxMinCapacity.Text))
                 {
-                    txtboxRequiredCapacity.Text = txtboxCapacity.Text;
-                } else
-                {
-                    txtboxRequiredCapacity.Text = "Invalid";
+                    if (Convert.ToDecimal(txtboxCapacity.Text) >= Convert.ToDecimal(txtboxMinCapacity.Text))
+                    {
+                        txtboxRequiredCapacity.Text = txtboxCapacity.Text;
+                    }
+                    else
+                    {
+                        txtboxRequiredCapacity.Text = "Invalid";
+                    }
                 }
 
             }
