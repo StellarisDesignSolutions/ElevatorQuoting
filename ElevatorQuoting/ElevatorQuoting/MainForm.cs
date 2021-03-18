@@ -689,7 +689,7 @@ namespace ElevatorQuoting
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = myConnectionString;
-            string sql = "INSERT INTO main (ProjectDescription,Date,Customer,Contact,LoadType,PitDepth,TravelDistance,OverheadClearance,Floors,TravelSpeed,PlatformWidth,PlatformLength,InlineThrough,Capacity) VALUES(@ProjectDescription,@Date,@Customer,@Contact,@LoadType,@PitDepth,@TravelDistance,@OverheadClearance,@Floors,@TravelSpeed,@PlatformWidth,@PlatformLength,@InlineThrough,@Capacity)";
+            string sql = "INSERT INTO main (ProjectDescription) VALUES(@ProjectDescription)";
             
             conn.Open();
 
@@ -697,6 +697,7 @@ namespace ElevatorQuoting
 
 
             cmd.Parameters.Add("@ProjectDescription", MySqlDbType.VarChar).Value = txtboxProjectDescription.Text;
+            /*
             cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
             cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
             cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
@@ -710,7 +711,7 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
             cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
             cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
-
+            */
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
