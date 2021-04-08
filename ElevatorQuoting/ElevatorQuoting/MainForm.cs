@@ -17,10 +17,19 @@ using netDxf.IO;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 
+
+/// <summary>
+/// Formatting decimals for nice output:
+/// string.Format("{0,4:.00}", platformMass)
+/// </summary>
+
 namespace ElevatorQuoting
 {
     public partial class MainForm : Form
     {
+
+        Lift newLift = new Lift();
+
         List<string> ProvinceCode = new List<string>();
         List<decimal> materialDensitiesMetric = new List<decimal>();
         List<decimal> materialDensitiesImperial = new List<decimal>();
@@ -371,23 +380,7 @@ namespace ElevatorQuoting
             setUnits(comboxUnits.Items[comboxUnits.SelectedIndex].ToString());
             updateAllCalculations();
         }
-        private void txtboxPlatformWidth_TextChanged(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-        }
-        private void txtboxPlatformLength_TextChanged(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-        }
-        private void txtboxPlatformThickness_TextChanged(object sender, EventArgs e)
-        {
-            //this is crashing for some reason
-            //updateAllCalculations();
-        }
-        private void comboxMaterials_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-        }
+
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
             updateAllCalculations();
@@ -415,58 +408,54 @@ namespace ElevatorQuoting
                 decimal platformWidth = decimal.Parse(txtboxPlatformWidth.Text);
                 decimal platformLength = decimal.Parse(txtboxPlatformLength.Text);
                 decimal platformArea = platformLength * platformWidth;
-                decimal platformClassCapacity;
-
-                //string classLetter = "A";
+                decimal platformClassCapacity = -1;
 
                 switch (comboxLoadType.SelectedIndex)
                 {
                     case 0:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
-                        txtboxClass.Text = "A";
+                        newLift.LoadingClass = "A";
                         break;
                     case 1:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
-                        txtboxClass.Text = "B";
+                        newLift.LoadingClass = "B";
                         break;
                     case 2:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
-                        txtboxClass.Text = "C1";
+                        newLift.LoadingClass = "C1";
                         break;
                     case 3:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C2"] : imperialCapacityValues["C2"]) * platformArea;
-                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
-                        txtboxClass.Text = "C2";
+                        newLift.LoadingClass = "C2";
                         break;
                     case 4:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C3"] : imperialCapacityValues["C3"]) * platformArea;
-                        txtboxMinCapacity.Text = string.Format("{0,4:.00}", platformClassCapacity);
-                        txtboxClass.Text = "C3";
+                        newLift.LoadingClass = "C3";
                         break;
                     default:
                         
                         break;
                 }
 
-                if (isThisStringANumber(txtboxCapacity.Text) && isThisStringANumber(txtboxMinCapacity.Text))
+                newLift.MinCapacity = platformClassCapacity;
+
+
+                if (isThisStringANumber(txtboxCapacity.Text) && newLift.MinCapacity != -1)
                 {
-                    if (Convert.ToDecimal(txtboxCapacity.Text) >= Convert.ToDecimal(txtboxMinCapacity.Text))
+                    if (Convert.ToDecimal(txtboxCapacity.Text) >= newLift.MinCapacity)
                     {
-                        txtboxRequiredCapacity.Text = txtboxCapacity.Text;
+                        newLift.RequiredCapacity = Convert.ToDecimal(txtboxCapacity.Text);
                     }
                     else
                     {
-                        txtboxRequiredCapacity.Text = "Invalid";
+                        newLift.RequiredCapacity = -1;
                     }
                 }
 
             }
             else
             {
-                txtboxMinCapacity.Text = "Invalid";
+                newLift.MinCapacity = -1;
             }
         }
         void calculatePlatformMass()
@@ -506,21 +495,22 @@ namespace ElevatorQuoting
 
                 decimal platformMass = platformArea * platformMassPerArea;
 
-                txtboxPlatformMass.Text = string.Format("{0,4:.00}", platformMass);
+                newLift.PlatformMass = platformMass;
+
             }
             else
             {
-                txtboxPlatformMass.Text = "Invalid";
+                newLift.PlatformMass = -1;
             }
         }
         //void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
         void calculatePressures()
         {
-            if (isThisStringANumber(txtboxRequiredCapacity.Text) && isThisStringANumber(txtboxPlatformMass.Text) && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
+            if (newLift.RequiredCapacity != -1 && newLift.PlatformMass != -1 && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
             {
-                decimal platformMass = decimal.Parse(txtboxPlatformMass.Text);
+                decimal platformMass = newLift.PlatformMass;
 
-                decimal totalMass = platformMass + decimal.Parse(txtboxRequiredCapacity.Text);
+                decimal totalMass = platformMass + newLift.RequiredCapacity;
 
                 decimal conversionFactor = 1;
 
@@ -545,44 +535,52 @@ namespace ElevatorQuoting
 
                 decimal maxOperatingPressureDynamic = maxOperatingPressureStatic * 1.1M;
 
+                /*
                 txtboxFullLoadStatic.BackColor = txtboxMinCapacity.BackColor;
                 txtboxFullLoadStatic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureStatic))
                 {
                     txtboxFullLoadStatic.ForeColor = Color.Red;
                 }
-                txtboxFullLoadStatic.Text = string.Format("{0,4:.00}", maxOperatingPressureStatic);
+                */
+                newLift.FullStaticPressure = maxOperatingPressureStatic;
 
+                /*
                 txtboxFullLoadDynamic.BackColor = txtboxMinCapacity.BackColor;
                 txtboxFullLoadDynamic.ForeColor = Color.Black;
                 if (!isPressureOk(maxOperatingPressureDynamic))
                 {
                     txtboxFullLoadDynamic.ForeColor = Color.Red;
                 }
-                txtboxFullLoadDynamic.Text = string.Format("{0,4:.00}", maxOperatingPressureDynamic);
+                */
+                newLift.FullDynamicPressure = maxOperatingPressureDynamic;
 
+                /*
                 txtboxEmptyPlatformStatic.BackColor = txtboxMinCapacity.BackColor;
                 txtboxEmptyPlatformStatic.ForeColor = Color.Black;
                 if (!isPressureOk(emptyPlatformPressureStatic))
                 {
                     txtboxEmptyPlatformStatic.ForeColor = Color.Red;
                 }
-                txtboxEmptyPlatformStatic.Text = string.Format("{0,4:.00}", emptyPlatformPressureStatic);
+                */
+                newLift.EmptyStaticPressure = emptyPlatformPressureStatic;
 
+                /*
                 txtboxEmptyPlatformDynamic.BackColor = txtboxMinCapacity.BackColor;
                 txtboxEmptyPlatformDynamic.ForeColor = Color.Black;
                 if (!isPressureOk(emptyPlatformPressureDynamic))
                 {
                     txtboxEmptyPlatformDynamic.ForeColor = Color.Red;
                 }
-                txtboxEmptyPlatformDynamic.Text = string.Format("{0,4:.00}", emptyPlatformPressureDynamic);
+                */
+                newLift.EmptyDynamicPressure = emptyPlatformPressureDynamic;
             }
             else
             {
-                txtboxEmptyPlatformStatic.Text = "Invalid";
-                txtboxEmptyPlatformDynamic.Text = "Invalid";
-                txtboxFullLoadStatic.Text = "Invalid";
-                txtboxFullLoadDynamic.Text = "Invalid";
+                newLift.FullStaticPressure = -1;
+                newLift.FullDynamicPressure = -1;
+                newLift.EmptyStaticPressure = -1;
+                newLift.EmptyDynamicPressure = -1;
             }
         }
 
@@ -774,69 +772,6 @@ namespace ElevatorQuoting
                 return false;
             }
         }
-
-
-        //other
-        private void txtboxTravelDis_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtboxPitDepth_TextChanged(object sender, EventArgs e)
-        {
-            decimal pitDepth = 0;
-
-            if (isThisStringANumber(txtboxPitDepth.Text))
-            {
-                if (unitsAreMetric)
-                {
-                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text) * 3.28084M;
-                } else
-                {
-                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text);
-                }
-            }
-
-            if (pitDepth >= pitDepthThreshold)
-            {
-                pitDepthThresholdMet = true;
-            } else
-            {
-                pitDepthThresholdMet = false;
-            }
-            
-            updateAllCalculations();
-        }
-
-        private void txtboxOverheadCl_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        private void txtboxTravelSpeed_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtboxPlatformMass_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dtpDate_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        private void panelClassB_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
 
         private void drawObject(List<Line> objectList, DxfDocument doc)
         {
@@ -1046,11 +981,6 @@ namespace ElevatorQuoting
             Application.Exit();
         }
 
-        private void txtboxCapacity_TextChanged(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-        }
-
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Application.Restart();
@@ -1091,16 +1021,6 @@ namespace ElevatorQuoting
 
             }
         }
-
-
-
-        private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
-        }
-
-
-
 
         private void comboxCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1273,10 +1193,56 @@ namespace ElevatorQuoting
 
         private void liftSpecificationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show(newLift.ToString());
         }
 
+        private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            newLift.ClassYear = ProvinceCode[comboxProvince.SelectedIndex];
+        }
 
+        private void txtboxPitDepth_TextChanged(object sender, EventArgs e)
+        {
+            decimal pitDepth = 0;
+
+            if (isThisStringANumber(txtboxPitDepth.Text))
+            {
+                if (unitsAreMetric)
+                {
+                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text) * 3.28084M;
+                }
+                else
+                {
+                    pitDepth = Convert.ToDecimal(txtboxPitDepth.Text);
+                }
+            }
+
+            if (pitDepth >= pitDepthThreshold)
+            {
+                pitDepthThresholdMet = true;
+            }
+            else
+            {
+                pitDepthThresholdMet = false;
+            }
+
+            updateAllCalculations();
+        }
+
+        private void txtboxPlatformWidth_TextChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
+
+        private void txtboxPlatformLength_TextChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
+
+        private void txtboxCapacity_TextChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
 
 
         /*
@@ -1348,6 +1314,50 @@ namespace ElevatorQuoting
         public override string ToString()
         {
             return Name;
+        }
+    }
+    public class Lift
+    {
+
+        // Auto-implemented readonly property:
+        public string ClassYear { get; set; }
+        public string LoadingClass { get; set; }
+        public decimal PlatformMass { get; set; }
+        public decimal MinCapacity { get; set; }
+        public decimal RequiredCapacity { get; set; }
+        public decimal EmptyStaticPressure { get; set; }
+        public decimal EmptyDynamicPressure { get; set; }
+        public decimal FullStaticPressure { get; set; }
+        public decimal FullDynamicPressure { get; set; }
+
+        // Constructor that takes no arguments:
+        public Lift()
+        {
+            ClassYear = "";
+            LoadingClass = "";
+            PlatformMass = -1;
+            MinCapacity = -1;
+            RequiredCapacity = -1;
+            EmptyStaticPressure = -1;
+            EmptyDynamicPressure = -1;
+            FullStaticPressure = -1;
+            FullDynamicPressure = -1;
+        }
+        
+
+        // Constructor that takes arguments:
+        /*
+        public Lift(string id, string name, List<Contact> contacts)
+        {
+            ID = id;
+            Name = name;
+            Contacts = contacts;
+        }
+        */
+        // Method that overrides the base class (System.Object) implementation.
+        public override string ToString()
+        {
+            return string.Format("Here is some info about your lift:\nClass Year: {0}\nClass: {1}\nPlatform Mass: {2,4:.00}\nMinimum Capacity: {3,4:.00}\nRequired Capacity: {4,4:.00}\nEmpty Platform Static Pressure: {5,4:.00}\nEmpty Platform Dynamic Pressure: {6,4:.00}\nFull Load Static Pressure: {7,4:.00}\nFull Load Dynamic Pressure: {8,4:.00}", ClassYear, LoadingClass, PlatformMass, MinCapacity, RequiredCapacity, EmptyStaticPressure, EmptyDynamicPressure, FullStaticPressure, FullDynamicPressure);
         }
     }
 }

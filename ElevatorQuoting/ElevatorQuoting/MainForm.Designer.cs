@@ -115,7 +115,6 @@
             this.labelNumberOfCylinders = new System.Windows.Forms.Label();
             this.comboxCylinders = new System.Windows.Forms.ComboBox();
             this.labelCylinders = new System.Windows.Forms.Label();
-            this.performanceCounter1 = new System.Diagnostics.PerformanceCounter();
             this.panelOutput = new System.Windows.Forms.Panel();
             this.labelMass3 = new System.Windows.Forms.Label();
             this.labelPlatformWeight = new System.Windows.Forms.Label();
@@ -150,7 +149,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxClass)).BeginInit();
             this.panelConditions.SuspendLayout();
             this.panelCylinders.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).BeginInit();
             this.panelOutput.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,7 +168,6 @@
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(163, 20);
             this.dtpDate.TabIndex = 27;
-            this.dtpDate.ValueChanged += new System.EventHandler(this.dtpDate_ValueChanged);
             // 
             // buttonOK
             // 
@@ -219,7 +216,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1378, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(379, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -272,7 +269,7 @@
             // liftSpecificationsToolStripMenuItem
             // 
             this.liftSpecificationsToolStripMenuItem.Name = "liftSpecificationsToolStripMenuItem";
-            this.liftSpecificationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.liftSpecificationsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.liftSpecificationsToolStripMenuItem.Text = "Lift Specifications";
             this.liftSpecificationsToolStripMenuItem.Click += new System.EventHandler(this.liftSpecificationsToolStripMenuItem_Click);
             // 
@@ -518,6 +515,7 @@
             this.comboxProvince.Name = "comboxProvince";
             this.comboxProvince.Size = new System.Drawing.Size(338, 26);
             this.comboxProvince.TabIndex = 73;
+            this.comboxProvince.SelectedIndexChanged += new System.EventHandler(this.comboxProvince_SelectedIndexChanged);
             // 
             // labelProvince
             // 
@@ -752,6 +750,7 @@
             this.txtboxCapacity.Name = "txtboxCapacity";
             this.txtboxCapacity.Size = new System.Drawing.Size(62, 20);
             this.txtboxCapacity.TabIndex = 132;
+            this.txtboxCapacity.TextChanged += new System.EventHandler(this.txtboxCapacity_TextChanged);
             // 
             // labelInlineThrough
             // 
@@ -862,6 +861,7 @@
             this.txtboxPlatformLength.Name = "txtboxPlatformLength";
             this.txtboxPlatformLength.Size = new System.Drawing.Size(47, 20);
             this.txtboxPlatformLength.TabIndex = 119;
+            this.txtboxPlatformLength.TextChanged += new System.EventHandler(this.txtboxPlatformLength_TextChanged);
             // 
             // txtboxPlatformWidth
             // 
@@ -869,6 +869,7 @@
             this.txtboxPlatformWidth.Name = "txtboxPlatformWidth";
             this.txtboxPlatformWidth.Size = new System.Drawing.Size(47, 20);
             this.txtboxPlatformWidth.TabIndex = 118;
+            this.txtboxPlatformWidth.TextChanged += new System.EventHandler(this.txtboxPlatformWidth_TextChanged);
             // 
             // labelSiteConditions
             // 
@@ -981,6 +982,7 @@
             this.txtboxPitDepth.Name = "txtboxPitDepth";
             this.txtboxPitDepth.Size = new System.Drawing.Size(47, 20);
             this.txtboxPitDepth.TabIndex = 107;
+            this.txtboxPitDepth.TextChanged += new System.EventHandler(this.txtboxPitDepth_TextChanged);
             // 
             // txtboxTravelDis
             // 
@@ -1087,7 +1089,7 @@
             this.panelOutput.Controls.Add(this.labelClassofLoading);
             this.panelOutput.Controls.Add(this.labelSpecifications);
             this.panelOutput.Controls.Add(this.txtboxCodeYear);
-            this.panelOutput.Location = new System.Drawing.Point(721, 120);
+            this.panelOutput.Location = new System.Drawing.Point(990, 76);
             this.panelOutput.Name = "panelOutput";
             this.panelOutput.Size = new System.Drawing.Size(325, 355);
             this.panelOutput.TabIndex = 114;
@@ -1332,7 +1334,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1378, 620);
+            this.ClientSize = new System.Drawing.Size(379, 620);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);
@@ -1368,7 +1370,6 @@
             this.panelConditions.PerformLayout();
             this.panelCylinders.ResumeLayout(false);
             this.panelCylinders.PerformLayout();
-            //((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).EndInit();
             this.panelOutput.ResumeLayout(false);
             this.panelOutput.PerformLayout();
             this.ResumeLayout(false);
@@ -1463,7 +1464,6 @@
         private System.Windows.Forms.Button buttonCylBack;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem liftSpecificationsToolStripMenuItem;
-        private System.Diagnostics.PerformanceCounter performanceCounter1;
         private System.Windows.Forms.Panel panelOutput;
         private System.Windows.Forms.Label labelMass3;
         private System.Windows.Forms.Label labelPlatformWeight;
