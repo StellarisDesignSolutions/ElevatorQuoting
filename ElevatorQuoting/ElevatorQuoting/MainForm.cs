@@ -31,6 +31,8 @@ namespace ElevatorQuoting
 
         List<Customer> customers = new List<Customer>();
 
+        int shifted = 0;
+
         int dxfStartX = 200; //inch
         int dxfStartY = 200; //inch
 
@@ -326,7 +328,7 @@ namespace ElevatorQuoting
                 newUnitLabelPressure = "psi";
             }
 
-            foreach (Label label in tabSiteConditions.Controls.OfType<Label>().Where(label => label.Name.StartsWith("labelUnit")))
+            foreach (Label label in panelConditions.Controls.OfType<Label>().Where(label => label.Name.StartsWith("labelUnit")))
             {
                 label.Text = newUnitLabelLength;
                 if (label.Name.Contains("Speed"))
@@ -357,30 +359,9 @@ namespace ElevatorQuoting
             labelSpeedUnit.Text = newUnitLabelLength + "/s";
             */
         }
-
-
-        private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
-
-        }
         
 
         //Next Buttons
-        private void buttonSCNext_Click(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-            tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-
-        }
-
-
-        //Back Buttons
-        private void buttonBack_Click(object sender, EventArgs e)
-        {
-            tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
-        }
 
 
 
@@ -408,14 +389,6 @@ namespace ElevatorQuoting
             updateAllCalculations();
         }
         private void buttonCalculate_Click(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-        }
-        private void comboxCylinders_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            updateAllCalculations();
-        }
-        private void comboxNumberOfCylinders_SelectedIndexChanged(object sender, EventArgs e)
         {
             updateAllCalculations();
         }
@@ -840,42 +813,7 @@ namespace ElevatorQuoting
 
         }
 
-        private void comboxLoadType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (comboxLoadType.SelectedIndex)
-            {
-                case 0:
 
-                    pictureBoxClass.Image = Properties.Resources.ClassA;
-
-                    break;
-
-                case 1:
-
-                    pictureBoxClass.Image = Properties.Resources.ClassB;
-
-                    break;
-
-                case 2:
-
-                    pictureBoxClass.Image = Properties.Resources.ClassC1;
-
-                    break;
-
-                case 3:
-
-                    pictureBoxClass.Image = Properties.Resources.ClassC2;
-
-                    break;
-
-                case 4:
-
-                    pictureBoxClass.Image = Properties.Resources.ClassC3;
-
-                    break;
-            }
-            calculateCapacity();
-        }
 
         private void txtboxTravelSpeed_TextChanged(object sender, EventArgs e)
         {
@@ -892,60 +830,10 @@ namespace ElevatorQuoting
 
         }
 
-        private void comboxNumberOfCylinders_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
 
-        }
 
         private void panelClassB_Paint(object sender, PaintEventArgs e)
         {
-
-        }
-
-        private void buttonPDNext_Click(object sender, EventArgs e)
-        {
-            if (comboxCustomer.SelectedIndex == -1)
-            {
-                MessageBox.Show(this, "No Customer Selected","Complete Form",MessageBoxButtons.OK,MessageBoxIcon.Warning);
-            } else if (comboxProvince.SelectedIndex == -1)
-            {
-                MessageBox.Show(this, "No Province Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            } else if (comboxContactName.SelectedIndex == -1)
-            {
-                MessageBox.Show(this, "No Contact Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            } else if (txtboxProjectDescription.Text == "")
-            {
-                MessageBox.Show(this, "Project Description Missing", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                //txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
-                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-            }
-        }
-
-        private void buttonLoadNext_Click(object sender, EventArgs e)
-        {
-            if (comboxLoadType.SelectedIndex == -1)
-            {
-                MessageBox.Show(this, "No Load Type Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            } else
-            {
-                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-            }
-        }
-
-        private void buttonSCBack_Click(object sender, EventArgs e)
-        {
-
-            tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
-
-        }
-
-        private void buttonLoadBack_Click(object sender, EventArgs e)
-        {
-
-            tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
 
         }
 
@@ -1151,6 +1039,69 @@ namespace ElevatorQuoting
             DxfDocument loaded = DxfDocument.Load(file);
         }
 
+       
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void txtboxCapacity_TextChanged(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Application.Restart();
+            comboxContactName.Items.Clear();
+            txtboxQuoteName.Text = "";
+            dtpDate.Value = DateTime.Today;
+
+            foreach (Control control in panelDetails.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+                
+            }
+            foreach (Control control in panelLoading.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+
+            }
+            foreach (Control control in panelConditions.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+
+            }
+            foreach (Control control in panelCylinders.Controls)
+            {
+                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                {
+                    control.Text = "";
+                }
+
+            }
+        }
+
+
+
+        private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtboxCodeYear.Text = ProvinceCode[comboxProvince.SelectedIndex];
+        }
+
+
+
+
         private void comboxCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             int customerIndex = comboxCustomer.SelectedIndex;
@@ -1176,56 +1127,157 @@ namespace ElevatorQuoting
             txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void buttonPDNext_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            /*
+            if (comboxCustomer.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Customer Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (comboxProvince.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Province Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (comboxContactName.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Contact Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (txtboxProjectDescription.Text == "")
+            {
+                MessageBox.Show(this, "Project Description Missing", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                //txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
+                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            }
+            */
+            timerNext.Start();
         }
 
-        private void txtboxCapacity_TextChanged(object sender, EventArgs e)
+        private void timerNext_Tick(object sender, EventArgs e)
+        {
+
+            panelDetails.Left -= 10;
+            panelLoading.Left -= 10;
+            panelConditions.Left -= 10;
+            panelCylinders.Left -= 10;
+            shifted += 10;
+
+            if (shifted >= 370)
+            {
+                timerNext.Stop();
+                shifted = 0;
+            }
+        }
+
+        private void buttonLoadBack_Click(object sender, EventArgs e)
+        {
+            //tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
+            timerBack.Start();
+        }
+
+        private void timerBack_Tick(object sender, EventArgs e)
+        {
+            panelDetails.Left += 10;
+            panelLoading.Left += 10;
+            panelConditions.Left += 10;
+            panelCylinders.Left += 10;
+            shifted += 10;
+
+            if (shifted >= 370)
+            {
+                timerBack.Stop();
+                shifted = 0;
+            }
+        }
+
+        private void buttonLoadNext_Click(object sender, EventArgs e)
+        {
+            /*
+            if (comboxLoadType.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "No Load Type Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            } else
+            {
+                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            }
+            */
+            timerNext.Start();
+        }
+
+        private void buttonSCBack_Click(object sender, EventArgs e)
+        {
+            //tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
+            timerBack.Start();
+        }
+
+        private void buttonSCNext_Click(object sender, EventArgs e)
+        {
+            updateAllCalculations();
+            //tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+            timerNext.Start();
+        }
+
+        private void comboxLoadType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboxLoadType.SelectedIndex)
+            {
+                case 0:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassA;
+
+                    break;
+
+                case 1:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassB;
+
+                    break;
+
+                case 2:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassC1;
+
+                    break;
+
+                case 3:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassC2;
+
+                    break;
+
+                case 4:
+
+                    pictureBoxClass.Image = Properties.Resources.ClassC3;
+
+                    break;
+            }
+            calculateCapacity();
+        }
+
+        private void comboxCylinders_SelectedIndexChanged(object sender, EventArgs e)
         {
             updateAllCalculations();
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void comboxNumberOfCylinders_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Application.Restart();
-            comboxContactName.Items.Clear();
-            txtboxQuoteName.Text = "";
-            dtpDate.Value = DateTime.Today;
-
-            foreach (Control control in tabProjectDetails.Controls)
-            {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
-                {
-                    control.Text = "";
-                }
-                
-            }
-            foreach (Control control in tabLoading.Controls)
-            {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
-                {
-                    control.Text = "";
-                }
-
-            }
-            foreach (Control control in tabSiteConditions.Controls)
-            {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
-                {
-                    control.Text = "";
-                }
-
-            }
-            foreach (Control control in tabCylinder.Controls)
-            {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
-                {
-                    control.Text = "";
-                }
-
-            }
+            updateAllCalculations();
         }
+
+        private void buttonCylBack_Click(object sender, EventArgs e)
+        {
+            timerBack.Start();
+        }
+
+        private void liftSpecificationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
 
         /*
         void updateLabels(string labelId, string labelText)
