@@ -109,6 +109,7 @@
             this.txtboxPitDepth = new System.Windows.Forms.TextBox();
             this.txtboxTravelDis = new System.Windows.Forms.TextBox();
             this.panelCylinders = new System.Windows.Forms.Panel();
+            this.buttonDXF = new System.Windows.Forms.Button();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.comboxNumberOfCylinders = new System.Windows.Forms.ComboBox();
             this.labelNumberOfCylinders = new System.Windows.Forms.Label();
@@ -141,7 +142,6 @@
             this.labelClassofLoading = new System.Windows.Forms.Label();
             this.labelSpecifications = new System.Windows.Forms.Label();
             this.txtboxCodeYear = new System.Windows.Forms.TextBox();
-            this.buttonDXF = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.panelDetails.SuspendLayout();
@@ -216,7 +216,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1343, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(381, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -994,6 +994,16 @@
             this.panelCylinders.Size = new System.Drawing.Size(360, 420);
             this.panelCylinders.TabIndex = 113;
             // 
+            // buttonDXF
+            // 
+            this.buttonDXF.Location = new System.Drawing.Point(10, 344);
+            this.buttonDXF.Name = "buttonDXF";
+            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
+            this.buttonDXF.TabIndex = 115;
+            this.buttonDXF.Text = "Create DXF";
+            this.buttonDXF.UseVisualStyleBackColor = true;
+            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
+            // 
             // buttonCylBack
             // 
             this.buttonCylBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
@@ -1320,22 +1330,12 @@
             this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
             this.txtboxCodeYear.TabIndex = 7;
             // 
-            // buttonDXF
-            // 
-            this.buttonDXF.Location = new System.Drawing.Point(10, 344);
-            this.buttonDXF.Name = "buttonDXF";
-            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
-            this.buttonDXF.TabIndex = 115;
-            this.buttonDXF.Text = "Create DXF";
-            this.buttonDXF.UseVisualStyleBackColor = true;
-            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1343, 619);
+            this.ClientSize = new System.Drawing.Size(381, 619);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);
