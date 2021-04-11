@@ -50,7 +50,6 @@
             this.tabLoading = new System.Windows.Forms.TabPage();
             this.tabSiteConditions = new System.Windows.Forms.TabPage();
             this.tabCylinder = new System.Windows.Forms.TabPage();
-            this.buttonDXF = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.timerNext = new System.Windows.Forms.Timer(this.components);
             this.panelDetails = new System.Windows.Forms.Panel();
@@ -142,6 +141,7 @@
             this.labelClassofLoading = new System.Windows.Forms.Label();
             this.labelSpecifications = new System.Windows.Forms.Label();
             this.txtboxCodeYear = new System.Windows.Forms.TextBox();
+            this.buttonDXF = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.panelDetails.SuspendLayout();
@@ -216,7 +216,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(379, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1343, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -347,16 +347,6 @@
             this.tabCylinder.Size = new System.Drawing.Size(436, 342);
             this.tabCylinder.TabIndex = 1;
             this.tabCylinder.Text = "Cylinder";
-            // 
-            // buttonDXF
-            // 
-            this.buttonDXF.Location = new System.Drawing.Point(554, 620);
-            this.buttonDXF.Name = "buttonDXF";
-            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
-            this.buttonDXF.TabIndex = 44;
-            this.buttonDXF.Text = "Create DXF";
-            this.buttonDXF.UseVisualStyleBackColor = true;
-            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
             // panel3
             // 
@@ -993,6 +983,7 @@
             // 
             // panelCylinders
             // 
+            this.panelCylinders.Controls.Add(this.buttonDXF);
             this.panelCylinders.Controls.Add(this.buttonCylBack);
             this.panelCylinders.Controls.Add(this.comboxNumberOfCylinders);
             this.panelCylinders.Controls.Add(this.labelNumberOfCylinders);
@@ -1329,19 +1320,28 @@
             this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
             this.txtboxCodeYear.TabIndex = 7;
             // 
+            // buttonDXF
+            // 
+            this.buttonDXF.Location = new System.Drawing.Point(10, 344);
+            this.buttonDXF.Name = "buttonDXF";
+            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
+            this.buttonDXF.TabIndex = 115;
+            this.buttonDXF.Text = "Create DXF";
+            this.buttonDXF.UseVisualStyleBackColor = true;
+            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(379, 620);
+            this.ClientSize = new System.Drawing.Size(1343, 619);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);
             this.Controls.Add(this.panelLoading);
             this.Controls.Add(this.panelDetails);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.buttonDXF);
             this.Controls.Add(this.comboxUnits);
             this.Controls.Add(this.labelSelectUnits);
             this.Controls.Add(this.tabControl);
@@ -1394,7 +1394,6 @@
         private System.Windows.Forms.TabPage tabCylinder;
         private System.Windows.Forms.TabPage tabLoading;
         private System.Windows.Forms.TabPage tabProjectDetails;
-        private System.Windows.Forms.Button buttonDXF;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
@@ -1491,6 +1490,7 @@
         private System.Windows.Forms.Label labelClassofLoading;
         private System.Windows.Forms.Label labelSpecifications;
         private System.Windows.Forms.TextBox txtboxCodeYear;
+        private System.Windows.Forms.Button buttonDXF;
     }
 }
 

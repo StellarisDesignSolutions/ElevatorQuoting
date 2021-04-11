@@ -27,8 +27,7 @@ namespace ElevatorQuoting
 {
     public partial class MainForm : Form
     {
-
-        Lift newLift = new Lift();
+        //public Lift newLift = new Lift();
 
         List<string> ProvinceCode = new List<string>();
         List<decimal> materialDensitiesMetric = new List<decimal>();
@@ -414,48 +413,48 @@ namespace ElevatorQuoting
                 {
                     case 0:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["A"] : imperialCapacityValues["A"]) * platformArea;
-                        newLift.LoadingClass = "A";
+                        Lift.LoadingClass = "A";
                         break;
                     case 1:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["B"] : imperialCapacityValues["B"]) * platformArea;
-                        newLift.LoadingClass = "B";
+                        Lift.LoadingClass = "B";
                         break;
                     case 2:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C1"] : imperialCapacityValues["C1"]) * platformArea;
-                        newLift.LoadingClass = "C1";
+                        Lift.LoadingClass = "C1";
                         break;
                     case 3:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C2"] : imperialCapacityValues["C2"]) * platformArea;
-                        newLift.LoadingClass = "C2";
+                        Lift.LoadingClass = "C2";
                         break;
                     case 4:
                         platformClassCapacity = (unitsAreMetric ? metricCapacityValues["C3"] : imperialCapacityValues["C3"]) * platformArea;
-                        newLift.LoadingClass = "C3";
+                        Lift.LoadingClass = "C3";
                         break;
                     default:
                         
                         break;
                 }
 
-                newLift.MinCapacity = platformClassCapacity;
+                Lift.MinCapacity = platformClassCapacity;
 
 
-                if (isThisStringANumber(txtboxCapacity.Text) && newLift.MinCapacity != -1)
+                if (isThisStringANumber(txtboxCapacity.Text) && Lift.MinCapacity != -1)
                 {
-                    if (Convert.ToDecimal(txtboxCapacity.Text) >= newLift.MinCapacity)
+                    if (Convert.ToDecimal(txtboxCapacity.Text) >= Lift.MinCapacity)
                     {
-                        newLift.RequiredCapacity = Convert.ToDecimal(txtboxCapacity.Text);
+                        Lift.RequiredCapacity = Convert.ToDecimal(txtboxCapacity.Text);
                     }
                     else
                     {
-                        newLift.RequiredCapacity = -1;
+                        Lift.RequiredCapacity = -1;
                     }
                 }
 
             }
             else
             {
-                newLift.MinCapacity = -1;
+                Lift.MinCapacity = -1;
             }
         }
         void calculatePlatformMass()
@@ -495,22 +494,22 @@ namespace ElevatorQuoting
 
                 decimal platformMass = platformArea * platformMassPerArea;
 
-                newLift.PlatformMass = platformMass;
+                Lift.PlatformMass = platformMass;
 
             }
             else
             {
-                newLift.PlatformMass = -1;
+                Lift.PlatformMass = -1;
             }
         }
         //void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
         void calculatePressures()
         {
-            if (newLift.RequiredCapacity != -1 && newLift.PlatformMass != -1 && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
+            if (Lift.RequiredCapacity != -1 && Lift.PlatformMass != -1 && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
             {
-                decimal platformMass = newLift.PlatformMass;
+                decimal platformMass = Lift.PlatformMass;
 
-                decimal totalMass = platformMass + newLift.RequiredCapacity;
+                decimal totalMass = platformMass + Lift.RequiredCapacity;
 
                 decimal conversionFactor = 1;
 
@@ -543,7 +542,7 @@ namespace ElevatorQuoting
                     txtboxFullLoadStatic.ForeColor = Color.Red;
                 }
                 */
-                newLift.FullStaticPressure = maxOperatingPressureStatic;
+                Lift.FullStaticPressure = maxOperatingPressureStatic;
 
                 /*
                 txtboxFullLoadDynamic.BackColor = txtboxMinCapacity.BackColor;
@@ -553,7 +552,7 @@ namespace ElevatorQuoting
                     txtboxFullLoadDynamic.ForeColor = Color.Red;
                 }
                 */
-                newLift.FullDynamicPressure = maxOperatingPressureDynamic;
+                Lift.FullDynamicPressure = maxOperatingPressureDynamic;
 
                 /*
                 txtboxEmptyPlatformStatic.BackColor = txtboxMinCapacity.BackColor;
@@ -563,7 +562,7 @@ namespace ElevatorQuoting
                     txtboxEmptyPlatformStatic.ForeColor = Color.Red;
                 }
                 */
-                newLift.EmptyStaticPressure = emptyPlatformPressureStatic;
+                Lift.EmptyStaticPressure = emptyPlatformPressureStatic;
 
                 /*
                 txtboxEmptyPlatformDynamic.BackColor = txtboxMinCapacity.BackColor;
@@ -573,14 +572,14 @@ namespace ElevatorQuoting
                     txtboxEmptyPlatformDynamic.ForeColor = Color.Red;
                 }
                 */
-                newLift.EmptyDynamicPressure = emptyPlatformPressureDynamic;
+                Lift.EmptyDynamicPressure = emptyPlatformPressureDynamic;
             }
             else
             {
-                newLift.FullStaticPressure = -1;
-                newLift.FullDynamicPressure = -1;
-                newLift.EmptyStaticPressure = -1;
-                newLift.EmptyDynamicPressure = -1;
+                Lift.FullStaticPressure = -1;
+                Lift.FullDynamicPressure = -1;
+                Lift.EmptyStaticPressure = -1;
+                Lift.EmptyDynamicPressure = -1;
             }
         }
 
@@ -773,6 +772,8 @@ namespace ElevatorQuoting
             }
         }
 
+
+
         private void drawObject(List<Line> objectList, DxfDocument doc)
         {
             for (int i = 0; i < objectList.Count; i++)
@@ -789,9 +790,8 @@ namespace ElevatorQuoting
             }
         }
 
-        private void buttonDXF_Click(object sender, EventArgs e)
+       private void createDXF()
         {
-
             double conversionFactor = 1;
             double PlatformThickness = .5;
 
@@ -803,10 +803,10 @@ namespace ElevatorQuoting
 
             double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * conversionFactor);
             double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * conversionFactor);
-            
+
 
             double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * conversionFactor);
-            
+
             double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * conversionFactor);
             double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * conversionFactor);
 
@@ -880,8 +880,8 @@ namespace ElevatorQuoting
                 floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
                 floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance + PitDepth - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance + PitDepth - (TravelDistance * i / numOfFloors))));
 
-                LinearDimension floordim = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * (i+1) / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * i / numOfFloors)), DimensionX - (PlatformThickness * 5.5), 90, netDxf.Tables.DimensionStyle.Iso25);
-                floordim.UserText = (TravelDistance/numOfFloors).ToString() + " INT TRAVEL";
+                LinearDimension floordim = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * (i + 1) / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * i / numOfFloors)), DimensionX - (PlatformThickness * 5.5), 90, netDxf.Tables.DimensionStyle.Iso25);
+                floordim.UserText = (TravelDistance / numOfFloors).ToString() + " INT TRAVEL";
 
                 intTravel.Add(floordim);
 
@@ -911,34 +911,34 @@ namespace ElevatorQuoting
             //Dimensions
 
             //PitDepth
-            
+
             LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
             dim1.UserText = PitDepth.ToString() + " PIT DEPTH";
-            
-            
+
+
             //Travel
-            
-            LinearDimension dim2 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance) , DimensionX - (PlatformThickness*1.5) , 90, netDxf.Tables.DimensionStyle.Iso25);
+
+            LinearDimension dim2 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance), DimensionX - (PlatformThickness * 1.5), 90, netDxf.Tables.DimensionStyle.Iso25);
             dim2.UserText = TravelDistance.ToString() + " TRAVEL";
 
 
             //Overhead Cl
-            LinearDimension dim3 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + PlatformThickness  - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
+            LinearDimension dim3 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
             dim3.UserText = OverheadCl.ToString() + " OVERHEAD CLEARANCE";
 
             //Top Cl
-            LinearDimension dim4 = new LinearDimension(new Vector2(dxfStartX  - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX - PlatformThickness *3, 90, netDxf.Tables.DimensionStyle.Iso25);
+            LinearDimension dim4 = new LinearDimension(new Vector2(dxfStartX - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX - PlatformThickness * 3, 90, netDxf.Tables.DimensionStyle.Iso25);
 
 
 
             //Plan view
             List<Line> planView = new List<Line>();
-            
+
             //outside
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness*2, dxfStartY)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness*2)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness*2, dxfStartY + PlatformWidth + hatchThickness * 2)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness*2, dxfStartY + PlatformWidth + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY + PlatformWidth + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY + PlatformWidth + hatchThickness * 2)));
 
             //inside
             planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness)));
@@ -974,8 +974,6 @@ namespace ElevatorQuoting
             DxfDocument loaded = DxfDocument.Load(file);
         }
 
-       
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -984,6 +982,7 @@ namespace ElevatorQuoting
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Application.Restart();
+            Lift.Reset();
             comboxContactName.Items.Clear();
             txtboxQuoteName.Text = "";
             dtpDate.Value = DateTime.Today;
@@ -1001,7 +1000,7 @@ namespace ElevatorQuoting
                 if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
                 {
                     control.Text = "";
-                }
+                } 
 
             }
             foreach (Control control in panelConditions.Controls)
@@ -1193,12 +1192,14 @@ namespace ElevatorQuoting
 
         private void liftSpecificationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(newLift.ToString());
+            SpecificationsForm frm = new SpecificationsForm();
+            frm.Show();
+            //MessageBox.Show(newLift.ToString());
         }
 
         private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
-            newLift.ClassYear = ProvinceCode[comboxProvince.SelectedIndex];
+            Lift.ClassYear = ProvinceCode[comboxProvince.SelectedIndex];
         }
 
         private void txtboxPitDepth_TextChanged(object sender, EventArgs e)
@@ -1242,6 +1243,11 @@ namespace ElevatorQuoting
         private void txtboxCapacity_TextChanged(object sender, EventArgs e)
         {
             updateAllCalculations();
+        }
+
+        private void buttonDXF_Click(object sender, EventArgs e)
+        {
+            createDXF();
         }
 
 
@@ -1316,6 +1322,64 @@ namespace ElevatorQuoting
             return Name;
         }
     }
+    public static class Lift
+    {
+
+        // Auto-implemented readonly property:
+        public static string ClassYear { get; set; }
+        public static string LoadingClass { get; set; }
+        public static decimal PlatformMass { get; set; }
+        public static decimal MinCapacity { get; set; }
+        public static decimal RequiredCapacity { get; set; }
+        public static decimal EmptyStaticPressure { get; set; }
+        public static decimal EmptyDynamicPressure { get; set; }
+        public static decimal FullStaticPressure { get; set; }
+        public static decimal FullDynamicPressure { get; set; }
+
+        // Constructor that takes no arguments:
+        static Lift()
+        {
+            ClassYear = "";
+            LoadingClass = "";
+            PlatformMass = -1;
+            MinCapacity = -1;
+            RequiredCapacity = -1;
+            EmptyStaticPressure = -1;
+            EmptyDynamicPressure = -1;
+            FullStaticPressure = -1;
+            FullDynamicPressure = -1;
+        }
+
+
+        // Constructor that takes arguments:
+        /*
+        public Lift(string id, string name, List<Contact> contacts)
+        {
+            ID = id;
+            Name = name;
+            Contacts = contacts;
+        }
+        */
+        // Method that overrides the base class (System.Object) implementation.
+
+        public static void Reset()
+        {
+            ClassYear = "";
+            LoadingClass = "";
+            PlatformMass = -1;
+            MinCapacity = -1;
+            RequiredCapacity = -1;
+            EmptyStaticPressure = -1;
+            EmptyDynamicPressure = -1;
+            FullStaticPressure = -1;
+            FullDynamicPressure = -1;
+        }
+        public static string OutputString()
+        {
+            return string.Format("Here is some info about your lift:\nClass Year: {0}\nClass: {1}\nPlatform Mass: {2,4:.00}\nMinimum Capacity: {3,4:.00}\nRequired Capacity: {4,4:.00}\nEmpty Platform Static Pressure: {5,4:.00}\nEmpty Platform Dynamic Pressure: {6,4:.00}\nFull Load Static Pressure: {7,4:.00}\nFull Load Dynamic Pressure: {8,4:.00}", ClassYear, LoadingClass, PlatformMass, MinCapacity, RequiredCapacity, EmptyStaticPressure, EmptyDynamicPressure, FullStaticPressure, FullDynamicPressure);
+        }
+    }
+    /*
     public class Lift
     {
 
@@ -1346,18 +1410,19 @@ namespace ElevatorQuoting
         
 
         // Constructor that takes arguments:
-        /*
+        
         public Lift(string id, string name, List<Contact> contacts)
         {
             ID = id;
             Name = name;
             Contacts = contacts;
         }
-        */
-        // Method that overrides the base class (System.Object) implementation.
-        public override string ToString()
+        
+    // Method that overrides the base class (System.Object) implementation.
+    public override string ToString()
         {
             return string.Format("Here is some info about your lift:\nClass Year: {0}\nClass: {1}\nPlatform Mass: {2,4:.00}\nMinimum Capacity: {3,4:.00}\nRequired Capacity: {4,4:.00}\nEmpty Platform Static Pressure: {5,4:.00}\nEmpty Platform Dynamic Pressure: {6,4:.00}\nFull Load Static Pressure: {7,4:.00}\nFull Load Dynamic Pressure: {8,4:.00}", ClassYear, LoadingClass, PlatformMass, MinCapacity, RequiredCapacity, EmptyStaticPressure, EmptyDynamicPressure, FullStaticPressure, FullDynamicPressure);
         }
     }
+    */
 }

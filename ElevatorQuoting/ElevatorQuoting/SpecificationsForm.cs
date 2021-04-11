@@ -16,5 +16,34 @@ namespace ElevatorQuoting
         {
             InitializeComponent();
         }
+
+        private void SpecificationsForm_Load(object sender, EventArgs e)
+        {
+            updateValues();
+        }
+
+        private void buttonUpdate_Click(object sender, EventArgs e)
+        {
+            updateValues();
+        }
+
+        private void updateValues()
+        {
+            txtboxCodeYear.Text = Lift.ClassYear;
+            txtboxClass.Text = Lift.LoadingClass;
+            txtboxPlatformMass.Text = string.Format("{0,4:.00}", Lift.PlatformMass);
+            txtboxMinCapacity.Text = string.Format("{0,4:.00}", Lift.MinCapacity);
+            txtboxRequiredCapacity.Text = string.Format("{0,4:.00}", Lift.RequiredCapacity);
+            txtboxEmptyPlatformStatic.Text = string.Format("{0,4:.00}", Lift.EmptyStaticPressure);
+            txtboxEmptyPlatformDynamic.Text = string.Format("{0,4:.00}", Lift.EmptyDynamicPressure);
+            txtboxFullLoadStatic.Text = string.Format("{0,4:.00}", Lift.FullStaticPressure);
+            txtboxFullLoadDynamic.Text = string.Format("{0,4:.00}", Lift.FullDynamicPressure);
+
+        }
+
+        private void buttonDXF_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
