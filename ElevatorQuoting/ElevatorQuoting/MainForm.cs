@@ -373,10 +373,6 @@ namespace ElevatorQuoting
         }
         
 
-        //Next Buttons
-
-
-
         //Call Calculate
         private void comboxUnits_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -795,7 +791,7 @@ namespace ElevatorQuoting
         }
 
         
-        public static void TestCreate(Boolean metricUnits, double dxfStartX, double dxfStartY)
+        public static string CreateDxf(Boolean metricUnits, double dxfStartX, double dxfStartY)
         {
             double conversionFactor = 1;
             double PlatformThickness = .5;
@@ -977,6 +973,10 @@ namespace ElevatorQuoting
             // load file
             DxfDocument loaded = DxfDocument.Load(file);
 
+            DateTime dateTime = DateTime.Now;
+
+            return dateTime.ToString();
+
             void drawObject(List<Line> objectList, DxfDocument document)
             {
                 for (int i = 0; i < objectList.Count; i++)
@@ -994,7 +994,7 @@ namespace ElevatorQuoting
             }
 
         }
-        
+       /* 
        private void createDXF()
         {
             double conversionFactor = 1;
@@ -1178,7 +1178,7 @@ namespace ElevatorQuoting
             // load file
             DxfDocument loaded = DxfDocument.Load(file);
         }
-
+        */
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -1465,7 +1465,7 @@ namespace ElevatorQuoting
 
         private void buttonDXF_Click(object sender, EventArgs e)
         {
-            TestCreate(unitsAreMetric, dxfStartX, dxfStartY);
+            CreateDxf(unitsAreMetric, dxfStartX, dxfStartY);
         }
 
         private void txtboxTravelDis_TextChanged(object sender, EventArgs e)

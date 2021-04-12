@@ -62,7 +62,8 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.buttonDXF = new System.Windows.Forms.Button();
+            this.buttonViewDxf = new System.Windows.Forms.Button();
+            this.labelDxfCreated = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelMass3
@@ -369,7 +370,7 @@
             this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonUpdate.ForeColor = System.Drawing.Color.White;
-            this.buttonUpdate.Location = new System.Drawing.Point(16, 395);
+            this.buttonUpdate.Location = new System.Drawing.Point(16, 400);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(342, 30);
             this.buttonUpdate.TabIndex = 81;
@@ -377,22 +378,37 @@
             this.buttonUpdate.UseVisualStyleBackColor = false;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
-            // buttonDXF
+            // buttonViewDxf
             // 
-            this.buttonDXF.Location = new System.Drawing.Point(16, 358);
-            this.buttonDXF.Name = "buttonDXF";
-            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
-            this.buttonDXF.TabIndex = 116;
-            this.buttonDXF.Text = "Create DXF";
-            this.buttonDXF.UseVisualStyleBackColor = true;
-            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
+            this.buttonViewDxf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.buttonViewDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonViewDxf.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonViewDxf.ForeColor = System.Drawing.Color.White;
+            this.buttonViewDxf.Location = new System.Drawing.Point(230, 366);
+            this.buttonViewDxf.Name = "buttonViewDxf";
+            this.buttonViewDxf.Size = new System.Drawing.Size(128, 25);
+            this.buttonViewDxf.TabIndex = 82;
+            this.buttonViewDxf.Text = "View DXF";
+            this.buttonViewDxf.UseVisualStyleBackColor = false;
+            this.buttonViewDxf.Click += new System.EventHandler(this.buttonViewDxf_Click);
+            // 
+            // labelDxfCreated
+            // 
+            this.labelDxfCreated.AutoSize = true;
+            this.labelDxfCreated.Location = new System.Drawing.Point(16, 373);
+            this.labelDxfCreated.Name = "labelDxfCreated";
+            this.labelDxfCreated.Size = new System.Drawing.Size(35, 13);
+            this.labelDxfCreated.TabIndex = 83;
+            this.labelDxfCreated.Text = "label1";
             // 
             // SpecificationsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 437);
-            this.Controls.Add(this.buttonDXF);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(370, 444);
+            this.Controls.Add(this.labelDxfCreated);
+            this.Controls.Add(this.buttonViewDxf);
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
@@ -471,6 +487,7 @@
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Button buttonUpdate;
-        private System.Windows.Forms.Button buttonDXF;
+        private System.Windows.Forms.Button buttonViewDxf;
+        private System.Windows.Forms.Label labelDxfCreated;
     }
 }

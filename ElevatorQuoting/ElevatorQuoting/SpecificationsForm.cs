@@ -39,11 +39,13 @@ namespace ElevatorQuoting
             txtboxFullLoadStatic.Text = string.Format("{0,4:.00}", Lift.FullStaticPressure);
             txtboxFullLoadDynamic.Text = string.Format("{0,4:.00}", Lift.FullDynamicPressure);
 
+            labelDxfCreated.Text = "DXF Created at: " + MainForm.CreateDxf(MainForm.unitsAreMetric, MainForm.dxfStartX, MainForm.dxfStartY);
+
         }
 
-        private void buttonDXF_Click(object sender, EventArgs e)
+        private void buttonViewDxf_Click(object sender, EventArgs e)
         {
-            MainForm.TestCreate(MainForm.unitsAreMetric, MainForm.dxfStartX, MainForm.dxfStartY);
+            System.Diagnostics.Process.Start(@"_sample.dxf");
         }
     }
 }
