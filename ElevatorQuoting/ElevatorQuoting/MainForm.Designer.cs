@@ -216,7 +216,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(381, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1342, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -763,6 +763,7 @@
             this.comboxInlineThrough.Name = "comboxInlineThrough";
             this.comboxInlineThrough.Size = new System.Drawing.Size(121, 21);
             this.comboxInlineThrough.TabIndex = 130;
+            this.comboxInlineThrough.SelectedIndexChanged += new System.EventHandler(this.comboxInlineThrough_SelectedIndexChanged);
             // 
             // comboxFloors
             // 
@@ -776,6 +777,7 @@
             this.comboxFloors.Name = "comboxFloors";
             this.comboxFloors.Size = new System.Drawing.Size(57, 21);
             this.comboxFloors.TabIndex = 125;
+            this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxFloors_SelectedIndexChanged);
             // 
             // comboxMaterials
             // 
@@ -958,6 +960,7 @@
             this.txtboxTravelSpeed.Name = "txtboxTravelSpeed";
             this.txtboxTravelSpeed.Size = new System.Drawing.Size(47, 20);
             this.txtboxTravelSpeed.TabIndex = 106;
+            this.txtboxTravelSpeed.TextChanged += new System.EventHandler(this.txtboxTravelSpeed_TextChanged);
             // 
             // txtboxOverheadCl
             // 
@@ -965,6 +968,7 @@
             this.txtboxOverheadCl.Name = "txtboxOverheadCl";
             this.txtboxOverheadCl.Size = new System.Drawing.Size(47, 20);
             this.txtboxOverheadCl.TabIndex = 108;
+            this.txtboxOverheadCl.TextChanged += new System.EventHandler(this.txtboxOverheadCl_TextChanged);
             // 
             // txtboxPitDepth
             // 
@@ -980,6 +984,7 @@
             this.txtboxTravelDis.Name = "txtboxTravelDis";
             this.txtboxTravelDis.Size = new System.Drawing.Size(47, 20);
             this.txtboxTravelDis.TabIndex = 105;
+            this.txtboxTravelDis.TextChanged += new System.EventHandler(this.txtboxTravelDis_TextChanged);
             // 
             // panelCylinders
             // 
@@ -1335,7 +1340,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(381, 619);
+            this.ClientSize = new System.Drawing.Size(1342, 619);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);

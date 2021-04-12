@@ -43,7 +43,7 @@ namespace ElevatorQuoting
 
         private void buttonDXF_Click(object sender, EventArgs e)
         {
-
+            MainForm.TestCreate(MainForm.unitsAreMetric, MainForm.dxfStartX, MainForm.dxfStartY);
         }
     }
 }
