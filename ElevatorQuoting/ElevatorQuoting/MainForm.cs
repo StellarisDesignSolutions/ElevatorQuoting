@@ -29,6 +29,12 @@ namespace ElevatorQuoting
     {
         //public Lift newLift = new Lift();
 
+        //Forms
+        LoadQuote LoadingForm = new LoadQuote();
+        SpecificationsForm SpecForm = new SpecificationsForm();
+        
+
+        //Variables
         List<string> ProvinceCode = new List<string>();
         List<decimal> materialDensitiesMetric = new List<decimal>();
         List<decimal> materialDensitiesImperial = new List<decimal>();
@@ -61,6 +67,24 @@ namespace ElevatorQuoting
         public MainForm()
         {
             InitializeComponent();
+            //Events
+            LoadQuote.OnLoadingQuote += LoadQuote_OnLoadingQuote;
+        }
+
+        void LoadQuote_OnLoadingQuote(object sender, EventArgs e)
+        {
+            //this.txtboxProjectDescription.Text = "QUOTE LOADED";
+            txtboxQuoteName.Text = Quote.QuoteNumber.ToString();
+            txtboxPitDepth.Text = UserInputs.PitDepth.ToString();
+            txtboxTravelDis.Text = UserInputs.TravelDistance.ToString();
+            comboxFloors.Text = UserInputs.Floors.ToString();
+            txtboxOverheadCl.Text = UserInputs.OverheadClearance.ToString();
+            txtboxPlatformWidth.Text = UserInputs.PlatformWidth.ToString();
+            txtboxPlatformLength.Text = UserInputs.PlatformLength.ToString();
+            txtboxTravelSpeed.Text = UserInputs.TravelSpeed.ToString();
+            txtboxCapacity.Text = UserInputs.Capacity.ToString();
+            comboxInlineThrough.Text = UserInputs.InlineThrough;
+
         }
 
         // loading subs
@@ -176,7 +200,7 @@ namespace ElevatorQuoting
                 readerForImportingCapacities.Close();
                 cmdForImportingCapacities.Dispose();
 
-                ////////
+                /*
                 string sqlForMaterialsImport = "SELECT * FROM materials";
 
                 MySqlCommand cmdForImportingMaterials = new MySqlCommand(sqlForMaterialsImport, conn);
@@ -193,7 +217,7 @@ namespace ElevatorQuoting
 
                 readerForImportingMaterials.Close();
                 cmdForImportingMaterials.Dispose();
-                //////
+                */
 
                 ////////
                 string sqlForCylindersImport = "SELECT * FROM cylinder_catalogue";
@@ -208,7 +232,7 @@ namespace ElevatorQuoting
                     cylinderEffectiveAreasImperial.Add(Convert.ToDecimal(readerForImportingCylinders[2]));
                 }
 
-                comboxMaterials.SelectedIndex = 0;
+                //comboxMaterials.SelectedIndex = 0;
 
                 readerForImportingCylinders.Close();
                 cmdForImportingCylinders.Dispose();
@@ -705,8 +729,8 @@ namespace ElevatorQuoting
                 MySqlCommand cmdForQuoteNumber = new MySqlCommand("SELECT QuoteName FROM main ORDER BY QuoteName DESC LIMIT 1", conn);
                 MySqlDataReader readerForQuoteNumber = cmdForQuoteNumber.ExecuteReader();
                 readerForQuoteNumber.Read();
-                txtboxQuoteName.Text = Convert.ToString(readerForQuoteNumber.GetInt16(0));
-
+                Quote.QuoteNumber = readerForQuoteNumber.GetInt16(0);
+                txtboxQuoteName.Text = Convert.ToString(Quote.QuoteNumber);
                 readerForQuoteNumber.Close();
                 cmdForQuoteNumber.Dispose();
             }
@@ -719,6 +743,7 @@ namespace ElevatorQuoting
 
             //update
             cmd.Parameters.Add("@ProjectDescription", MySqlDbType.VarChar).Value = txtboxProjectDescription.Text;
+            cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
             cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
             cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
             cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
@@ -731,7 +756,6 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
             cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
-            cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
 
             //where
             cmd.Parameters.Add("@QuoteName", MySqlDbType.Int16).Value = Convert.ToInt16(txtboxQuoteName.Text);
@@ -790,7 +814,10 @@ namespace ElevatorQuoting
             }
         }
 
-        
+        public static void LoadValuesFromQuote()
+        {
+            
+        }
         public static string CreateDxf(Boolean metricUnits, double dxfStartX, double dxfStartY)
         {
             double conversionFactor = 1;
@@ -1397,8 +1424,7 @@ namespace ElevatorQuoting
 
         private void liftSpecificationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SpecificationsForm frm = new SpecificationsForm();
-            frm.Show();
+            SpecForm.Show();
             //MessageBox.Show(newLift.ToString());
         }
 
@@ -1432,7 +1458,10 @@ namespace ElevatorQuoting
                 pitDepthThresholdMet = false;
             }
 
-            UserInputs.PitDepth = Convert.ToDecimal(txtboxPitDepth.Text);
+            if (isThisStringANumber(txtboxPitDepth.Text))
+            {
+                UserInputs.PitDepth = Convert.ToDecimal(txtboxPitDepth.Text);
+            }
             updateAllCalculations();
         }
 
@@ -1503,6 +1532,10 @@ namespace ElevatorQuoting
             UserInputs.InlineThrough = comboxInlineThrough.Text;
         }
 
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadingForm.Show();
+        }
 
         /*
         void updateLabels(string labelId, string labelText)
@@ -1574,6 +1607,18 @@ namespace ElevatorQuoting
         {
             return Name;
         }
+    }
+
+    public static class Quote
+    {
+        public static short QuoteNumber { get; set; }
+        public static short Revision { get; set; }
+        public static Customer ProjectCustomer { get; set; }
+        public static Contact ProjectContact { get; set; }
+        public static String ProjectDescription { get; set; }
+
+
+
     }
 
     public static class UserInputs
@@ -1678,19 +1723,6 @@ namespace ElevatorQuoting
             FullStaticPressure = -1;
             FullDynamicPressure = -1;
         }
-
-
-        // Constructor that takes arguments:
-        /*
-        public Lift(string id, string name, List<Contact> contacts)
-        {
-            ID = id;
-            Name = name;
-            Contacts = contacts;
-        }
-        */
-        // Method that overrides the base class (System.Object) implementation.
-
         public static void Reset()
         {
             ClassYear = "";
@@ -1708,51 +1740,4 @@ namespace ElevatorQuoting
             return string.Format("Here is some info about your lift:\nClass Year: {0}\nClass: {1}\nPlatform Mass: {2,4:.00}\nMinimum Capacity: {3,4:.00}\nRequired Capacity: {4,4:.00}\nEmpty Platform Static Pressure: {5,4:.00}\nEmpty Platform Dynamic Pressure: {6,4:.00}\nFull Load Static Pressure: {7,4:.00}\nFull Load Dynamic Pressure: {8,4:.00}", ClassYear, LoadingClass, PlatformMass, MinCapacity, RequiredCapacity, EmptyStaticPressure, EmptyDynamicPressure, FullStaticPressure, FullDynamicPressure);
         }
     }
-
-    /*
-    public class Lift
-    {
-
-        // Auto-implemented readonly property:
-        public string ClassYear { get; set; }
-        public string LoadingClass { get; set; }
-        public decimal PlatformMass { get; set; }
-        public decimal MinCapacity { get; set; }
-        public decimal RequiredCapacity { get; set; }
-        public decimal EmptyStaticPressure { get; set; }
-        public decimal EmptyDynamicPressure { get; set; }
-        public decimal FullStaticPressure { get; set; }
-        public decimal FullDynamicPressure { get; set; }
-
-        // Constructor that takes no arguments:
-        public Lift()
-        {
-            ClassYear = "";
-            LoadingClass = "";
-            PlatformMass = -1;
-            MinCapacity = -1;
-            RequiredCapacity = -1;
-            EmptyStaticPressure = -1;
-            EmptyDynamicPressure = -1;
-            FullStaticPressure = -1;
-            FullDynamicPressure = -1;
-        }
-        
-
-        // Constructor that takes arguments:
-        
-        public Lift(string id, string name, List<Contact> contacts)
-        {
-            ID = id;
-            Name = name;
-            Contacts = contacts;
-        }
-        
-    // Method that overrides the base class (System.Object) implementation.
-    public override string ToString()
-        {
-            return string.Format("Here is some info about your lift:\nClass Year: {0}\nClass: {1}\nPlatform Mass: {2,4:.00}\nMinimum Capacity: {3,4:.00}\nRequired Capacity: {4,4:.00}\nEmpty Platform Static Pressure: {5,4:.00}\nEmpty Platform Dynamic Pressure: {6,4:.00}\nFull Load Static Pressure: {7,4:.00}\nFull Load Dynamic Pressure: {8,4:.00}", ClassYear, LoadingClass, PlatformMass, MinCapacity, RequiredCapacity, EmptyStaticPressure, EmptyDynamicPressure, FullStaticPressure, FullDynamicPressure);
-        }
-    }
-    */
 }

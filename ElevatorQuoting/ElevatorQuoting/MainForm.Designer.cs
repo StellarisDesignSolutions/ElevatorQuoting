@@ -86,9 +86,7 @@
             this.labelInlineThrough = new System.Windows.Forms.Label();
             this.comboxInlineThrough = new System.Windows.Forms.ComboBox();
             this.comboxFloors = new System.Windows.Forms.ComboBox();
-            this.comboxMaterials = new System.Windows.Forms.ComboBox();
             this.labelFloors = new System.Windows.Forms.Label();
-            this.labelPlatformMaterial = new System.Windows.Forms.Label();
             this.labelX1 = new System.Windows.Forms.Label();
             this.labelUnit3 = new System.Windows.Forms.Label();
             this.labelUnit2 = new System.Windows.Forms.Label();
@@ -250,6 +248,7 @@
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -659,9 +658,7 @@
             this.panelConditions.Controls.Add(this.labelInlineThrough);
             this.panelConditions.Controls.Add(this.comboxInlineThrough);
             this.panelConditions.Controls.Add(this.comboxFloors);
-            this.panelConditions.Controls.Add(this.comboxMaterials);
             this.panelConditions.Controls.Add(this.labelFloors);
-            this.panelConditions.Controls.Add(this.labelPlatformMaterial);
             this.panelConditions.Controls.Add(this.labelX1);
             this.panelConditions.Controls.Add(this.labelUnit3);
             this.panelConditions.Controls.Add(this.labelUnit2);
@@ -747,7 +744,7 @@
             this.labelInlineThrough.AutoSize = true;
             this.labelInlineThrough.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelInlineThrough.ForeColor = System.Drawing.Color.Gray;
-            this.labelInlineThrough.Location = new System.Drawing.Point(165, 326);
+            this.labelInlineThrough.Location = new System.Drawing.Point(17, 326);
             this.labelInlineThrough.Name = "labelInlineThrough";
             this.labelInlineThrough.Size = new System.Drawing.Size(114, 18);
             this.labelInlineThrough.TabIndex = 131;
@@ -759,7 +756,7 @@
             this.comboxInlineThrough.Items.AddRange(new object[] {
             "Inline",
             "Through"});
-            this.comboxInlineThrough.Location = new System.Drawing.Point(168, 346);
+            this.comboxInlineThrough.Location = new System.Drawing.Point(20, 346);
             this.comboxInlineThrough.Name = "comboxInlineThrough";
             this.comboxInlineThrough.Size = new System.Drawing.Size(121, 21);
             this.comboxInlineThrough.TabIndex = 130;
@@ -779,14 +776,6 @@
             this.comboxFloors.TabIndex = 125;
             this.comboxFloors.SelectedIndexChanged += new System.EventHandler(this.comboxFloors_SelectedIndexChanged);
             // 
-            // comboxMaterials
-            // 
-            this.comboxMaterials.FormattingEnabled = true;
-            this.comboxMaterials.Location = new System.Drawing.Point(21, 346);
-            this.comboxMaterials.Name = "comboxMaterials";
-            this.comboxMaterials.Size = new System.Drawing.Size(121, 21);
-            this.comboxMaterials.TabIndex = 124;
-            // 
             // labelFloors
             // 
             this.labelFloors.AutoSize = true;
@@ -797,17 +786,6 @@
             this.labelFloors.Size = new System.Drawing.Size(57, 18);
             this.labelFloors.TabIndex = 127;
             this.labelFloors.Text = "Floors";
-            // 
-            // labelPlatformMaterial
-            // 
-            this.labelPlatformMaterial.AutoSize = true;
-            this.labelPlatformMaterial.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPlatformMaterial.ForeColor = System.Drawing.Color.Gray;
-            this.labelPlatformMaterial.Location = new System.Drawing.Point(17, 326);
-            this.labelPlatformMaterial.Name = "labelPlatformMaterial";
-            this.labelPlatformMaterial.Size = new System.Drawing.Size(137, 18);
-            this.labelPlatformMaterial.TabIndex = 126;
-            this.labelPlatformMaterial.Text = "Platform Material";
             // 
             // labelX1
             // 
@@ -1438,9 +1416,7 @@
         private System.Windows.Forms.Label labelInlineThrough;
         private System.Windows.Forms.ComboBox comboxInlineThrough;
         private System.Windows.Forms.ComboBox comboxFloors;
-        private System.Windows.Forms.ComboBox comboxMaterials;
         private System.Windows.Forms.Label labelFloors;
-        private System.Windows.Forms.Label labelPlatformMaterial;
         private System.Windows.Forms.Label labelX1;
         private System.Windows.Forms.Label labelUnit3;
         private System.Windows.Forms.Label labelUnit2;

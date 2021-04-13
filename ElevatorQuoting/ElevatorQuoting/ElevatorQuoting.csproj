@@ -102,6 +102,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoadQuote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadQuote.Designer.cs">
+      <DependentUpon>LoadQuote.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpecificationsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +122,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LoadQuote.resx">
+      <DependentUpon>LoadQuote.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SpecificationsForm.resx">
       <DependentUpon>SpecificationsForm.cs</DependentUpon>
     </EmbeddedResource>
