@@ -214,7 +214,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(380, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(379, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -268,7 +268,7 @@
             // liftSpecificationsToolStripMenuItem
             // 
             this.liftSpecificationsToolStripMenuItem.Name = "liftSpecificationsToolStripMenuItem";
-            this.liftSpecificationsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.liftSpecificationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.liftSpecificationsToolStripMenuItem.Text = "Lift Specifications";
             this.liftSpecificationsToolStripMenuItem.Click += new System.EventHandler(this.liftSpecificationsToolStripMenuItem_Click);
             // 
@@ -406,7 +406,6 @@
             // 
             // comboxContactName
             // 
-            this.comboxContactName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboxContactName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboxContactName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboxContactName.FormattingEnabled = true;
@@ -473,7 +472,6 @@
             // 
             // comboxCustomer
             // 
-            this.comboxCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboxCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboxCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboxCustomer.FormattingEnabled = true;
@@ -496,7 +494,6 @@
             // 
             // comboxProvince
             // 
-            this.comboxProvince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboxProvince.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboxProvince.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboxProvince.FormattingEnabled = true;
@@ -616,7 +613,6 @@
             // 
             // comboxLoadType
             // 
-            this.comboxLoadType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboxLoadType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboxLoadType.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboxLoadType.FormattingEnabled = true;
@@ -1073,7 +1069,7 @@
             this.panelOutput.Controls.Add(this.labelClassofLoading);
             this.panelOutput.Controls.Add(this.labelSpecifications);
             this.panelOutput.Controls.Add(this.txtboxCodeYear);
-            this.panelOutput.Location = new System.Drawing.Point(990, 76);
+            this.panelOutput.Location = new System.Drawing.Point(1016, 81);
             this.panelOutput.Name = "panelOutput";
             this.panelOutput.Size = new System.Drawing.Size(325, 355);
             this.panelOutput.TabIndex = 114;
@@ -1318,7 +1314,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(380, 619);
+            this.ClientSize = new System.Drawing.Size(379, 619);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);

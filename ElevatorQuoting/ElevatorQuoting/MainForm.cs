@@ -30,8 +30,8 @@ namespace ElevatorQuoting
         //public Lift newLift = new Lift();
 
         //Forms
-        LoadQuote LoadingForm = new LoadQuote();
-        SpecificationsForm SpecForm = new SpecificationsForm();
+        
+        
         
 
         //Variables
@@ -69,12 +69,19 @@ namespace ElevatorQuoting
             InitializeComponent();
             //Events
             LoadQuote.OnLoadingQuote += LoadQuote_OnLoadingQuote;
+            comboxUnits.SelectedIndex = 0;
         }
 
         void LoadQuote_OnLoadingQuote(object sender, EventArgs e)
         {
+            NewQuote();
             //this.txtboxProjectDescription.Text = "QUOTE LOADED";
             txtboxQuoteName.Text = Quote.QuoteNumber.ToString();
+            txtboxProjectDescription.Text = Quote.ProjectDescription;
+            comboxCustomer.Text = Quote.ProjectCustomer;
+            comboxContactName.Text = Quote.ProjectContact;
+
+            comboxLoadType.Text = UserInputs.LoadType;
             txtboxPitDepth.Text = UserInputs.PitDepth.ToString();
             txtboxTravelDis.Text = UserInputs.TravelDistance.ToString();
             comboxFloors.Text = UserInputs.Floors.ToString();
@@ -1213,8 +1220,14 @@ namespace ElevatorQuoting
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            NewQuote();
+        }
+
+        void NewQuote()
+        {
             //Application.Restart();
-            Lift.Reset();
+            //Lift.Reset();
+            comboxUnits.SelectedIndex = 0;
             comboxContactName.Items.Clear();
             txtboxQuoteName.Text = "";
             dtpDate.Value = DateTime.Today;
@@ -1225,14 +1238,14 @@ namespace ElevatorQuoting
                 {
                     control.Text = "";
                 }
-                
+
             }
             foreach (Control control in panelLoading.Controls)
             {
                 if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
                 {
                     control.Text = "";
-                } 
+                }
 
             }
             foreach (Control control in panelConditions.Controls)
@@ -1424,6 +1437,7 @@ namespace ElevatorQuoting
 
         private void liftSpecificationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SpecificationsForm SpecForm = new SpecificationsForm();
             SpecForm.Show();
             //MessageBox.Show(newLift.ToString());
         }
@@ -1534,6 +1548,7 @@ namespace ElevatorQuoting
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            LoadQuote LoadingForm = new LoadQuote();
             LoadingForm.Show();
         }
 
@@ -1613,9 +1628,11 @@ namespace ElevatorQuoting
     {
         public static short QuoteNumber { get; set; }
         public static short Revision { get; set; }
-        public static Customer ProjectCustomer { get; set; }
-        public static Contact ProjectContact { get; set; }
-        public static String ProjectDescription { get; set; }
+        //public static Customer ProjectCustomer { get; set; }
+        public static string ProjectCustomer { get; set; }
+        //public static Contact ProjectContact { get; set; }
+        public static string ProjectContact { get; set; }
+        public static string ProjectDescription { get; set; }
 
 
 
@@ -1624,6 +1641,7 @@ namespace ElevatorQuoting
     public static class UserInputs
     {
         // Auto-implemented readonly property:
+        public static string LoadType { get; set; }
         public static decimal PitDepth { get; set; }
         public static decimal OverheadClearance { get; set; }
         public static short Floors { get; set; }
@@ -1638,6 +1656,7 @@ namespace ElevatorQuoting
         // Constructor that takes no arguments:
         static UserInputs()
         {
+            LoadType = "";
             PitDepth = -1;
             OverheadClearance = -1;
             Floors = -1;
@@ -1652,6 +1671,7 @@ namespace ElevatorQuoting
 
         public static void Reset()
         {
+            LoadType = "";
             PitDepth = -1;
             OverheadClearance = -1;
             Floors = -1;
@@ -1661,6 +1681,7 @@ namespace ElevatorQuoting
             Capacity = -1;
             TravelSpeed = -1;
             InlineThrough = "";
+            MetricUnits = false;
         }
 
         /*

@@ -171,6 +171,12 @@ namespace ElevatorQuoting
                 MySqlCommand cmdForQuotes = new MySqlCommand(sqlForQuotesImport, conn);
                 MySqlDataReader readerForImportingQuotes = cmdForQuotes.ExecuteReader();
                 readerForImportingQuotes.Read();
+
+                Quote.ProjectDescription = readerForImportingQuotes[1].ToString();
+                Quote.ProjectCustomer = readerForImportingQuotes[3].ToString();
+                Quote.ProjectContact = readerForImportingQuotes[4].ToString();
+
+                UserInputs.LoadType = readerForImportingQuotes[5].ToString();
                 UserInputs.PitDepth = Convert.ToDecimal(readerForImportingQuotes[6]);
                 UserInputs.TravelDistance = Convert.ToDecimal(readerForImportingQuotes[7]);
                 UserInputs.OverheadClearance = Convert.ToDecimal(readerForImportingQuotes[8]);
