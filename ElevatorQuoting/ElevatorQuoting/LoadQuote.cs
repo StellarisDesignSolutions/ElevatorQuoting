@@ -175,17 +175,21 @@ namespace ElevatorQuoting
                 Quote.ProjectDescription = readerForImportingQuotes[1].ToString();
                 Quote.ProjectCustomer = readerForImportingQuotes[3].ToString();
                 Quote.ProjectContact = readerForImportingQuotes[4].ToString();
+                Quote.ProjectProvince = readerForImportingQuotes[5].ToString();
 
-                UserInputs.LoadType = readerForImportingQuotes[5].ToString();
-                UserInputs.PitDepth = Convert.ToDecimal(readerForImportingQuotes[6]);
-                UserInputs.TravelDistance = Convert.ToDecimal(readerForImportingQuotes[7]);
-                UserInputs.OverheadClearance = Convert.ToDecimal(readerForImportingQuotes[8]);
-                UserInputs.Floors = Convert.ToInt16(readerForImportingQuotes[9]);
-                UserInputs.TravelSpeed = Convert.ToDecimal(readerForImportingQuotes[10]);
-                UserInputs.PlatformWidth = Convert.ToDecimal(readerForImportingQuotes[11]);
-                UserInputs.PlatformLength = Convert.ToDecimal(readerForImportingQuotes[12]);
-                UserInputs.InlineThrough = readerForImportingQuotes[13].ToString();
-                UserInputs.Capacity = Convert.ToDecimal(readerForImportingQuotes[14]);
+                UserInputs.LoadType = readerForImportingQuotes[6].ToString();
+                UserInputs.PitDepth = Convert.ToDecimal(readerForImportingQuotes[7]);
+                UserInputs.TravelDistance = Convert.ToDecimal(readerForImportingQuotes[8]);
+                UserInputs.OverheadClearance = Convert.ToDecimal(readerForImportingQuotes[9]);
+                UserInputs.Floors = Convert.ToInt16(readerForImportingQuotes[10]);
+                UserInputs.TravelSpeed = Convert.ToDecimal(readerForImportingQuotes[11]);
+                UserInputs.PlatformWidth = Convert.ToDecimal(readerForImportingQuotes[12]);
+                UserInputs.PlatformLength = Convert.ToDecimal(readerForImportingQuotes[13]);
+                UserInputs.InlineThrough = readerForImportingQuotes[14].ToString();
+                UserInputs.Capacity = Convert.ToDecimal(readerForImportingQuotes[15]);
+                UserInputs.CylinderSelection = Convert.ToInt16(readerForImportingQuotes[16]);
+                UserInputs.NumberOfCylinders = Convert.ToInt16(readerForImportingQuotes[17]);
+                UserInputs.MetricUnits = Convert.ToBoolean(readerForImportingQuotes[18]);
 
                 readerForImportingQuotes.Close();
                 cmdForQuotes.Dispose();

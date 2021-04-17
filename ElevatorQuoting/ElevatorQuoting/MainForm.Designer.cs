@@ -107,6 +107,8 @@
             this.txtboxPitDepth = new System.Windows.Forms.TextBox();
             this.txtboxTravelDis = new System.Windows.Forms.TextBox();
             this.panelCylinders = new System.Windows.Forms.Panel();
+            this.txtboxPrice = new System.Windows.Forms.TextBox();
+            this.buttonCalculate = new System.Windows.Forms.Button();
             this.buttonDXF = new System.Windows.Forms.Button();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.comboxNumberOfCylinders = new System.Windows.Forms.ComboBox();
@@ -141,8 +143,6 @@
             this.labelSpecifications = new System.Windows.Forms.Label();
             this.txtboxCodeYear = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.buttonCalculate = new System.Windows.Forms.Button();
-            this.txtboxPrice = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.panelDetails.SuspendLayout();
@@ -217,7 +217,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(381, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(382, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -978,6 +978,26 @@
             this.panelCylinders.Size = new System.Drawing.Size(360, 420);
             this.panelCylinders.TabIndex = 113;
             // 
+            // txtboxPrice
+            // 
+            this.txtboxPrice.Location = new System.Drawing.Point(197, 347);
+            this.txtboxPrice.Name = "txtboxPrice";
+            this.txtboxPrice.Size = new System.Drawing.Size(147, 20);
+            this.txtboxPrice.TabIndex = 117;
+            // 
+            // buttonCalculate
+            // 
+            this.buttonCalculate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.buttonCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCalculate.ForeColor = System.Drawing.Color.White;
+            this.buttonCalculate.Location = new System.Drawing.Point(181, 381);
+            this.buttonCalculate.Name = "buttonCalculate";
+            this.buttonCalculate.Size = new System.Drawing.Size(169, 30);
+            this.buttonCalculate.TabIndex = 116;
+            this.buttonCalculate.Text = "Calculate";
+            this.buttonCalculate.UseVisualStyleBackColor = false;
+            // 
             // buttonDXF
             // 
             this.buttonDXF.Location = new System.Drawing.Point(10, 344);
@@ -1324,32 +1344,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // buttonCalculate
-            // 
-            this.buttonCalculate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.buttonCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCalculate.ForeColor = System.Drawing.Color.White;
-            this.buttonCalculate.Location = new System.Drawing.Point(181, 381);
-            this.buttonCalculate.Name = "buttonCalculate";
-            this.buttonCalculate.Size = new System.Drawing.Size(169, 30);
-            this.buttonCalculate.TabIndex = 116;
-            this.buttonCalculate.Text = "Calculate";
-            this.buttonCalculate.UseVisualStyleBackColor = false;
-            // 
-            // txtboxPrice
-            // 
-            this.txtboxPrice.Location = new System.Drawing.Point(197, 347);
-            this.txtboxPrice.Name = "txtboxPrice";
-            this.txtboxPrice.Size = new System.Drawing.Size(147, 20);
-            this.txtboxPrice.TabIndex = 117;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(381, 619);
+            this.ClientSize = new System.Drawing.Size(382, 619);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);

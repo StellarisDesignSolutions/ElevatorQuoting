@@ -85,11 +85,13 @@ namespace ElevatorQuoting
         void LoadQuote_OnLoadingQuote(object sender, EventArgs e)
         {
             NewQuote(false);
+            comboxUnits.SelectedIndex = Convert.ToInt16(UserInputs.MetricUnits);
             //this.txtboxProjectDescription.Text = "QUOTE LOADED";
             txtboxQuoteName.Text = Quote.QuoteNumber.ToString();
             txtboxProjectDescription.Text = Quote.ProjectDescription;
             comboxCustomer.Text = Quote.ProjectCustomer;
             comboxContactName.Text = Quote.ProjectContact;
+            comboxProvince.Text = Quote.ProjectProvince;
 
             comboxLoadType.Text = UserInputs.LoadType;
             txtboxPitDepth.Text = UserInputs.PitDepth.ToString();
@@ -101,6 +103,9 @@ namespace ElevatorQuoting
             txtboxTravelSpeed.Text = UserInputs.TravelSpeed.ToString();
             txtboxCapacity.Text = UserInputs.Capacity.ToString();
             comboxInlineThrough.Text = UserInputs.InlineThrough;
+            comboxCylinders.SelectedIndex = UserInputs.CylinderSelection;
+            comboxNumberOfCylinders.SelectedIndex = UserInputs.NumberOfCylinders - 1;
+            
 
         }
 
@@ -362,6 +367,8 @@ namespace ElevatorQuoting
             {
                 label.Text = newUnitLabelPressure;
             }
+
+            UserInputs.MetricUnits = unitsAreMetric;
         }
         
 
@@ -638,7 +645,7 @@ namespace ElevatorQuoting
                 cmdForQuoteNumber.Dispose();
             }
 
-            string sql = "UPDATE main SET ProjectDescription = @ProjectDescription, Date = @Date, Customer = @Customer, Contact = @Contact, LoadType = @LoadType, PitDepth = @PitDepth, TravelDistance = @TravelDistance, OverheadClearance = @OverheadClearance, Floors = @Floors, TravelSpeed = @TravelSpeed, PlatformWidth = @PlatformWidth, PlatformLength = @PlatformLength, InlineThrough = @InlineThrough, Capacity = @Capacity WHERE QuoteName = @QuoteName";
+            string sql = "UPDATE main SET ProjectDescription = @ProjectDescription, Date = @Date, Customer = @Customer, Province = @Province, Contact = @Contact, LoadType = @LoadType, PitDepth = @PitDepth, TravelDistance = @TravelDistance, OverheadClearance = @OverheadClearance, Floors = @Floors, TravelSpeed = @TravelSpeed, PlatformWidth = @PlatformWidth, PlatformLength = @PlatformLength, InlineThrough = @InlineThrough, Capacity = @Capacity, CylinderSelection = @CylinderSelection, NumberOfCylinders = @NumberOfCylinders, MetricUnits = @MetricUnits WHERE QuoteName = @QuoteName";
             
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
@@ -648,6 +655,7 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
             cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
             cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
+            cmd.Parameters.Add("@Province", MySqlDbType.VarChar).Value = comboxProvince.Text;
             cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
             cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPitDepth.Text) ? Convert.ToDecimal(txtboxPitDepth.Text) : 0;
             cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelDis.Text) ? Convert.ToDecimal(txtboxTravelDis.Text) : 0;
@@ -658,6 +666,9 @@ namespace ElevatorQuoting
             cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
             cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
             cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
+            cmd.Parameters.Add("@CylinderSelection", MySqlDbType.Int16).Value = comboxCylinders.SelectedIndex;
+            cmd.Parameters.Add("@NumberOfCylinders", MySqlDbType.Int16).Value = isThisStringANumber(comboxNumberOfCylinders.Text) ? Convert.ToDecimal(comboxNumberOfCylinders.Text) : 0;
+            cmd.Parameters.Add("@MetricUnits", MySqlDbType.Int16).Value = Convert.ToInt16(UserInputs.MetricUnits);
 
             //where
             cmd.Parameters.Add("@QuoteName", MySqlDbType.Int16).Value = Convert.ToInt16(txtboxQuoteName.Text);
@@ -937,12 +948,18 @@ namespace ElevatorQuoting
             comboxContactName.SelectedIndex = -1;
             comboxContactName.Items.Clear();
             comboxLoadType.SelectedIndex = -1;
+            comboxCylinders.SelectedIndex = -1;
+            comboxNumberOfCylinders.SelectedIndex = -1;
+            comboxFloors.SelectedIndex = -1;
+            comboxInlineThrough.SelectedIndex = -1;
+            comboxProvince.SelectedIndex = -1;
+            
             txtboxQuoteName.Text = "";
             dtpDate.Value = DateTime.Today;
             
             foreach (Control control in panelDetails.Controls)
             {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                if (control.Name.StartsWith("txtbox"))// || control.Name.StartsWith("combox"))
                 {
                     control.Text = "";
                 }
@@ -950,7 +967,7 @@ namespace ElevatorQuoting
             }
             foreach (Control control in panelLoading.Controls)
             {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                if (control.Name.StartsWith("txtbox"))// || control.Name.StartsWith("combox"))
                 {
                     control.Text = "";
                 }
@@ -958,12 +975,13 @@ namespace ElevatorQuoting
             }
             foreach (Control control in panelConditions.Controls)
             {
-                if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
+                if (control.Name.StartsWith("txtbox"))// || control.Name.StartsWith("combox"))
                 {
                     control.Text = "";
                 }
 
             }
+            /*
             foreach (Control control in panelCylinders.Controls)
             {
                 if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
@@ -972,7 +990,7 @@ namespace ElevatorQuoting
                 }
 
             }
-
+            */
             if (resetQuote)
             {
                 Quote.Reset();
@@ -1121,7 +1139,9 @@ namespace ElevatorQuoting
 
         private void comboxCylinders_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UserInputs.CylinderSelection = comboxCylinders.SelectedIndex;
+            if (comboxCylinders.SelectedIndex != -1) {
+                UserInputs.CylinderSelection = comboxCylinders.SelectedIndex;
+            }
             updateAllCalculations();
         }
 
@@ -1151,7 +1171,10 @@ namespace ElevatorQuoting
 
         private void comboxProvince_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Lift.ClassYear = ProvinceCode[comboxProvince.SelectedIndex];
+            if (comboxProvince.SelectedIndex != -1)
+            {
+                Lift.ClassYear = ProvinceCode[comboxProvince.SelectedIndex];
+            }
         }
 
         private void txtboxPitDepth_TextChanged(object sender, EventArgs e)
@@ -1229,7 +1252,10 @@ namespace ElevatorQuoting
 
         private void comboxFloors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UserInputs.Floors = Convert.ToInt16(comboxFloors.Text);
+            if (isThisStringANumber(comboxFloors.Text))
+            {
+                UserInputs.Floors = Convert.ToInt16(comboxFloors.Text);
+            }
         }
 
         private void txtboxOverheadCl_TextChanged(object sender, EventArgs e)
@@ -1250,7 +1276,10 @@ namespace ElevatorQuoting
 
         private void comboxInlineThrough_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UserInputs.InlineThrough = comboxInlineThrough.Text;
+            if (comboxInlineThrough.SelectedIndex != -1)
+            {
+                UserInputs.InlineThrough = comboxInlineThrough.Text;
+            }
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1577,6 +1606,7 @@ namespace ElevatorQuoting
         public static string ProjectCustomer { get; set; }
         //public static Contact ProjectContact { get; set; }
         public static string ProjectContact { get; set; }
+        public static string ProjectProvince { get; set; }
         public static string ProjectDescription { get; set; }
 
         public static void Reset()
@@ -1585,6 +1615,7 @@ namespace ElevatorQuoting
             Revision = -1;
             ProjectCustomer = "";
             ProjectContact = "";
+            ProjectProvince = "";
             ProjectDescription = "";
         }
 
