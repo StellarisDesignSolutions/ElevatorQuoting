@@ -207,7 +207,7 @@ namespace ElevatorQuoting
         
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-            
+            //Quote.Reset();
             Quote.QuoteNumber = Convert.ToInt16(listViewQuotes.SelectedItems[0].Text);
             sshConnection(LoadQuotes);
             OnLoadingQuote(sender, e);

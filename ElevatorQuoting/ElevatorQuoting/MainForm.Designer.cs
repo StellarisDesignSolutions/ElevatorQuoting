@@ -140,6 +140,7 @@
             this.labelClassofLoading = new System.Windows.Forms.Label();
             this.labelSpecifications = new System.Windows.Forms.Label();
             this.txtboxCodeYear = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.panelDetails.SuspendLayout();
@@ -214,7 +215,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(379, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(378, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -268,7 +269,7 @@
             // liftSpecificationsToolStripMenuItem
             // 
             this.liftSpecificationsToolStripMenuItem.Name = "liftSpecificationsToolStripMenuItem";
-            this.liftSpecificationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.liftSpecificationsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.liftSpecificationsToolStripMenuItem.Text = "Lift Specifications";
             this.liftSpecificationsToolStripMenuItem.Click += new System.EventHandler(this.liftSpecificationsToolStripMenuItem_Click);
             // 
@@ -1069,7 +1070,7 @@
             this.panelOutput.Controls.Add(this.labelClassofLoading);
             this.panelOutput.Controls.Add(this.labelSpecifications);
             this.panelOutput.Controls.Add(this.txtboxCodeYear);
-            this.panelOutput.Location = new System.Drawing.Point(1016, 81);
+            this.panelOutput.Location = new System.Drawing.Point(1305, 120);
             this.panelOutput.Name = "panelOutput";
             this.panelOutput.Size = new System.Drawing.Size(325, 355);
             this.panelOutput.TabIndex = 114;
@@ -1309,12 +1310,23 @@
             this.txtboxCodeYear.Size = new System.Drawing.Size(73, 20);
             this.txtboxCodeYear.TabIndex = 7;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(808, 143);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(108, 30);
+            this.button1.TabIndex = 115;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(379, 619);
+            this.ClientSize = new System.Drawing.Size(378, 619);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);
@@ -1468,6 +1480,7 @@
         private System.Windows.Forms.Label labelSpecifications;
         private System.Windows.Forms.TextBox txtboxCodeYear;
         private System.Windows.Forms.Button buttonDXF;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -27,17 +27,24 @@ namespace ElevatorQuoting
 {
     public partial class MainForm : Form
     {
-        //public Lift newLift = new Lift();
 
-        //Forms
-        
-        
-        
+        public static ConversionFactor KilogramsToPounds = new ConversionFactor(2.20462M, "pounds", "lbs", false);
+        public static ConversionFactor PoundsToKilograms = new ConversionFactor(0.453593M, "kilograms", "kg", true);
+
+        public static ConversionFactor MetresToFeet = new ConversionFactor(3.28084M, "feet","ft", false);
+        public static ConversionFactor FeetToMetres = new ConversionFactor(0.304799M, "metres", "m", true);
+
+        public static ConversionFactor MpaToPsi = new ConversionFactor(145.03768M, "psi", "PSI", false);
+        public static ConversionFactor PsiToMpa = new ConversionFactor(0.00689476M, "mpa", "MPa", true);
+
+        public static ConversionFactor FeetToInches = new ConversionFactor(12M, "inches", "in", false);
+        public static ConversionFactor InchesToFeet = new ConversionFactor(0.83333333M, "feet", "ft", false);
+
+
+        const decimal AccelerationDueToGravity = 9.80665M;
 
         //Variables
         List<string> ProvinceCode = new List<string>();
-        List<decimal> materialDensitiesMetric = new List<decimal>();
-        List<decimal> materialDensitiesImperial = new List<decimal>();
         List<decimal> cylinderEffectiveAreasMetric = new List<decimal>();
         List<decimal> cylinderEffectiveAreasImperial = new List<decimal>();
         Dictionary<string, int> metricCapacityValues = new Dictionary<string, int>();
@@ -51,7 +58,7 @@ namespace ElevatorQuoting
         public static int dxfStartY = 200; //inch
 
         const decimal poundsPerKilogram = 2.20462M;
-        const decimal acceleration = 9.80665M;
+        
 
         const decimal maxOperatingPressure = 1200; //This value will be moved to a standards database//
         const decimal pitDepthThreshold = 0.666M;
@@ -67,14 +74,17 @@ namespace ElevatorQuoting
         public MainForm()
         {
             InitializeComponent();
-            //Events
+
+            //Events//
             LoadQuote.OnLoadingQuote += LoadQuote_OnLoadingQuote;
+            //////////
+            
             comboxUnits.SelectedIndex = 0;
         }
 
         void LoadQuote_OnLoadingQuote(object sender, EventArgs e)
         {
-            NewQuote();
+            NewQuote(false);
             //this.txtboxProjectDescription.Text = "QUOTE LOADED";
             txtboxQuoteName.Text = Quote.QuoteNumber.ToString();
             txtboxProjectDescription.Text = Quote.ProjectDescription;
@@ -98,7 +108,7 @@ namespace ElevatorQuoting
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            sshConnection();
+            sshConnection(LogicLoad);
             //LogicLoad();  //migrated to sshConnection function
             //comboxUnits.SelectedIndex = 0;
             //comboxCylinders.SelectedIndex = 0;
@@ -106,7 +116,7 @@ namespace ElevatorQuoting
             //comboxProvince.SelectedIndex = 8;
 
         }
-        void sshConnection()
+        void sshConnection(Func<Boolean> function)
         {
             PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
             connectionInfo.Timeout = TimeSpan.FromSeconds(30);
@@ -139,7 +149,7 @@ namespace ElevatorQuoting
                         Console.WriteLine("Port forwarding has failed.");
                     }
 
-                    LogicLoad();
+                    function();
 
                     client.Disconnect();
 
@@ -152,19 +162,10 @@ namespace ElevatorQuoting
                 {
                     Console.WriteLine("Socket connection error: {0}", e.Message);
                 }
-
             }
-
-            //Console.WriteLine("\r\nTrying database connection...");
-            //DBConnect dbConnect = new DBConnect("localhost", "test_database", "root", "passwrod123", "4479");
-
-            //var ct = dbConnect.Count("packages");
-            //Console.WriteLine(ct.ToString());
         }
-        void LogicLoad()
+        Boolean LogicLoad()
         {
-
-
             MySqlConnection conn;
             string myConnectionString;
 
@@ -207,25 +208,6 @@ namespace ElevatorQuoting
                 readerForImportingCapacities.Close();
                 cmdForImportingCapacities.Dispose();
 
-                /*
-                string sqlForMaterialsImport = "SELECT * FROM materials";
-
-                MySqlCommand cmdForImportingMaterials = new MySqlCommand(sqlForMaterialsImport, conn);
-                MySqlDataReader readerForImportingMaterials = cmdForImportingMaterials.ExecuteReader();
-
-                while (readerForImportingMaterials.Read())
-                {
-                    comboxMaterials.Items.Add(readerForImportingMaterials[0].ToString());
-                    materialDensitiesMetric.Add(Convert.ToDecimal(readerForImportingMaterials[1]));
-                    materialDensitiesImperial.Add(Convert.ToDecimal(readerForImportingMaterials[2]));
-                }
-
-                comboxMaterials.SelectedIndex = 0;
-
-                readerForImportingMaterials.Close();
-                cmdForImportingMaterials.Dispose();
-                */
-
                 ////////
                 string sqlForCylindersImport = "SELECT * FROM cylinder_catalogue";
 
@@ -238,8 +220,6 @@ namespace ElevatorQuoting
                     cylinderEffectiveAreasMetric.Add(Convert.ToDecimal(readerForImportingCylinders[1]));
                     cylinderEffectiveAreasImperial.Add(Convert.ToDecimal(readerForImportingCylinders[2]));
                 }
-
-                //comboxMaterials.SelectedIndex = 0;
 
                 readerForImportingCylinders.Close();
                 cmdForImportingCylinders.Dispose();
@@ -282,22 +262,15 @@ namespace ElevatorQuoting
 
                 //////
 
-                /*
-                MySqlCommand cmdForQuoteNumber = new MySqlCommand("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'quotinglog' AND TABLE_NAME = 'main'", conn);
-                MySqlDataReader readerForQuoteNumber = cmdForQuoteNumber.ExecuteReader();
-                readerForQuoteNumber.Read();
-                txtboxQuoteName.Text = Convert.ToString(readerForQuoteNumber.GetInt32(0));
-
-                readerForQuoteNumber.Close();
-                cmdForQuoteNumber.Dispose();
-                */
                 conn.Close();
 
+                return true;
 
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 MessageBox.Show(ex.Message);
+                return false;
             }
 
         }
@@ -313,19 +286,16 @@ namespace ElevatorQuoting
         void convertAllInputs(Boolean imperial)
         {
             decimal conversionFactor;
-            decimal conversionFactorInches;
             decimal conversionFactorMass;
 
             if (imperial)
             {
                 conversionFactor = 0.3048M;
-                conversionFactorInches = conversionFactor / 12M;
                 conversionFactorMass = 1M / poundsPerKilogram;
 
             } else
             {
                 conversionFactor = 3.28084M;
-                conversionFactorInches = conversionFactor * 12M;
                 conversionFactorMass = poundsPerKilogram;
             }
 
@@ -392,15 +362,6 @@ namespace ElevatorQuoting
             {
                 label.Text = newUnitLabelPressure;
             }
-
-            /*
-            labelUnit1.Text = newUnitLabelLength;
-            labelUnit2.Text = newUnitLabelLength;
-            labelUnit3.Text = newUnitLabelLength;
-            labelUnit4.Text = newUnitLabelLength;
-            labelUnit5.Text = newUnitLabelLength;
-            labelSpeedUnit.Text = newUnitLabelLength + "/s";
-            */
         }
         
 
@@ -423,21 +384,15 @@ namespace ElevatorQuoting
             calculateCapacity();
             calculatePlatformMass();
             calculatePressures();
-            //calculatePressures(txtboxFullLoadStatic, txtboxFullLoadDynamic, txtboxCapacity);
-            //calculatePressures(txtboxFullLoadStaticA, txtboxFullLoadDynamicA, txtboxCapacityClassA);
-            //calculatePressures(txtboxFullLoadStaticB, txtboxFullLoadDynamicB, txtboxCapacityClassB);
-            //calculatePressures(txtboxFullLoadStaticC, txtboxFullLoadDynamicC, txtboxCapacityClassC);
         }
 
         void calculateCapacity()
         {
 
-            if (isThisStringANumber(txtboxPlatformWidth.Text) && isThisStringANumber(txtboxPlatformLength.Text))
+            if (UserInputs.PlatformWidth > 0 && UserInputs.PlatformLength > 0)
             {
 
-                decimal platformWidth = decimal.Parse(txtboxPlatformWidth.Text);
-                decimal platformLength = decimal.Parse(txtboxPlatformLength.Text);
-                decimal platformArea = platformLength * platformWidth;
+                decimal platformArea = UserInputs.PlatformLength * UserInputs.PlatformWidth;
                 decimal platformClassCapacity = -1;
 
                 switch (comboxLoadType.SelectedIndex)
@@ -463,18 +418,18 @@ namespace ElevatorQuoting
                         Lift.LoadingClass = "C3";
                         break;
                     default:
-                        
+                        Lift.LoadingClass = "";
                         break;
                 }
 
                 Lift.MinCapacity = platformClassCapacity;
 
 
-                if (isThisStringANumber(txtboxCapacity.Text) && Lift.MinCapacity != -1)
+                if (UserInputs.Capacity > 0 && Lift.MinCapacity > 0)
                 {
-                    if (Convert.ToDecimal(txtboxCapacity.Text) >= Lift.MinCapacity)
+                    if (UserInputs.Capacity >= Lift.MinCapacity)
                     {
-                        Lift.RequiredCapacity = Convert.ToDecimal(txtboxCapacity.Text);
+                        Lift.RequiredCapacity = UserInputs.Capacity;
                     }
                     else
                     {
@@ -490,13 +445,10 @@ namespace ElevatorQuoting
         }
         void calculatePlatformMass()
         {
-            if (isThisStringANumber(txtboxPlatformWidth.Text) && isThisStringANumber(txtboxPlatformLength.Text))
+            if (UserInputs.PlatformWidth > 0 && UserInputs.PlatformLength > 0)
             {
-                decimal platformWidth = decimal.Parse(txtboxPlatformWidth.Text);
-                decimal platformLength = decimal.Parse(txtboxPlatformLength.Text);
-                decimal platformArea = platformWidth * platformLength;
 
-
+                decimal platformArea = UserInputs.PlatformWidth * UserInputs.PlatformLength;
 
                 decimal platformMassPerArea;
 
@@ -511,7 +463,8 @@ namespace ElevatorQuoting
                     {
                         platformMassPerArea = massPerSqFtDeepPit;
                     }
-                } else
+                }
+                else
                 {
                     if (unitsAreMetric)
                     {
@@ -536,24 +489,24 @@ namespace ElevatorQuoting
         //void calculatePressures(TextBox textBoxToPopulateStatic, TextBox textBoxToPopulateDynamic, TextBox capacityTextBox)
         void calculatePressures()
         {
-            if (Lift.RequiredCapacity != -1 && Lift.PlatformMass != -1 && isThisStringANumber(comboxNumberOfCylinders.Text) && comboxCylinders.SelectedIndex != -1)
+            if (Lift.RequiredCapacity != -1 && Lift.PlatformMass != -1 && UserInputs.NumberOfCylinders > 0 && UserInputs.CylinderSelection != -1)
             {
                 decimal platformMass = Lift.PlatformMass;
 
                 decimal totalMass = platformMass + Lift.RequiredCapacity;
 
-                decimal conversionFactor = 1;
+                decimal conversionFactor;
 
                 decimal totalArea;
 
                 if (unitsAreMetric)
                 {
-                    totalArea = decimal.Parse(comboxNumberOfCylinders.Text) * cylinderEffectiveAreasMetric[comboxCylinders.SelectedIndex];
-                    conversionFactor = acceleration;
+                    totalArea = Convert.ToDecimal(UserInputs.NumberOfCylinders) * cylinderEffectiveAreasMetric[UserInputs.CylinderSelection];
+                    conversionFactor = AccelerationDueToGravity;
                 }
                 else
                 {
-                    totalArea = decimal.Parse(comboxNumberOfCylinders.Text) * cylinderEffectiveAreasImperial[comboxCylinders.SelectedIndex];
+                    totalArea = Convert.ToDecimal(UserInputs.NumberOfCylinders) * cylinderEffectiveAreasImperial[UserInputs.CylinderSelection];
                     conversionFactor = 1;
                 }
 
@@ -622,63 +575,20 @@ namespace ElevatorQuoting
 
         }
 
+        Boolean SaveFunction()
+        {
+            if (!isThisStringANumber(txtboxQuoteName.Text))
+            {
+                CreateQuoteLocal();
+            }
+            SaveQuoteLocal();
+            return true;
+        }
 
         //Saving
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("192.168.2.52", "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
-            connectionInfo.Timeout = TimeSpan.FromSeconds(30);
-
-            using (var client = new SshClient(connectionInfo))
-            {
-                try
-                {
-                    Console.WriteLine("Trying SSH connection...");
-                    client.Connect();
-                    if (client.IsConnected)
-                    {
-                        Console.WriteLine("SSH connection is active: {0}", client.ConnectionInfo.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("SSH connection has failed: {0}", client.ConnectionInfo.ToString());
-                    }
-
-                    Console.WriteLine("\r\nTrying port forwarding...");
-                    var portFwld = new ForwardedPortLocal("127.0.0.1", 1000, "localhost", 3306);
-                    client.AddForwardedPort(portFwld);
-                    portFwld.Start();
-                    if (portFwld.IsStarted)
-                    {
-                        Console.WriteLine("Port forwarded: {0}", portFwld.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("Port forwarding has failed.");
-                    }
-
-                    if (!isThisStringANumber(txtboxQuoteName.Text))
-                    {
-                        CreateQuoteLocal();
-                    }
-                    SaveQuoteLocal();
-
-                    client.Disconnect();
-
-                }
-                catch (SshException err)
-                {
-                    Console.WriteLine("SSH client connection error: {0}", err.Message);
-                }
-                catch (System.Net.Sockets.SocketException err)
-                {
-                    Console.WriteLine("Socket connection error: {0}", err.Message);
-                }
-
-            }
-
-            
-
+            sshConnection(SaveFunction);
         }
         void CreateQuoteLocal()
         {
@@ -698,21 +608,7 @@ namespace ElevatorQuoting
 
 
             cmd.Parameters.Add("@ProjectDescription", MySqlDbType.VarChar).Value = txtboxProjectDescription.Text;
-            /*
-            cmd.Parameters.Add("@Customer", MySqlDbType.VarChar).Value = comboxCustomer.Text;
-            cmd.Parameters.Add("@Contact", MySqlDbType.VarChar).Value = comboxContactName.Text;
-            cmd.Parameters.Add("@LoadType", MySqlDbType.VarChar).Value = comboxLoadType.Text;
-            cmd.Parameters.Add("@PitDepth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPitDepth.Text) ? Convert.ToDecimal(txtboxPitDepth.Text) : 0;
-            cmd.Parameters.Add("@TravelDistance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelDis.Text) ? Convert.ToDecimal(txtboxTravelDis.Text) : 0;
-            cmd.Parameters.Add("@OverheadClearance", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxOverheadCl.Text) ? Convert.ToDecimal(txtboxOverheadCl.Text) : 0;
-            cmd.Parameters.Add("@Floors", MySqlDbType.Int16).Value = isThisStringANumber(comboxFloors.Text) ? Convert.ToInt16(comboxFloors.Text) : 0;
-            cmd.Parameters.Add("@TravelSpeed", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxTravelSpeed.Text) ? Convert.ToDecimal(txtboxTravelSpeed.Text) : 0;
-            cmd.Parameters.Add("@PlatformWidth", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformWidth.Text) ? Convert.ToDecimal(txtboxPlatformWidth.Text) : 0;
-            cmd.Parameters.Add("@PlatformLength", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxPlatformLength.Text) ? Convert.ToDecimal(txtboxPlatformLength.Text) : 0;
-            cmd.Parameters.Add("@InlineThrough", MySqlDbType.VarChar).Value = comboxInlineThrough.Text;
-            cmd.Parameters.Add("@Capacity", MySqlDbType.Decimal).Value = isThisStringANumber(txtboxCapacity.Text) ? Convert.ToDecimal(txtboxCapacity.Text) : 0;
-            cmd.Parameters.Add("@Date", MySqlDbType.Date).Value = Convert.ToDateTime(dtpDate.Value.ToShortDateString());
-            */
+
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
@@ -742,7 +638,6 @@ namespace ElevatorQuoting
                 cmdForQuoteNumber.Dispose();
             }
 
-            //string sql = "UPDATE main SET LoadType = @LoadType, QuoteDate = @QuoteDate Where QuoteName = @QuoteName";
             string sql = "UPDATE main SET ProjectDescription = @ProjectDescription, Date = @Date, Customer = @Customer, Contact = @Contact, LoadType = @LoadType, PitDepth = @PitDepth, TravelDistance = @TravelDistance, OverheadClearance = @OverheadClearance, Floors = @Floors, TravelSpeed = @TravelSpeed, PlatformWidth = @PlatformWidth, PlatformLength = @PlatformLength, InlineThrough = @InlineThrough, Capacity = @Capacity WHERE QuoteName = @QuoteName";
             
 
@@ -771,7 +666,6 @@ namespace ElevatorQuoting
 
             cmd.Dispose();
             conn.Close();
-
 
             MessageBox.Show("Quote Saved");
         }
@@ -803,8 +697,6 @@ namespace ElevatorQuoting
             }
         }
 
-
-
         private void drawObject(List<Line> objectList, DxfDocument doc)
         {
             for (int i = 0; i < objectList.Count; i++)
@@ -821,10 +713,6 @@ namespace ElevatorQuoting
             }
         }
 
-        public static void LoadValuesFromQuote()
-        {
-            
-        }
         public static string CreateDxf(Boolean metricUnits, double dxfStartX, double dxfStartY)
         {
             double conversionFactor = 1;
@@ -1028,191 +916,7 @@ namespace ElevatorQuoting
             }
 
         }
-       /* 
-       private void createDXF()
-        {
-            double conversionFactor = 1;
-            double PlatformThickness = .5;
-
-            if (!unitsAreMetric)
-            {
-                conversionFactor = 12;
-                PlatformThickness = 12;
-            }
-
-            double PlatformLength = (Convert.ToDouble(txtboxPlatformLength.Text) * conversionFactor);
-            double PlatformWidth = (Convert.ToDouble(txtboxPlatformWidth.Text) * conversionFactor);
-
-
-            double PitDepth = (Convert.ToDouble(txtboxPitDepth.Text) * conversionFactor);
-
-            double TravelDistance = (Convert.ToDouble(txtboxTravelDis.Text) * conversionFactor);
-            double OverheadCl = (Convert.ToDouble(txtboxOverheadCl.Text) * conversionFactor);
-
-            double TopCl = 24;
-
-            double DimensionX = dxfStartX / 2;
-            double dimPad = 5;
-
-            double hatchThickness = 20;
-
-            double dxfPlanStartX = dxfStartX + PlatformLength * 2;
-
-
-            int numOfFloors;
-
-            // your DXF file name
-            string file = "_sample.dxf";
-
-            // create a new document, by default it will create an AutoCad2000 DXF version
-            DxfDocument doc = new DxfDocument();
-            // an entity
-
-            //Platform
-            List<Line> platform = new List<Line>();
-
-            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX, dxfStartY + PitDepth)));
-            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth), new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth)));
-            platform.Add(new Line(new Vector2(dxfStartX - PlatformThickness * 2, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PitDepth + PlatformThickness)));
-            platform.Add(new Line(new Vector2(dxfStartX, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness * 2, dxfStartY + PitDepth), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness * 4, dxfStartY + PitDepth + PlatformThickness)));
-            platform.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness)));
-
-
-            //top of lift
-            List<Line> topOfLift = new List<Line>();
-
-            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl)));
-            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl)));
-            topOfLift.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl)));
-
-            //top area
-            List<Line> topArea = new List<Line>();
-
-            topArea.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX, dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + (PlatformThickness * 2) + PitDepth + TravelDistance + OverheadCl), new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl)));
-            topArea.Add(new Line(new Vector2(dxfStartX + PlatformLength + (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformLength + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl)));
-
-
-            //Floors
-            List<Line> floors = new List<Line>();
-
-            List<LinearDimension> intTravel = new List<LinearDimension>();
-
-            //Subsequent floors
-
-            numOfFloors = Convert.ToInt32(comboxFloors.Text);
-
-            for (int i = 1; i < numOfFloors; i++)
-            {
-
-                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
-                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
-                floors.Add(new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
-                floors.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + TravelDistance - (TravelDistance * i / numOfFloors) + PitDepth)));
-                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
-                floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
-                floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + PitDepth + TravelDistance - (TravelDistance * i / numOfFloors))));
-                floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance + PitDepth - (TravelDistance * i / numOfFloors)), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance + PitDepth - (TravelDistance * i / numOfFloors))));
-
-                LinearDimension floordim = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * (i + 1) / numOfFloors)), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * i / numOfFloors)), DimensionX - (PlatformThickness * 5.5), 90, netDxf.Tables.DimensionStyle.Iso25);
-                floordim.UserText = (TravelDistance / numOfFloors).ToString() + " INT TRAVEL";
-
-                intTravel.Add(floordim);
-
-            }
-
-            if (numOfFloors > 1)
-            {
-
-                LinearDimension floordim = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance - (TravelDistance * 1 / numOfFloors)), DimensionX - (PlatformThickness * 5.5), 90, netDxf.Tables.DimensionStyle.Iso25);
-                floordim.UserText = (TravelDistance / numOfFloors).ToString() + " INT TRAVEL";
-
-                intTravel.Add(floordim);
-
-            }
-
-
-            //Top Floor
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + PlatformThickness + PitDepth + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX, dxfStartY + PitDepth + TravelDistance), new Vector2(dxfStartX - (PlatformThickness * 2), dxfStartY + TravelDistance + PitDepth)));
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + PlatformThickness + PitDepth + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + PlatformThickness + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY - PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + PitDepth + TravelDistance)));
-            floors.Add(new Line(new Vector2(dxfStartX + (PlatformThickness * 2) + PlatformLength, dxfStartY + TravelDistance + PitDepth), new Vector2(dxfStartX + (PlatformThickness * 4) + PlatformLength, dxfStartY + TravelDistance + PitDepth)));
-
-            //Dimensions
-
-            //PitDepth
-
-            LinearDimension dim1 = new LinearDimension(new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
-            dim1.UserText = PitDepth.ToString() + " PIT DEPTH";
-
-
-            //Travel
-
-            LinearDimension dim2 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness), new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PitDepth + PlatformThickness + TravelDistance), DimensionX - (PlatformThickness * 1.5), 90, netDxf.Tables.DimensionStyle.Iso25);
-            dim2.UserText = TravelDistance.ToString() + " TRAVEL";
-
-
-            //Overhead Cl
-            LinearDimension dim3 = new LinearDimension(new Vector2(dxfStartX - (PlatformThickness * 2) - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance), new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX, 90, netDxf.Tables.DimensionStyle.Iso25);
-            dim3.UserText = OverheadCl.ToString() + " OVERHEAD CLEARANCE";
-
-            //Top Cl
-            LinearDimension dim4 = new LinearDimension(new Vector2(dxfStartX - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl - TopCl), new Vector2(dxfStartX + PlatformThickness - dimPad, dxfStartY + PlatformThickness + PitDepth + TravelDistance + OverheadCl), DimensionX - PlatformThickness * 3, 90, netDxf.Tables.DimensionStyle.Iso25);
-
-
-
-            //Plan view
-            List<Line> planView = new List<Line>();
-
-            //outside
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY + PlatformWidth + hatchThickness * 2)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY + PlatformWidth + hatchThickness * 2)));
-
-            //inside
-            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
-
-
-
-            drawObject(platform, doc);
-            drawObject(topOfLift, doc);
-            drawObject(topArea, doc);
-            drawObject(floors, doc);
-            drawObject(planView, doc);
-            drawDimension(intTravel, doc);
-
-            // add your entities here
-
-            doc.AddEntity(dim1);
-            doc.AddEntity(dim2);
-            doc.AddEntity(dim3);
-            doc.AddEntity(dim4);
-
-
-            // save to file
-            doc.Save(file);
-
-            // this check is optional but recommended before loading a DXF file
-            //DxfVersion dxfVersion = DxfDocument.CheckDxfFileVersion(file);
-            // netDxf is only compatible with AutoCad2000 and higher DXF versions
-            //if (dxfVersion < DxfVersion.AutoCad2000) return;
-            // load file
-            DxfDocument loaded = DxfDocument.Load(file);
-        }
-        */
+      
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -1220,18 +924,22 @@ namespace ElevatorQuoting
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewQuote();
+            NewQuote(true);
         }
 
-        void NewQuote()
+        void NewQuote(Boolean resetQuote)
         {
             //Application.Restart();
-            //Lift.Reset();
+            
+            
             comboxUnits.SelectedIndex = 0;
+            comboxCustomer.SelectedIndex = -1;
+            comboxContactName.SelectedIndex = -1;
             comboxContactName.Items.Clear();
+            comboxLoadType.SelectedIndex = -1;
             txtboxQuoteName.Text = "";
             dtpDate.Value = DateTime.Today;
-
+            
             foreach (Control control in panelDetails.Controls)
             {
                 if (control.Name.StartsWith("txtbox") || control.Name.StartsWith("combox"))
@@ -1264,6 +972,13 @@ namespace ElevatorQuoting
                 }
 
             }
+
+            if (resetQuote)
+            {
+                Quote.Reset();
+                Lift.Reset();
+                UserInputs.Reset();
+            }
         }
 
         private void comboxCustomer_SelectedIndexChanged(object sender, EventArgs e)
@@ -1276,9 +991,12 @@ namespace ElevatorQuoting
             txtboxContactEmail.Text = "";
             txtboxContactPhone.Text = "";
 
-            foreach (Contact contact in customers[customerIndex].Contacts)
+            if (customerIndex != -1)
             {
-                comboxContactName.Items.Add(contact.Name);
+                foreach (Contact contact in customers[customerIndex].Contacts)
+                {
+                    comboxContactName.Items.Add(contact.Name);
+                }
             }
         }
 
@@ -1287,36 +1005,16 @@ namespace ElevatorQuoting
             int customerIndex = comboxCustomer.SelectedIndex;
             int contactIndex = comboxContactName.SelectedIndex;
 
-            txtboxContactEmail.Text = customers[customerIndex].Contacts[contactIndex].Email;
-            txtboxContactPhone.Text = customers[customerIndex].Contacts[contactIndex].Phone;
+            txtboxContactEmail.Text = (customerIndex != -1 ? customers[customerIndex].Contacts[contactIndex].Email : "");
+            txtboxContactPhone.Text = (customerIndex != -1 ? customers[customerIndex].Contacts[contactIndex].Phone : "");
         }
 
         private void buttonPDNext_Click(object sender, EventArgs e)
         {
-            /*
-            if (comboxCustomer.SelectedIndex == -1)
+            if (!timerNext.Enabled && !timerBack.Enabled)
             {
-                MessageBox.Show(this, "No Customer Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                timerNext.Start();
             }
-            else if (comboxProvince.SelectedIndex == -1)
-            {
-                MessageBox.Show(this, "No Province Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else if (comboxContactName.SelectedIndex == -1)
-            {
-                MessageBox.Show(this, "No Contact Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else if (txtboxProjectDescription.Text == "")
-            {
-                MessageBox.Show(this, "Project Description Missing", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                //txtboxQuoteName.Text = customers[comboxCustomer.SelectedIndex].ID;
-                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-            }
-            */
-            timerNext.Start();
         }
 
         private void timerNext_Tick(object sender, EventArgs e)
@@ -1337,8 +1035,10 @@ namespace ElevatorQuoting
 
         private void buttonLoadBack_Click(object sender, EventArgs e)
         {
-            //tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
-            timerBack.Start();
+            if (!timerNext.Enabled && !timerBack.Enabled)
+            {
+                timerBack.Start();
+            }
         }
 
         private void timerBack_Tick(object sender, EventArgs e)
@@ -1358,33 +1058,32 @@ namespace ElevatorQuoting
 
         private void buttonLoadNext_Click(object sender, EventArgs e)
         {
-            /*
-            if (comboxLoadType.SelectedIndex == -1)
+            if (!timerNext.Enabled && !timerBack.Enabled)
             {
-                MessageBox.Show(this, "No Load Type Selected", "Complete Form", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            } else
-            {
-                tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
+                timerNext.Start();
             }
-            */
-            timerNext.Start();
         }
 
         private void buttonSCBack_Click(object sender, EventArgs e)
         {
-            //tabControl.SelectedIndex = (tabControl.SelectedIndex - 1) % tabControl.TabCount;
-            timerBack.Start();
+            if (!timerNext.Enabled && !timerBack.Enabled)
+            {
+                timerBack.Start();
+            }
         }
 
         private void buttonSCNext_Click(object sender, EventArgs e)
         {
             updateAllCalculations();
-            //tabControl.SelectedIndex = (tabControl.SelectedIndex + 1) % tabControl.TabCount;
-            timerNext.Start();
+            if (!timerNext.Enabled && !timerBack.Enabled)
+            {
+                timerNext.Start();
+            }
         }
 
         private void comboxLoadType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Lift.LoadingClass = "";
             switch (comboxLoadType.SelectedIndex)
             {
                 case 0:
@@ -1422,17 +1121,25 @@ namespace ElevatorQuoting
 
         private void comboxCylinders_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UserInputs.CylinderSelection = comboxCylinders.SelectedIndex;
             updateAllCalculations();
         }
 
         private void comboxNumberOfCylinders_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (isThisStringANumber(comboxNumberOfCylinders.Text))
+            {
+                UserInputs.NumberOfCylinders = Convert.ToInt16(comboxNumberOfCylinders.Text);
+            }
             updateAllCalculations();
         }
 
         private void buttonCylBack_Click(object sender, EventArgs e)
         {
-            timerBack.Start();
+            if (!timerNext.Enabled && !timerBack.Enabled)
+            {
+                timerBack.Start();
+            }
         }
 
         private void liftSpecificationsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1558,6 +1265,244 @@ namespace ElevatorQuoting
             Controls.Find("labelUnit", true).FirstOrDefault();
         }
         */
+
+
+        Tuple<decimal, string> ConvertUnits(decimal valueToConvert, ConversionFactor conversionFactor)
+        {
+
+            decimal convertedValue;
+
+            convertedValue = valueToConvert * conversionFactor.Value;
+
+            return Tuple.Create(convertedValue, conversionFactor.UnitAbbreviation);
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(UserInputs.PitDepth.ConvertUnits("metres"));
+        }
+    }
+
+    public class StandardUnit
+    {
+        public decimal Value { get; set; }
+        public string Units { get; set; }
+        public string UnitAbbreviation { get; set; }
+        public Boolean MetricUnits { get; set; }
+
+        public StandardUnit(decimal value, string units, string unitAbbreviation, Boolean metricUnits)
+        {
+            Value = value;
+            Units = units;
+            UnitAbbreviation = unitAbbreviation;
+            MetricUnits = metricUnits;
+        }
+
+        public string ConvertUnits(string convertTo)
+        {
+
+            ConversionFactor ActiveConversionFactor;
+            decimal OriginalValue = this.Value;
+            string ConvertedFrom = this.UnitAbbreviation;
+
+            switch (this.Units)
+            {
+
+                case "kilograms":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            return "Units are already Kilograms";
+                        case "pounds":
+                            ActiveConversionFactor = MainForm.KilogramsToPounds;
+                            break;
+                        case "mpa":
+                            return "Cannot convert Kilograms to MPa";
+                        case "psi":
+                            return "Cannot convert Kilograms to PSI";
+                        case "metres":
+                            return "Cannot convert Kilograms to Metres";
+                        case "feet":
+                            return "Cannot convert Kilograms to Feet";
+                        case "inches":
+                            return "Cannot convert Kilograms to Inches";
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                case "pounds":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            ActiveConversionFactor = MainForm.PoundsToKilograms;
+                            break;
+                        case "pounds":
+                            return "Units are already Pounds";
+                        case "mpa":
+                            return "Cannot convert to MPa";
+                        case "psi":
+                            return "Cannot convert to PSI";
+                        case "metres":
+                            return "Cannot convert to Metres";
+                        case "feet":
+                            return "Cannot convert to Feet";
+                        case "inches":
+                            return "Cannot convert to Inches";
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                case "mpa":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            return "Cannot convert to Kilograms";
+                        case "pounds":
+                            return "Cannot convert to Pounds";
+                        case "mpa":
+                            return "Units are already MPa";
+                        case "psi":
+                            ActiveConversionFactor = MainForm.MpaToPsi;
+                            break;
+                        case "metres":
+                            return "Cannot convert to Metres";
+                        case "feet":
+                            return "Cannot convert to Feet";
+                        case "inches":
+                            return "Cannot convert to Inches";
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                case "psi":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            return "Cannot convert to Kilograms";
+                        case "pounds":
+                            return "Cannot convert to Pounds";
+                        case "mpa":
+                            ActiveConversionFactor = MainForm.PsiToMpa;
+                            break;
+                        case "psi":
+                            return "Units are already PSI";
+                        case "metres":
+                            return "Cannot convert to Metres";
+                        case "feet":
+                            return "Cannot convert to Feet";
+                        case "inches":
+                            return "Cannot convert to Inches";
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                case "metres":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            return "Cannot convert to Kilograms";
+                        case "pounds":
+                            return "Cannot convert to Pounds";
+                        case "mpa":
+                            return "Cannot convert to MPa";
+                        case "psi":
+                            return "Cannot convert to PSI";
+                        case "metres":
+                            return "Units are already Metres";
+                        case "feet":
+                            ActiveConversionFactor = MainForm.MetresToFeet;
+                            break;
+                        case "inches":
+                            return "Cannot convert to Inches";
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                case "feet":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            return "Cannot convert to Kilograms";
+                        case "pounds":
+                            return "Cannot convert to Pounds";
+                        case "mpa":
+                            return "Cannot convert to MPa";
+                        case "psi":
+                            return "Cannot convert to PSI";
+                        case "metres":
+                            ActiveConversionFactor = MainForm.FeetToMetres;
+                            break;
+                        case "feet":
+                            return "Units are already Feet";
+                        case "inches":
+                            ActiveConversionFactor = MainForm.FeetToInches;
+                            break;
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                case "inches":
+                    switch (convertTo)
+                    {
+
+                        case "kilograms":
+                            return "Cannot convert to Kilograms";
+                        case "pounds":
+                            return "Cannot convert to Pounds";
+                        case "mpa":
+                            return "Cannot convert to MPa";
+                        case "psi":
+                            return "Cannot convert to PSI";
+                        case "metres":
+                            return "Cannot convert to Metres";
+                        case "feet":
+                            ActiveConversionFactor = MainForm.InchesToFeet;
+                            break;
+                        case "inches":
+                            return "Units are already Inches";
+                        default:
+                            return "The requested conversion is not available";
+                    }
+                    break;
+                default:
+
+                    return "The input units are invalid";
+            }
+            this.Value *= ActiveConversionFactor.Value;
+            this.Units = ActiveConversionFactor.Units;
+            this.UnitAbbreviation = ActiveConversionFactor.UnitAbbreviation;
+            this.MetricUnits = ActiveConversionFactor.MetricUnits;
+
+            return String.Format("Converted {0,4:.0000}{1} to {2,4:.0000}{3}", OriginalValue,ConvertedFrom,this.Value,this.UnitAbbreviation);
+
+        }
+        public override string ToString()
+        {
+            return String.Format("{0,4:.00}{1}", Value, UnitAbbreviation);
+        }
+    }
+
+    public class ConversionFactor
+    {
+        public decimal Value { get; }
+        public string Units { get; }
+        public string UnitAbbreviation { get; }
+        public Boolean MetricUnits { get; }
+
+        public ConversionFactor(decimal value, string units, string unitAbbreviation, Boolean metricUnits)
+        {
+            Value = value;
+            Units = units;
+            UnitAbbreviation = unitAbbreviation;
+            MetricUnits = metricUnits;
+        }
     }
 
     public class Customer
@@ -1634,7 +1579,14 @@ namespace ElevatorQuoting
         public static string ProjectContact { get; set; }
         public static string ProjectDescription { get; set; }
 
-
+        public static void Reset()
+        {
+            QuoteNumber = -1;
+            Revision = -1;
+            ProjectCustomer = "";
+            ProjectContact = "";
+            ProjectDescription = "";
+        }
 
     }
 
@@ -1643,6 +1595,7 @@ namespace ElevatorQuoting
         // Auto-implemented readonly property:
         public static string LoadType { get; set; }
         public static decimal PitDepth { get; set; }
+        //public static StandardUnit PitDepth { get; set; }
         public static decimal OverheadClearance { get; set; }
         public static short Floors { get; set; }
         public static decimal TravelDistance { get; set; }
@@ -1651,6 +1604,8 @@ namespace ElevatorQuoting
         public static decimal Capacity { get; set; }
         public static decimal TravelSpeed { get; set; }
         public static string InlineThrough { get; set; }
+        public static int CylinderSelection { get; set; }
+        public static short NumberOfCylinders { get; set; }
         public static Boolean MetricUnits { get; set; }
 
         // Constructor that takes no arguments:
@@ -1658,6 +1613,7 @@ namespace ElevatorQuoting
         {
             LoadType = "";
             PitDepth = -1;
+            //PitDepth = new StandardUnit(-1, "feet", "ft", false);
             OverheadClearance = -1;
             Floors = -1;
             TravelDistance = -1;
@@ -1666,6 +1622,8 @@ namespace ElevatorQuoting
             Capacity = -1;
             TravelSpeed = -1;
             InlineThrough = "";
+            CylinderSelection = -1;
+            NumberOfCylinders = -1;
             MetricUnits = false;
         }
 
@@ -1673,6 +1631,7 @@ namespace ElevatorQuoting
         {
             LoadType = "";
             PitDepth = -1;
+            //PitDepth = new StandardUnit(-1, "feet", "ft", false);
             OverheadClearance = -1;
             Floors = -1;
             TravelDistance = -1;
@@ -1681,6 +1640,8 @@ namespace ElevatorQuoting
             Capacity = -1;
             TravelSpeed = -1;
             InlineThrough = "";
+            CylinderSelection = -1;
+            NumberOfCylinders = -1;
             MetricUnits = false;
         }
 
