@@ -141,6 +141,8 @@
             this.labelSpecifications = new System.Windows.Forms.Label();
             this.txtboxCodeYear = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.buttonCalculate = new System.Windows.Forms.Button();
+            this.txtboxPrice = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.panelDetails.SuspendLayout();
@@ -215,7 +217,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(378, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(381, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -233,28 +235,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -963,6 +965,8 @@
             // 
             // panelCylinders
             // 
+            this.panelCylinders.Controls.Add(this.txtboxPrice);
+            this.panelCylinders.Controls.Add(this.buttonCalculate);
             this.panelCylinders.Controls.Add(this.buttonDXF);
             this.panelCylinders.Controls.Add(this.buttonCylBack);
             this.panelCylinders.Controls.Add(this.comboxNumberOfCylinders);
@@ -1320,12 +1324,32 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // buttonCalculate
+            // 
+            this.buttonCalculate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.buttonCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCalculate.ForeColor = System.Drawing.Color.White;
+            this.buttonCalculate.Location = new System.Drawing.Point(181, 381);
+            this.buttonCalculate.Name = "buttonCalculate";
+            this.buttonCalculate.Size = new System.Drawing.Size(169, 30);
+            this.buttonCalculate.TabIndex = 116;
+            this.buttonCalculate.Text = "Calculate";
+            this.buttonCalculate.UseVisualStyleBackColor = false;
+            // 
+            // txtboxPrice
+            // 
+            this.txtboxPrice.Location = new System.Drawing.Point(197, 347);
+            this.txtboxPrice.Name = "txtboxPrice";
+            this.txtboxPrice.Size = new System.Drawing.Size(147, 20);
+            this.txtboxPrice.TabIndex = 117;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(378, 619);
+            this.ClientSize = new System.Drawing.Size(381, 619);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelCylinders);
@@ -1481,6 +1505,8 @@
         private System.Windows.Forms.TextBox txtboxCodeYear;
         private System.Windows.Forms.Button buttonDXF;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtboxPrice;
+        private System.Windows.Forms.Button buttonCalculate;
     }
 }
 
