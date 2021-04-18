@@ -68,6 +68,12 @@ namespace ElevatorQuoting
         const decimal massPerSqMShallowPit = 1;
         const decimal massPerSqFtShallowPit = 1;
 
+
+        int complexityEng = 0;
+        int complexityMfg = 0;
+        int complexityInstallation = 0;
+        int complexityInspection = 0;
+
         Boolean pitDepthThresholdMet;
         public static Boolean unitsAreMetric = false;
 
@@ -1311,6 +1317,228 @@ namespace ElevatorQuoting
         {
             //MessageBox.Show(UserInputs.PitDepth.ConvertUnits("metres"));
         }
+
+        private void buttonCalculate_Click_1(object sender, EventArgs e)
+        {
+
+            Calculation();
+
+        }
+
+
+        private void Calculation()
+        {
+            //needed up top
+            //int complexityEng = 0;
+            //int complexityMfg = 0;
+            //int complexityInstallation = 0;
+            //int complexityInspection = 0;
+
+            //Calculation assumptions (need to be moved to database eventually)
+
+            const decimal matCost = 4; // $/lb
+            const decimal engRate = 50; // $/hr
+            const decimal shopRate = 50; // $/hr
+            const decimal installationRate = 110; // $/hr (elevator mechanics)
+            const decimal inspectionRate = 110; // $/hr (inspector)
+            const decimal freightCost = 4000; // $ in km (in different radius)
+            const decimal maintenanceAgreeCost = 5000; // $ / yr
+            const decimal margin = 0.3M; // %
+
+
+            decimal engHours = 40; // 1 guy 1 week
+            decimal mfgHours = 80 * 6; // 2 guys 6 weeks
+            decimal installationHours = 80 * 1; // 2 guys 1 week
+            decimal inspectionHours = 16 * 1; // 1 guy 2 days
+            decimal cylCost = 0;
+
+            ComplexityIndex();
+
+
+            //Engineering
+            switch (complexityEng)
+            {
+                case 1:
+
+                    engHours = 40; // 1 guy 1 week
+
+                    break;
+
+                case 2:
+
+                    engHours = 60; // 1 guy 1.5 weeks
+
+                    break;
+
+                case 3:
+
+                    engHours = 80; // 1 guy 2 weeks
+
+                    break;
+            }
+
+
+            //Manufacturing
+            switch (complexityMfg)
+            {
+                case 1:
+
+                    mfgHours = 80 * 6; // 2 guys 6 weeks
+
+                    break;
+
+                case 2:
+
+                    mfgHours = 80 * 7; // 2 guys 7 weeks
+
+                    break;
+
+                case 3:
+
+                    mfgHours = 80 * 8; // 2 guy 8 weeks
+
+                    break;
+            }
+
+            //Installation
+            switch (complexityInstallation)
+            {
+                case 1:
+
+                    installationHours = 8 * 2; // 1 guys 2 days
+
+                    break;
+
+                case 2:
+
+                    installationHours = 8 * 3; // 1 guys 3 days
+
+                    break;
+
+                case 3:
+
+                    installationHours = 8 * 4; // 1 guy 4 days
+
+                    break;
+            }
+
+            //Inspection
+            switch (complexityInspection)
+            {
+                case 1:
+
+                    inspectionHours = 80 * 1; // 2 guys 1 weeks
+
+                    break;
+
+                case 2:
+
+                    inspectionHours = 120 * 1; // 3 guys 1 week
+
+                    break;
+
+                case 3:
+
+                    inspectionHours = 120 * 2; // 3 guy 2 weeks
+
+                    break;
+            }
+
+            //Inspection
+            switch (comboxCylinders.SelectedIndex)
+            {
+                case 0:
+
+                    cylCost = 3000 * comboxNumberOfCylinders.SelectedIndex; // price of Cylinder * number of cylinders
+
+                    break;
+
+                case 1:
+
+                    cylCost = 5000 * comboxNumberOfCylinders.SelectedIndex; // price of Cylinder * number of cylinders
+
+                    break;
+
+                case 2:
+
+                    cylCost = 7000 * comboxNumberOfCylinders.SelectedIndex; // price of Cylinder * number of cylinders
+
+                    break;
+
+                case 3:
+
+                    cylCost = 9000 * comboxNumberOfCylinders.SelectedIndex; // price of Cylinder * number of cylinders
+
+                    break;
+            }
+
+
+
+            decimal engCost = engHours * engRate;
+            decimal mfgCost = mfgHours * shopRate;
+            decimal installationCost = installationHours * installationRate;
+            decimal inspectionCost = inspectionHours * inspectionRate;
+
+            decimal platformWeight = Convert.ToDecimal(Lift.PlatformMass); //lbs
+
+            decimal materialCost = platformWeight * matCost;
+
+
+            txtboxPrice.Text = Math.Round(((engCost + mfgCost + installationCost + inspectionCost + freightCost + materialCost + maintenanceAgreeCost + cylCost) / (1 - margin)), 2).ToString();
+
+
+        }
+
+        private void ComplexityIndex()
+        {
+
+            complexityEng = 0;
+            complexityMfg = 0;
+            complexityInstallation = 0;
+            complexityInspection = 0;
+
+            if (Convert.ToDecimal(txtboxTravelDis.Text) > 100)
+            {
+
+                complexityMfg++;
+                complexityInspection++;
+
+            }
+
+            if (Convert.ToDecimal(comboxInlineThrough.SelectedIndex) == 1) //through
+            {
+
+                complexityEng++;
+                complexityInspection++;
+                complexityInstallation++;
+
+            }
+
+
+            if (Convert.ToDecimal(comboxCylinders.SelectedIndex) > 2) //through
+            {
+
+
+                complexityMfg++;
+                complexityEng++;
+
+            }
+
+            if (Convert.ToDecimal(comboxFloors.SelectedIndex) > 1) //through
+            {
+
+
+                complexityMfg++;
+                complexityEng++;
+                complexityInspection++;
+
+
+            }
+
+
+
+        }
+
     }
 
     public class StandardUnit
