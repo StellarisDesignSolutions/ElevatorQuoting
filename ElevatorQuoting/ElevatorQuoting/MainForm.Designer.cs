@@ -78,6 +78,7 @@
             this.labelLoadType = new System.Windows.Forms.Label();
             this.timerBack = new System.Windows.Forms.Timer(this.components);
             this.panelConditions = new System.Windows.Forms.Panel();
+            this.labelCapacityFlag = new System.Windows.Forms.Label();
             this.buttonSCBack = new System.Windows.Forms.Button();
             this.buttonSCNext = new System.Windows.Forms.Button();
             this.labelCapacity = new System.Windows.Forms.Label();
@@ -109,12 +110,13 @@
             this.panelCylinders = new System.Windows.Forms.Panel();
             this.txtboxPrice = new System.Windows.Forms.TextBox();
             this.buttonCalculate = new System.Windows.Forms.Button();
-            this.buttonDXF = new System.Windows.Forms.Button();
             this.buttonCylBack = new System.Windows.Forms.Button();
             this.comboxNumberOfCylinders = new System.Windows.Forms.ComboBox();
+            this.labelPrice = new System.Windows.Forms.Label();
             this.labelNumberOfCylinders = new System.Windows.Forms.Label();
             this.comboxCylinders = new System.Windows.Forms.ComboBox();
             this.labelCylinders = new System.Windows.Forms.Label();
+            this.buttonDXF = new System.Windows.Forms.Button();
             this.panelOutput = new System.Windows.Forms.Panel();
             this.labelMass3 = new System.Windows.Forms.Label();
             this.labelPlatformWeight = new System.Windows.Forms.Label();
@@ -143,6 +145,7 @@
             this.labelSpecifications = new System.Windows.Forms.Label();
             this.txtboxCodeYear = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.labelTravelSpeedFlag = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.panelDetails.SuspendLayout();
@@ -217,7 +220,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(381, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(378, 24);
             this.menuStrip1.TabIndex = 30;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -649,6 +652,8 @@
             // 
             // panelConditions
             // 
+            this.panelConditions.Controls.Add(this.labelTravelSpeedFlag);
+            this.panelConditions.Controls.Add(this.labelCapacityFlag);
             this.panelConditions.Controls.Add(this.buttonSCBack);
             this.panelConditions.Controls.Add(this.buttonSCNext);
             this.panelConditions.Controls.Add(this.labelCapacity);
@@ -681,6 +686,17 @@
             this.panelConditions.Name = "panelConditions";
             this.panelConditions.Size = new System.Drawing.Size(360, 420);
             this.panelConditions.TabIndex = 112;
+            // 
+            // labelCapacityFlag
+            // 
+            this.labelCapacityFlag.AutoSize = true;
+            this.labelCapacityFlag.ForeColor = System.Drawing.Color.Red;
+            this.labelCapacityFlag.Location = new System.Drawing.Point(114, 291);
+            this.labelCapacityFlag.Name = "labelCapacityFlag";
+            this.labelCapacityFlag.Size = new System.Drawing.Size(96, 13);
+            this.labelCapacityFlag.TabIndex = 137;
+            this.labelCapacityFlag.Text = "Capacity Too Low!";
+            this.labelCapacityFlag.Visible = false;
             // 
             // buttonSCBack
             // 
@@ -856,9 +872,9 @@
             this.labelUnitSpeed.AutoSize = true;
             this.labelUnitSpeed.Location = new System.Drawing.Point(74, 240);
             this.labelUnitSpeed.Name = "labelUnitSpeed";
-            this.labelUnitSpeed.Size = new System.Drawing.Size(23, 13);
+            this.labelUnitSpeed.Size = new System.Drawing.Size(34, 13);
             this.labelUnitSpeed.TabIndex = 116;
-            this.labelUnitSpeed.Text = "ft/s";
+            this.labelUnitSpeed.Text = "ft/min";
             // 
             // labelUnit5
             // 
@@ -967,9 +983,9 @@
             // 
             this.panelCylinders.Controls.Add(this.txtboxPrice);
             this.panelCylinders.Controls.Add(this.buttonCalculate);
-            this.panelCylinders.Controls.Add(this.buttonDXF);
             this.panelCylinders.Controls.Add(this.buttonCylBack);
             this.panelCylinders.Controls.Add(this.comboxNumberOfCylinders);
+            this.panelCylinders.Controls.Add(this.labelPrice);
             this.panelCylinders.Controls.Add(this.labelNumberOfCylinders);
             this.panelCylinders.Controls.Add(this.comboxCylinders);
             this.panelCylinders.Controls.Add(this.labelCylinders);
@@ -980,7 +996,7 @@
             // 
             // txtboxPrice
             // 
-            this.txtboxPrice.Location = new System.Drawing.Point(197, 347);
+            this.txtboxPrice.Location = new System.Drawing.Point(87, 350);
             this.txtboxPrice.Name = "txtboxPrice";
             this.txtboxPrice.Size = new System.Drawing.Size(147, 20);
             this.txtboxPrice.TabIndex = 117;
@@ -998,16 +1014,6 @@
             this.buttonCalculate.Text = "Calculate";
             this.buttonCalculate.UseVisualStyleBackColor = false;
             this.buttonCalculate.Click += new System.EventHandler(this.buttonCalculate_Click_1);
-            // 
-            // buttonDXF
-            // 
-            this.buttonDXF.Location = new System.Drawing.Point(10, 344);
-            this.buttonDXF.Name = "buttonDXF";
-            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
-            this.buttonDXF.TabIndex = 115;
-            this.buttonDXF.Text = "Create DXF";
-            this.buttonDXF.UseVisualStyleBackColor = true;
-            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
             // buttonCylBack
             // 
@@ -1035,6 +1041,17 @@
             this.comboxNumberOfCylinders.Size = new System.Drawing.Size(51, 21);
             this.comboxNumberOfCylinders.TabIndex = 111;
             this.comboxNumberOfCylinders.SelectedIndexChanged += new System.EventHandler(this.comboxNumberOfCylinders_SelectedIndexChanged);
+            // 
+            // labelPrice
+            // 
+            this.labelPrice.AutoSize = true;
+            this.labelPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPrice.ForeColor = System.Drawing.Color.Gray;
+            this.labelPrice.Location = new System.Drawing.Point(29, 349);
+            this.labelPrice.Name = "labelPrice";
+            this.labelPrice.Size = new System.Drawing.Size(47, 18);
+            this.labelPrice.TabIndex = 113;
+            this.labelPrice.Text = "Price";
             // 
             // labelNumberOfCylinders
             // 
@@ -1066,6 +1083,17 @@
             this.labelCylinders.Size = new System.Drawing.Size(110, 18);
             this.labelCylinders.TabIndex = 112;
             this.labelCylinders.Text = "Cylinder Type";
+            // 
+            // buttonDXF
+            // 
+            this.buttonDXF.Location = new System.Drawing.Point(1046, 112);
+            this.buttonDXF.Name = "buttonDXF";
+            this.buttonDXF.Size = new System.Drawing.Size(128, 31);
+            this.buttonDXF.TabIndex = 115;
+            this.buttonDXF.Text = "Create DXF";
+            this.buttonDXF.UseVisualStyleBackColor = true;
+            this.buttonDXF.Visible = false;
+            this.buttonDXF.Click += new System.EventHandler(this.buttonDXF_Click);
             // 
             // panelOutput
             // 
@@ -1345,14 +1373,25 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // labelTravelSpeedFlag
+            // 
+            this.labelTravelSpeedFlag.AutoSize = true;
+            this.labelTravelSpeedFlag.ForeColor = System.Drawing.Color.Red;
+            this.labelTravelSpeedFlag.Location = new System.Drawing.Point(114, 240);
+            this.labelTravelSpeedFlag.Name = "labelTravelSpeedFlag";
+            this.labelTravelSpeedFlag.Size = new System.Drawing.Size(237, 13);
+            this.labelTravelSpeedFlag.TabIndex = 138;
+            this.labelTravelSpeedFlag.Text = "Travel Speed Can\'t Exceed 0.5 ft/s  or 30 ft/min!";
+            this.labelTravelSpeedFlag.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(381, 617);
+            this.ClientSize = new System.Drawing.Size(378, 622);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.panelOutput);
+            this.Controls.Add(this.buttonDXF);
             this.Controls.Add(this.panelCylinders);
             this.Controls.Add(this.panelConditions);
             this.Controls.Add(this.panelLoading);
@@ -1368,6 +1407,7 @@
             this.Controls.Add(this.txtboxQuoteName);
             this.Controls.Add(this.labelNotes);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.panelOutput);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -1508,6 +1548,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox txtboxPrice;
         private System.Windows.Forms.Button buttonCalculate;
+        private System.Windows.Forms.Label labelPrice;
+        private System.Windows.Forms.Label labelCapacityFlag;
+        private System.Windows.Forms.Label labelTravelSpeedFlag;
     }
 }
 

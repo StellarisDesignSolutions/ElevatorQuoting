@@ -30,7 +30,8 @@ namespace ElevatorQuoting
 
         private void LoadQuote_Load(object sender, EventArgs e)
         {
-            sshConnection(GetQuotes);
+            //sshConnection(GetQuotes);
+            GetQuotes();
             //Tooltip(comboxQuotes);
         }
         /*
@@ -97,7 +98,8 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            //myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            myConnectionString = "server=localhost;port=3306;uid=root;pwd=stellaris;database=quotinglog;";
 
             try
             {
@@ -158,8 +160,8 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
-
+            //myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            myConnectionString = "server=localhost;port=3306;uid=root;pwd=stellaris;database=quotinglog;";
             try
             {
                 conn = new MySql.Data.MySqlClient.MySqlConnection(myConnectionString);
@@ -213,7 +215,8 @@ namespace ElevatorQuoting
         {
             //Quote.Reset();
             Quote.QuoteNumber = Convert.ToInt16(listViewQuotes.SelectedItems[0].Text);
-            sshConnection(LoadQuotes);
+            //sshConnection(LoadQuotes);
+            LoadQuotes();
             OnLoadingQuote(sender, e);
             this.Hide();
         }

@@ -119,8 +119,8 @@ namespace ElevatorQuoting
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            sshConnection(LogicLoad);
-            //LogicLoad();  //migrated to sshConnection function
+            //sshConnection(LogicLoad);
+            LogicLoad();  //migrated to sshConnection function //gwy May30
             //comboxUnits.SelectedIndex = 0;
             //comboxCylinders.SelectedIndex = 0;
             //comboxNumberOfCylinders.SelectedIndex = 0;
@@ -129,8 +129,8 @@ namespace ElevatorQuoting
         }
         void sshConnection(Func<Boolean> function)
         {
-            PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("stellarismysql.ddns.net", 7846, "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
-            connectionInfo.Timeout = TimeSpan.FromSeconds(30);
+           PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("stellarismysql.ddns.net", 7846, "gregyoung", "stellaris"); //replace "192.168.2.52" with "stellarismysql.ddns.net", 7846 for connections from offsite
+           connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
             using (var client = new SshClient(connectionInfo))
             {
@@ -180,7 +180,8 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=programlogic;";
+            //myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=programlogic;";
+            myConnectionString = "server=localhost;port=3306;uid=root;pwd=stellaris;database=programlogic;";
 
             try
             {
@@ -357,7 +358,7 @@ namespace ElevatorQuoting
                 label.Text = newUnitLabelLength;
                 if (label.Name.Contains("Speed"))
                 {
-                    label.Text += "/s";
+                    label.Text = "ft/min";
                 } else if (label.Name.Contains("Mass"))
                 {
                     label.Text = newUnitLabelMass;
@@ -405,7 +406,7 @@ namespace ElevatorQuoting
             if (UserInputs.PlatformWidth > 0 && UserInputs.PlatformLength > 0)
             {
 
-                decimal platformArea = UserInputs.PlatformLength * UserInputs.PlatformWidth;
+                decimal platformArea = (UserInputs.PlatformLength) * (UserInputs.PlatformWidth);
                 decimal platformClassCapacity = -1;
 
                 switch (comboxLoadType.SelectedIndex)
@@ -461,7 +462,7 @@ namespace ElevatorQuoting
             if (UserInputs.PlatformWidth > 0 && UserInputs.PlatformLength > 0)
             {
 
-                decimal platformArea = UserInputs.PlatformWidth * UserInputs.PlatformLength;
+                decimal platformArea = (UserInputs.PlatformWidth/12) * (UserInputs.PlatformLength/12);//converting to ft
 
                 decimal platformMassPerArea;
 
@@ -601,7 +602,8 @@ namespace ElevatorQuoting
         //Saving
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            sshConnection(SaveFunction);
+            //sshConnection(SaveFunction);
+            SaveFunction();
         }
         void CreateQuoteLocal()
         {
@@ -609,7 +611,8 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            //myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            myConnectionString = "server=localhost;port=3306;uid=root;pwd=stellaris;database=quotinglog;";
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = myConnectionString;
@@ -634,7 +637,8 @@ namespace ElevatorQuoting
             MySqlConnection conn;
             string myConnectionString;
 
-            myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            //myConnectionString = "server=127.0.0.1;port=1000;uid=gregyoung;pwd=[Stellaris03];database=quotinglog;";
+            myConnectionString = "server=localhost;port=3306;uid=root;pwd=stellaris;database=quotinglog;";
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = myConnectionString;
@@ -757,7 +761,7 @@ namespace ElevatorQuoting
 
             double hatchThickness = 20;
 
-            double dxfPlanStartX = dxfStartX + PlatformLength * 2;
+            double dxfPlanStartX = dxfStartX + PlatformLength * 2.5;
 
 
             int numOfFloors;
@@ -806,7 +810,7 @@ namespace ElevatorQuoting
 
             //Subsequent floors
 
-            numOfFloors = UserInputs.Floors;
+            numOfFloors = UserInputs.Floors-1;
 
             for (int i = 1; i < numOfFloors; i++)
             {
@@ -874,17 +878,47 @@ namespace ElevatorQuoting
             //Plan view
             List<Line> planView = new List<Line>();
 
+            //Plan View Dimensions
+            double ClY = 11;
+            double ClXfront = 1;
+            double ClXback = 4;
+
+
+
             //outside
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + hatchThickness * 2), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY + PlatformWidth + hatchThickness * 2)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness * 2, dxfStartY + PlatformWidth + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness * 2, dxfStartY)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + ClY*2 + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + ClY*2 + hatchThickness * 2), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness * 2, dxfStartY + PlatformWidth + ClY*2 + hatchThickness * 2)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness * 2, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness * 2, dxfStartY + PlatformWidth + ClY*2 + hatchThickness * 2)));
 
             //inside
-            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
-            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + hatchThickness, dxfStartY + PlatformWidth + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness, dxfStartY + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + ClY*2 + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + ClY*2 + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness, dxfStartY + PlatformWidth + ClY*2 + hatchThickness)));
+            planView.Add(new Line(new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness, dxfStartY + PlatformWidth + ClY*2 + hatchThickness)));
+
+        
+
+            //OpeningL
+
+            LinearDimension dim5 = new LinearDimension(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + ClXback + hatchThickness , dxfStartY), PlatformThickness, 180, netDxf.Tables.DimensionStyle.Iso25);
+            dim5.UserText = (PlatformLength + ClXfront + ClXback).ToString() + " OPENING";
+
+            //NetPlatformL
+
+            LinearDimension dim7 = new LinearDimension(new Vector2(dxfPlanStartX + hatchThickness + ClXfront, dxfStartY + hatchThickness), new Vector2(dxfPlanStartX + PlatformLength + ClXfront + hatchThickness, dxfStartY + hatchThickness), PlatformThickness, 0, netDxf.Tables.DimensionStyle.Iso25);
+            dim7.UserText = PlatformLength.ToString() + " NET PLATFORM";
+
+            //OpeningW
+
+            LinearDimension dim6 = new LinearDimension(new Vector2(dxfPlanStartX , dxfStartY + hatchThickness), new Vector2(dxfPlanStartX, dxfStartY + PlatformWidth + ClY*2 + hatchThickness), PlatformThickness + 5, 90, netDxf.Tables.DimensionStyle.Iso25);
+            dim6.UserText = (PlatformWidth + ClY*2).ToString() + " OPENING";
+
+            //NetPlatformW
+
+            LinearDimension dim8 = new LinearDimension(new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + ClY + hatchThickness), new Vector2(dxfPlanStartX + hatchThickness, dxfStartY + PlatformWidth + ClY + hatchThickness), PlatformThickness*2, 270, netDxf.Tables.DimensionStyle.Iso25);
+            dim8.UserText = (PlatformWidth).ToString() + " NET PLATFORM";
+
 
 
             drawObject(platform, doc);
@@ -900,6 +934,10 @@ namespace ElevatorQuoting
             doc.AddEntity(dim2);
             doc.AddEntity(dim3);
             doc.AddEntity(dim4);
+            doc.AddEntity(dim5);
+            doc.AddEntity(dim6);
+            doc.AddEntity(dim7);
+            doc.AddEntity(dim8);
 
 
             // save to file
@@ -1098,11 +1136,58 @@ namespace ElevatorQuoting
 
         private void buttonSCNext_Click(object sender, EventArgs e)
         {
-            updateAllCalculations();
-            if (!timerNext.Enabled && !timerBack.Enabled)
+            int x = 0;
+
+            if (capacityCheck() == true) 
             {
-                timerNext.Start();
+                x++;
             }
+            if (travelSpeedCheck() == true)
+            {
+                x++;
+            }
+            
+            if (x==0)
+            {
+                updateAllCalculations();
+                if (!timerNext.Enabled && !timerBack.Enabled)
+                {
+                    timerNext.Start();
+                }
+            }
+        }
+
+        private bool capacityCheck()
+        {
+            if (Convert.ToDecimal(txtboxCapacity.Text) < Lift.MinCapacity)
+            {
+                labelCapacityFlag.Visible = true;
+                labelCapacityFlag.Text = "Capacity too low!, Min Capacity: " + Lift.MinCapacity.ToString();
+                return true;
+            }
+            else
+            {
+                labelCapacityFlag.Visible = false;
+                return false;
+            }
+
+
+        }
+
+        private bool travelSpeedCheck()
+        {
+            if (Convert.ToDouble(txtboxTravelSpeed.Text) > 30)
+            {
+                labelTravelSpeedFlag.Visible = true;
+                return true;
+            }
+            else
+            {
+                labelTravelSpeedFlag.Visible = false;
+                return false;
+            }
+
+
         }
 
         private void comboxLoadType_SelectedIndexChanged(object sender, EventArgs e)
